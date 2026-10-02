@@ -1,0 +1,6 @@
+{
+  "name": "NewsDigest",
+  "description": "Daily newspaper digest for BCS and competitive exams from The Daily Star and Prothom Alo with study summaries, MCQs practice, archive, and read aloud.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
