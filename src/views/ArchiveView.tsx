@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Search, Bookmark, Calendar, ChevronRight, X } from 'lucide-react';
-import { Digest, SavedItem, PAPERS } from '../types';
+import { Digest, SavedItem } from '../types';
 import { ItemCard } from '../components/ItemCard';
 import { PaperBadge } from '../components/PaperBadge';
 import { formatDhakaPretty } from '../services/store';
@@ -76,21 +76,21 @@ export const ArchiveView: React.FC<ArchiveViewProps> = ({
   });
 
   return (
-    <div className="space-y-4 pb-24">
+    <div className="space-y-4 pb-28 max-w-3xl mx-auto">
       {/* Search Bar */}
       <div className="relative">
-        <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-neutral-400" />
+        <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-[var(--text-muted)]" />
         <input
           type="text"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          placeholder="Search: Padma, ASEAN, GDP, budget, নির্বাচন…"
-          className="w-full pl-9 pr-8 py-2 rounded-2xl bg-white dark:bg-[#1c1c1e] border border-black/5 dark:border-white/10 text-xs sm:text-sm text-neutral-900 dark:text-neutral-100 placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-[#007aff]/50 font-bangla shadow-xs"
+          placeholder="Search: Padma, ASEAN, GDP, budget, নির্বাচন, আইসিজে…"
+          className="w-full pl-9 pr-8 py-2.5 rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-subtle)] text-xs sm:text-sm text-[var(--text-primary)] placeholder:text-[var(--text-muted)] focus:outline-none focus:ring-2 focus:ring-[#007aff]/50 font-bangla shadow-xs"
         />
         {searchQuery && (
           <button
             onClick={() => setSearchQuery('')}
-            className="absolute right-2.5 top-1/2 -translate-y-1/2 p-1 text-neutral-400 hover:text-neutral-600 rounded-full"
+            className="absolute right-2.5 top-1/2 -translate-y-1/2 p-1 text-[var(--text-muted)] hover:text-[var(--text-primary)] rounded-full"
           >
             <X className="w-3.5 h-3.5" />
           </button>
@@ -100,17 +100,17 @@ export const ArchiveView: React.FC<ArchiveViewProps> = ({
       {/* When searching, show search results */}
       {searchQuery.trim() ? (
         <div className="space-y-3">
-          <div className="text-xs font-semibold text-neutral-500 px-1">
+          <div className="text-xs font-semibold text-[var(--text-muted)] px-1">
             Found {searchResults.length} matching stories
           </div>
           {searchResults.length === 0 ? (
-            <div className="bg-white dark:bg-[#1c1c1e] rounded-2xl p-10 text-center border border-black/5 dark:border-white/5 space-y-2">
-              <Search className="w-6 h-6 text-neutral-400 mx-auto mb-2" />
-              <div className="text-sm font-bold text-neutral-800 dark:text-neutral-200">
+            <div className="bg-[var(--bg-surface)] rounded-2xl p-10 text-center border border-[var(--border-subtle)] space-y-2">
+              <Search className="w-6 h-6 text-[var(--text-muted)] mx-auto mb-2" />
+              <div className="text-sm font-bold text-[var(--text-primary)]">
                 No matches for “{searchQuery}”
               </div>
-              <p className="text-xs text-neutral-500">
-                Try searching for other keywords, names, or topics.
+              <p className="text-xs text-[var(--text-muted)]">
+                Try searching for other keywords, figures, or names.
               </p>
             </div>
           ) : (
@@ -130,13 +130,13 @@ export const ArchiveView: React.FC<ArchiveViewProps> = ({
       ) : (
         <>
           {/* Segmented control: Days vs Saved */}
-          <div className="bg-black/5 dark:bg-white/10 p-0.5 rounded-xl flex text-xs font-semibold select-none">
+          <div className="bg-black/5 dark:bg-white/5 p-1 rounded-xl flex text-xs font-semibold select-none border border-black/5 dark:border-white/5">
             <button
               onClick={() => setMode('days')}
               className={`flex-1 py-1.5 rounded-lg transition-all text-center flex items-center justify-center gap-1.5 ${
                 mode === 'days'
-                  ? 'bg-white dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 shadow-xs'
-                  : 'text-neutral-600 dark:text-neutral-400 hover:text-neutral-900'
+                  ? 'bg-[var(--bg-surface)] text-[var(--text-primary)] shadow-2xs font-bold'
+                  : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
               }`}
             >
               <Calendar className="w-3.5 h-3.5" />
@@ -146,8 +146,8 @@ export const ArchiveView: React.FC<ArchiveViewProps> = ({
               onClick={() => setMode('saved')}
               className={`flex-1 py-1.5 rounded-lg transition-all text-center flex items-center justify-center gap-1.5 ${
                 mode === 'saved'
-                  ? 'bg-white dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 shadow-xs'
-                  : 'text-neutral-600 dark:text-neutral-400 hover:text-neutral-900'
+                  ? 'bg-[var(--bg-surface)] text-[var(--text-primary)] shadow-2xs font-bold'
+                  : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
               }`}
             >
               <Bookmark className="w-3.5 h-3.5" />
@@ -160,10 +160,10 @@ export const ArchiveView: React.FC<ArchiveViewProps> = ({
             <div className="space-y-6">
               {monthGroups.map((group) => (
                 <div key={group.month} className="space-y-2">
-                  <h3 className="text-xs font-bold uppercase tracking-wider text-neutral-500 px-1">
+                  <h3 className="text-xs font-bold uppercase tracking-wider text-[var(--text-muted)] px-1">
                     {group.month}
                   </h3>
-                  <div className="bg-white dark:bg-[#1c1c1e] rounded-2xl border border-black/5 dark:border-white/5 divide-y divide-black/5 dark:divide-white/5 overflow-hidden">
+                  <div className="bg-[var(--bg-surface)] rounded-2xl border border-[var(--border-subtle)] divide-y divide-[var(--border-subtle)] overflow-hidden shadow-xs">
                     {group.dates.map((dateStr) => {
                       const d = new Date(dateStr + 'T00:00:00');
                       const dayNumber = d.getDate();
@@ -176,21 +176,20 @@ export const ArchiveView: React.FC<ArchiveViewProps> = ({
                         <button
                           key={dateStr}
                           onClick={() => onSelectDate(dateStr)}
-                          className="w-full flex items-center justify-between p-3.5 sm:p-4 text-left hover:bg-black/5 dark:hover:bg-white/5 transition-colors group"
+                          className="w-full flex items-center justify-between p-4 text-left hover:bg-black/5 dark:hover:bg-white/5 transition-colors group"
                         >
                           <div className="flex items-center gap-4">
-                            {/* Big Day Number & Weekday */}
                             <div className="w-10 text-center shrink-0">
-                              <div className="text-lg font-bold text-neutral-900 dark:text-neutral-100 leading-none">
+                              <div className="text-lg font-bold text-[var(--text-primary)] leading-none">
                                 {dayNumber}
                               </div>
-                              <div className="text-[10px] font-bold text-neutral-400 uppercase tracking-tight mt-0.5">
+                              <div className="text-[10px] font-bold text-[var(--text-muted)] uppercase tracking-tight mt-0.5">
                                 {weekday}
                               </div>
                             </div>
 
                             <div className="space-y-1">
-                              <div className="text-sm font-semibold text-neutral-900 dark:text-neutral-100 group-hover:text-[#007aff] transition-colors">
+                              <div className="text-sm font-semibold text-[var(--text-primary)] group-hover:text-[#007aff] transition-colors">
                                 {formatDhakaPretty(dateStr)}
                               </div>
                               <div className="flex items-center gap-2">
@@ -202,7 +201,7 @@ export const ArchiveView: React.FC<ArchiveViewProps> = ({
                                   return (
                                     <div
                                       key={dig.paper}
-                                      className="flex items-center gap-1 text-xs text-neutral-500"
+                                      className="flex items-center gap-1 text-xs text-[var(--text-muted)]"
                                     >
                                       <PaperBadge paper={dig.paper} size="sm" />
                                       <span className="text-[11px]">{count}</span>
@@ -213,7 +212,7 @@ export const ArchiveView: React.FC<ArchiveViewProps> = ({
                             </div>
                           </div>
 
-                          <ChevronRight className="w-4 h-4 text-neutral-400 group-hover:text-[#007aff] transition-colors" />
+                          <ChevronRight className="w-4 h-4 text-[var(--text-muted)] group-hover:text-[#007aff] transition-colors" />
                         </button>
                       );
                     })}
@@ -225,15 +224,15 @@ export const ArchiveView: React.FC<ArchiveViewProps> = ({
             // Saved Mode: list of bookmarked stories
             <div className="space-y-3">
               {bookmarks.length === 0 ? (
-                <div className="bg-white dark:bg-[#1c1c1e] rounded-2xl p-10 text-center border border-black/5 dark:border-white/5 space-y-2">
+                <div className="bg-[var(--bg-surface)] rounded-2xl p-10 text-center border border-[var(--border-subtle)] space-y-2">
                   <div className="w-12 h-12 rounded-full bg-[#007aff]/10 text-[#007aff] flex items-center justify-center mx-auto mb-2">
                     <Bookmark className="w-6 h-6" />
                   </div>
-                  <h4 className="font-bold text-neutral-900 dark:text-neutral-100 text-sm">
+                  <h4 className="font-bold text-[var(--text-primary)] text-sm">
                     No saved stories yet
                   </h4>
-                  <p className="text-xs text-neutral-500 max-w-xs mx-auto">
-                    Tap the bookmark button on any card to save it here for exam revision.
+                  <p className="text-xs text-[var(--text-muted)] max-w-xs mx-auto">
+                    Click the bookmark button on any story to save it here for revision before exams.
                   </p>
                 </div>
               ) : (

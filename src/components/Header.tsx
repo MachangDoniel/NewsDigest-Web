@@ -1,12 +1,34 @@
 import React from 'react';
-import { ChevronLeft, ChevronRight, Calendar as CalendarIcon, Sparkles } from 'lucide-react';
+import {
+  ChevronLeft,
+  ChevronRight,
+  Calendar as CalendarIcon,
+  Sun,
+  Moon,
+  Coffee,
+  LayoutGrid,
+  List,
+  FileText,
+  HelpCircle,
+} from 'lucide-react';
 import { formatDhakaPretty, getTodayDhaka, stepDhakaDate } from '../services/store';
+
+export type ViewMode = 'editorial' | 'compact';
+export type ThemeMode = 'light' | 'sepia' | 'dark';
 
 interface HeaderProps {
   currentDate: string;
   onDateChange: (newDate: string) => void;
   onOpenCalendar: () => void;
   activeTab: 'today' | 'practice' | 'archive' | 'papers' | 'settings';
+  onTabChange: (tab: 'today' | 'practice' | 'archive' | 'papers' | 'settings') => void;
+  viewMode: ViewMode;
+  onViewModeChange: (mode: ViewMode) => void;
+  theme: ThemeMode;
+  onThemeChange: (theme: ThemeMode) => void;
+  onOpenRevisionSheet: () => void;
+  onOpenShortcuts: () => void;
+  mcqCount?: number;
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -14,95 +36,186 @@ export const Header: React.FC<HeaderProps> = ({
   onDateChange,
   onOpenCalendar,
   activeTab,
+  onTabChange,
+  viewMode,
+  onViewModeChange,
+  theme,
+  onThemeChange,
+  onOpenRevisionSheet,
+  onOpenShortcuts,
+  mcqCount = 0,
 }) => {
   const today = getTodayDhaka();
   const isToday = currentDate === today;
   const prettyDate = formatDhakaPretty(currentDate);
 
-  const getTitle = () => {
-    switch (activeTab) {
-      case 'today':
-        return prettyDate;
-      case 'practice':
-        return `Practice · ${prettyDate}`;
-      case 'archive':
-        return 'Archive';
-      case 'papers':
-        return 'Papers';
-      case 'settings':
-        return 'Settings';
-      default:
-        return 'NewsDigest';
-    }
+  const cycleTheme = () => {
+    if (theme === 'light') onThemeChange('sepia');
+    else if (theme === 'sepia') onThemeChange('dark');
+    else onThemeChange('light');
   };
 
-  const showDateControls = activeTab === 'today' || activeTab === 'practice';
-
   return (
-    <header className="sticky top-0 z-30 bg-[#f2f2f7]/85 dark:bg-[#000000]/85 backdrop-blur-xl border-b border-black/5 dark:border-white/10 px-4 py-2.5 transition-colors">
-      <div className="max-w-3xl mx-auto flex items-center justify-between min-h-[38px]">
-        {/* Left side */}
-        <div className="flex items-center gap-2">
-          {showDateControls && !isToday && (
-            <button
-              onClick={() => onDateChange(today)}
-              className="px-2.5 py-1 text-xs font-semibold text-[#007aff] hover:bg-[#007aff]/10 rounded-full transition-colors active:scale-95"
-            >
-              Today
-            </button>
-          )}
-          {(!showDateControls || isToday) && (
-            <div className="flex items-center gap-1.5 text-xs font-semibold text-neutral-500 dark:text-neutral-400">
-              <span className="w-2 h-2 rounded-full bg-emerald-500 inline-block animate-pulse"></span>
-              <span>Dhaka Edition</span>
-            </div>
-          )}
+    <header className="sticky top-0 z-30 bg-[var(--bg-canvas)]/90 backdrop-blur-xl border-b border-[var(--border-subtle)] px-4 sm:px-6 py-2.5 transition-colors duration-200">
+      <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
+        {/* Zone 1: Wordmark Brand */}
+        <div className="flex items-center gap-3 shrink-0">
+          <button
+            onClick={() => onTabChange('today')}
+            className="text-left group flex items-baseline gap-1.5 focus:outline-none"
+          >
+            <span className="font-serif font-black text-xl sm:text-2xl tracking-tight text-[var(--text-primary)] group-hover:text-[#007aff] transition-colors">
+              NewsDigest
+            </span>
+            <span className="text-[10px] font-sans font-bold tracking-widest text-[#007aff] uppercase">
+              Web v2
+            </span>
+          </button>
+
+          <div className="hidden sm:flex items-center gap-1.5 text-[11px] text-[var(--text-muted)] font-medium pl-2 border-l border-[var(--border-subtle)]">
+            <span className="w-2 h-2 rounded-full bg-emerald-500 inline-block animate-pulse" />
+            <span>Dhaka Edition</span>
+          </div>
         </div>
 
-        {/* Center / Title */}
-        <h1 className="text-base sm:text-lg font-bold tracking-tight text-neutral-900 dark:text-neutral-100 truncate px-2">
-          {getTitle()}
-        </h1>
+        {/* Zone 2: Navigation Links (Desktop) & Date Stepper */}
+        <div className="flex items-center gap-2 sm:gap-4">
+          {/* Desktop Nav Items */}
+          <nav className="hidden md:flex items-center gap-1 bg-black/5 dark:bg-white/5 p-1 rounded-xl text-xs font-semibold">
+            {[
+              { id: 'today', label: 'Today' },
+              { id: 'practice', label: 'Practice', badge: mcqCount > 0 ? mcqCount : undefined },
+              { id: 'archive', label: 'Archive' },
+              { id: 'papers', label: 'Papers' },
+              { id: 'settings', label: 'Settings' },
+            ].map((tab) => {
+              const isActive = activeTab === tab.id;
+              return (
+                <button
+                  key={tab.id}
+                  onClick={() => onTabChange(tab.id as any)}
+                  className={`px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5 ${
+                    isActive
+                      ? 'bg-[var(--bg-surface)] text-[var(--text-primary)] shadow-xs'
+                      : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
+                  }`}
+                >
+                  <span>{tab.label}</span>
+                  {tab.badge && (
+                    <span className="bg-[#007aff] text-white text-[10px] px-1.5 py-0.2 rounded-full font-bold">
+                      {tab.badge}
+                    </span>
+                  )}
+                </button>
+              );
+            })}
+          </nav>
 
-        {/* Right side date controls */}
-        <div className="flex items-center gap-1">
-          {showDateControls ? (
-            <>
+          {/* Date Stepper Controls */}
+          {(activeTab === 'today' || activeTab === 'practice') && (
+            <div className="flex items-center gap-1 bg-[var(--bg-surface)] border border-[var(--border-subtle)] px-2 py-1 rounded-xl shadow-2xs">
               <button
                 onClick={() => onDateChange(stepDhakaDate(currentDate, -1))}
                 aria-label="Previous day"
-                className="p-1.5 text-[#007aff] hover:bg-[#007aff]/10 rounded-full transition-colors active:scale-90"
-                title="Previous day"
+                className="p-1 rounded-md text-[var(--text-secondary)] hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
+                title="Previous day ([ key)"
               >
-                <ChevronLeft className="w-5 h-5" />
+                <ChevronLeft className="w-4 h-4" />
               </button>
 
               <button
                 onClick={onOpenCalendar}
-                aria-label="Jump to date"
-                className="p-1.5 text-[#007aff] hover:bg-[#007aff]/10 rounded-full transition-colors active:scale-90"
+                className="px-2 py-0.5 text-xs font-bold text-[var(--text-primary)] hover:text-[#007aff] flex items-center gap-1.5 transition-colors"
                 title="Jump to date"
               >
-                <CalendarIcon className="w-4 h-4" />
+                <CalendarIcon className="w-3.5 h-3.5 text-[#007aff]" />
+                <span className="truncate max-w-[120px]">{prettyDate}</span>
               </button>
 
-              <button
-                onClick={() => onDateChange(stepDhakaDate(currentDate, 1))}
-                disabled={isToday}
-                aria-label="Next day"
-                className={`p-1.5 rounded-full transition-colors active:scale-90 ${
-                  isToday
-                    ? 'text-neutral-300 dark:text-neutral-700 cursor-not-allowed'
-                    : 'text-[#007aff] hover:bg-[#007aff]/10'
-                }`}
-                title={isToday ? 'Already on today' : 'Next day'}
-              >
-                <ChevronRight className="w-5 h-5" />
-              </button>
-            </>
-          ) : (
-            <div className="w-8" />
+              {!isToday ? (
+                <button
+                  onClick={() => onDateChange(stepDhakaDate(currentDate, 1))}
+                  aria-label="Next day"
+                  className="p-1 rounded-md text-[var(--text-secondary)] hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
+                  title="Next day (] key)"
+                >
+                  <ChevronRight className="w-4 h-4" />
+                </button>
+              ) : (
+                <span className="w-4" />
+              )}
+
+              {!isToday && (
+                <button
+                  onClick={() => onDateChange(today)}
+                  className="ml-1 px-2 py-0.5 text-[10px] font-bold text-[#007aff] hover:bg-[#007aff]/10 rounded-md transition-colors"
+                >
+                  Today
+                </button>
+              )}
+            </div>
           )}
+        </div>
+
+        {/* Zone 3: Web Actions & Tooling */}
+        <div className="flex items-center gap-1.5 sm:gap-2">
+          {/* View mode toggle (Editorial vs Compact) */}
+          {activeTab === 'today' && (
+            <div className="hidden sm:flex items-center bg-black/5 dark:bg-white/5 p-0.5 rounded-xl text-xs">
+              <button
+                onClick={() => onViewModeChange('editorial')}
+                className={`p-1.5 rounded-lg transition-colors ${
+                  viewMode === 'editorial'
+                    ? 'bg-[var(--bg-surface)] text-[#007aff] shadow-2xs'
+                    : 'text-[var(--text-muted)] hover:text-[var(--text-primary)]'
+                }`}
+                title="Editorial broadsheet view"
+              >
+                <LayoutGrid className="w-3.5 h-3.5" />
+              </button>
+              <button
+                onClick={() => onViewModeChange('compact')}
+                className={`p-1.5 rounded-lg transition-colors ${
+                  viewMode === 'compact'
+                    ? 'bg-[var(--bg-surface)] text-[#007aff] shadow-2xs'
+                    : 'text-[var(--text-muted)] hover:text-[var(--text-primary)]'
+                }`}
+                title="Compact study list view"
+              >
+                <List className="w-3.5 h-3.5" />
+              </button>
+            </div>
+          )}
+
+          {/* Printable Revision Sheet Trigger */}
+          <button
+            onClick={onOpenRevisionSheet}
+            className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-[var(--border-subtle)] text-xs font-semibold text-[var(--text-primary)] hover:bg-black/5 dark:hover:bg-white/5 transition-colors shadow-2xs"
+            title="Open printable daily revision sheet (S key)"
+          >
+            <FileText className="w-3.5 h-3.5 text-emerald-600" />
+            <span>Revision Sheet</span>
+          </button>
+
+          {/* Theme Switcher (Paper / Sepia / Night) */}
+          <button
+            onClick={cycleTheme}
+            className="p-2 rounded-xl border border-[var(--border-subtle)] text-[var(--text-secondary)] hover:bg-black/5 dark:hover:bg-white/5 transition-colors shadow-2xs"
+            title={`Theme: ${theme.toUpperCase()} (Click to toggle)`}
+          >
+            {theme === 'light' && <Sun className="w-4 h-4 text-amber-500" />}
+            {theme === 'sepia' && <Coffee className="w-4 h-4 text-[#9a3412]" />}
+            {theme === 'dark' && <Moon className="w-4 h-4 text-blue-400" />}
+          </button>
+
+          {/* Shortcuts Modal Trigger */}
+          <button
+            onClick={onOpenShortcuts}
+            className="hidden sm:flex p-2 rounded-xl text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
+            title="Keyboard shortcuts (? key)"
+          >
+            <HelpCircle className="w-4 h-4" />
+          </button>
         </div>
       </div>
     </header>

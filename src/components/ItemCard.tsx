@@ -1,5 +1,16 @@
 import React, { useState } from 'react';
-import { Flame, Bookmark, Share2, Newspaper, ChevronDown, ChevronUp, Quote, Check, AlertTriangle } from 'lucide-react';
+import {
+  Flame,
+  Bookmark,
+  Share2,
+  Newspaper,
+  ChevronDown,
+  ChevronUp,
+  Quote,
+  Check,
+  AlertTriangle,
+  ExternalLink,
+} from 'lucide-react';
 import { SavedItem, PAPERS } from '../types';
 import { PaperBadge } from './PaperBadge';
 import { AskAIMenu } from './AskAIMenu';
@@ -11,6 +22,7 @@ interface ItemCardProps {
   onOpenPage?: (paper: string, page: number) => void;
   onOpenInAppChat: (prompt: string, contextTitle: string) => void;
   showDate?: boolean;
+  viewMode?: 'editorial' | 'compact';
 }
 
 export const ItemCard: React.FC<ItemCardProps> = ({
@@ -20,6 +32,7 @@ export const ItemCard: React.FC<ItemCardProps> = ({
   onOpenPage,
   onOpenInAppChat,
   showDate = false,
+  viewMode = 'editorial',
 }) => {
   const { item, paper, category } = saved;
   const paperInfo = PAPERS[paper] || PAPERS.dailystar;
@@ -56,58 +69,115 @@ export const ItemCard: React.FC<ItemCardProps> = ({
     }
   };
 
+  // Compact View Mode for high-speed skimming
+  if (viewMode === 'compact') {
+    return (
+      <article className="bg-[var(--bg-surface)] rounded-xl p-3.5 border border-[var(--border-subtle)] shadow-2xs hover:border-[#007aff]/30 transition-all flex items-start justify-between gap-3 group">
+        <div className="space-y-1 min-w-0 flex-1">
+          <div className="flex items-center gap-2 text-xs text-[var(--text-muted)] font-medium">
+            <PaperBadge paper={paper} size="sm" />
+            <span>{category}</span>
+            <span>·</span>
+            <span>Page {item.page}</span>
+            {item.bcsRelevance === 'high' && (
+              <>
+                <span>·</span>
+                <span className="text-amber-600 font-bold flex items-center gap-0.5">
+                  <Flame className="w-3 h-3 fill-current" /> High
+                </span>
+              </>
+            )}
+          </div>
+
+          <h3 className="text-sm font-bold font-bangla text-[var(--text-primary)] leading-snug group-hover:text-[#007aff] transition-colors">
+            {item.headline}
+          </h3>
+
+          {item.keyFacts && item.keyFacts.length > 0 && (
+            <div className="flex flex-wrap gap-1 pt-0.5">
+              {item.keyFacts.slice(0, 3).map((f, i) => (
+                <span
+                  key={i}
+                  className="text-[10px] px-1.5 py-0.2 rounded bg-black/5 dark:bg-white/10 text-[var(--text-secondary)] font-bangla"
+                >
+                  {f}
+                </span>
+              ))}
+            </div>
+          )}
+        </div>
+
+        <div className="flex items-center gap-1 shrink-0 pt-1">
+          <AskAIMenu story={saved} onOpenInAppChat={onOpenInAppChat} />
+          <button
+            onClick={() => onToggleBookmark(saved)}
+            className={`p-1.5 rounded-lg hover:bg-black/5 dark:hover:bg-white/5 transition-colors ${
+              isBookmarked ? 'text-[#007aff]' : 'text-neutral-400'
+            }`}
+          >
+            <Bookmark className={`w-3.5 h-3.5 ${isBookmarked ? 'fill-current' : ''}`} />
+          </button>
+        </div>
+      </article>
+    );
+  }
+
+  // Editorial Rich View Mode
   return (
-    <article className="bg-white dark:bg-[#1c1c1e] rounded-2xl p-4 sm:p-5 shadow-xs border border-black/5 dark:border-white/5 space-y-3 transition-all hover:shadow-md">
-      {/* Top Metadata Row */}
-      <div className="flex items-center justify-between gap-2 flex-wrap">
+    <article className="bg-[var(--bg-surface)] rounded-2xl p-5 sm:p-6 shadow-xs border border-[var(--border-subtle)] space-y-3.5 transition-all hover:shadow-md hover:border-[#007aff]/30">
+      {/* Top Metadata Row (Unboxed Clean Metadata) */}
+      <div className="flex items-center justify-between gap-2 flex-wrap text-xs text-[var(--text-muted)]">
         <div className="flex items-center gap-2">
           <PaperBadge paper={paper} size="sm" />
-          <span className="text-xs font-semibold text-neutral-500 dark:text-neutral-400">
-            {category}
-          </span>
+          <span className="font-semibold text-[var(--text-secondary)]">{category}</span>
+          <span aria-hidden="true">·</span>
+          <span>Page {item.page}</span>
           {showDate && (
-            <span className="text-[11px] text-neutral-400 dark:text-neutral-500">
-              · {saved.date}
-            </span>
+            <>
+              <span aria-hidden="true">·</span>
+              <span>{saved.date}</span>
+            </>
           )}
         </div>
 
         {item.bcsRelevance === 'high' && (
-          <div className="flex items-center gap-1 text-[11px] font-bold text-amber-600 dark:text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded-full">
+          <div className="flex items-center gap-1 text-[11px] font-bold text-amber-600 dark:text-amber-400 bg-amber-500/10 px-2.5 py-0.5 rounded-full">
             <Flame className="w-3.5 h-3.5 fill-current" />
-            <span>High BCS Relevance</span>
+            <span>High BCS Exam Relevance</span>
           </div>
         )}
       </div>
 
-      {/* Headline */}
-      <h3 className="text-base sm:text-lg font-bold text-neutral-900 dark:text-neutral-50 leading-snug font-bangla">
+      {/* Headline (Editorial Serif for English / Hind Siliguri for Bangla) */}
+      <h3 className="text-base sm:text-xl font-bold font-bangla text-[var(--text-primary)] leading-snug">
         {item.headline}
       </h3>
 
-      {/* Bullets */}
+      {/* Bullets (2-3 concise points) */}
       {item.bullets && item.bullets.length > 0 && (
-        <ul className="space-y-1.5 text-xs sm:text-sm text-neutral-700 dark:text-neutral-300 leading-relaxed font-bangla">
+        <ul className="space-y-2 text-xs sm:text-sm text-[var(--text-secondary)] leading-relaxed font-bangla pl-1">
           {item.bullets.map((bullet, idx) => (
-            <li key={idx} className="flex items-start gap-2">
-              <span className="text-[#007aff] font-bold text-base leading-none select-none mt-0.5">•</span>
+            <li key={idx} className="flex items-start gap-2.5">
+              <span className="text-[#007aff] font-bold text-base leading-none select-none mt-0.5">
+                •
+              </span>
               <span>{bullet}</span>
             </li>
           ))}
         </ul>
       )}
 
-      {/* Key Facts tags */}
+      {/* Key Exam Facts tags */}
       {item.keyFacts && item.keyFacts.length > 0 && (
-        <div className="pt-1">
-          <div className="text-[10px] uppercase tracking-wider font-bold text-neutral-400 dark:text-neutral-500 mb-1.5">
-            Key Exam Facts
+        <div className="pt-1.5 space-y-1.5">
+          <div className="text-[10px] font-sans font-bold uppercase tracking-wider text-[var(--text-muted)]">
+            Memorize for Prelims & Viva
           </div>
           <div className="flex flex-wrap gap-1.5">
             {item.keyFacts.map((fact, idx) => (
               <span
                 key={idx}
-                className="inline-flex items-center px-2 py-1 rounded-lg text-xs font-medium bg-[#f2f2f7] dark:bg-neutral-800 text-neutral-800 dark:text-neutral-200 border border-black/5 dark:border-white/5 font-bangla"
+                className="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold bg-black/5 dark:bg-white/5 text-[var(--text-primary)] border border-black/5 dark:border-white/5 font-bangla"
               >
                 {fact}
               </span>
@@ -116,10 +186,10 @@ export const ItemCard: React.FC<ItemCardProps> = ({
         </div>
       )}
 
-      {/* From the paper quote box */}
+      {/* Collapsible From The Paper Quote */}
       {(item.excerpt || item.sourceHeadline) && (
         <div
-          className="rounded-xl p-3 border-l-4 transition-all"
+          className="rounded-xl p-3.5 border-l-4 transition-all"
           style={{
             backgroundColor: `${paperInfo.color}0a`,
             borderColor: paperInfo.color,
@@ -127,12 +197,12 @@ export const ItemCard: React.FC<ItemCardProps> = ({
         >
           <button
             onClick={() => setFromPaperOpen(!fromPaperOpen)}
-            className="w-full flex items-center justify-between text-left font-semibold text-xs"
+            className="w-full flex items-center justify-between text-left font-bold text-xs"
             style={{ color: paperInfo.color }}
           >
             <div className="flex items-center gap-1.5">
               <Quote className="w-3.5 h-3.5" />
-              <span>From the paper</span>
+              <span>From the original paper</span>
             </div>
             {fromPaperOpen ? (
               <ChevronUp className="w-3.5 h-3.5" />
@@ -142,33 +212,33 @@ export const ItemCard: React.FC<ItemCardProps> = ({
           </button>
 
           {fromPaperOpen && (
-            <div className="mt-2 space-y-1 text-xs text-neutral-600 dark:text-neutral-300 font-bangla">
+            <div className="mt-2.5 space-y-1.5 text-xs text-[var(--text-secondary)] font-bangla leading-relaxed">
               {item.sourceHeadline && item.sourceHeadline !== item.headline && (
-                <div className="font-semibold text-neutral-800 dark:text-neutral-100">
+                <div className="font-bold text-[var(--text-primary)]">
                   {item.sourceHeadline}
                 </div>
               )}
-              {item.excerpt && <p className="leading-relaxed opacity-90">{item.excerpt}</p>}
+              {item.excerpt && <p className="opacity-95 italic">“{item.excerpt}”</p>}
             </div>
           )}
         </div>
       )}
 
-      {/* Model warning note */}
+      {/* Model warning note if lighter model */}
       {item.source === 'image' && item.model?.includes('lite') && (
         <div className="flex items-center gap-1.5 text-[11px] text-amber-600 dark:text-amber-400 bg-amber-500/10 px-2.5 py-1 rounded-lg">
           <AlertTriangle className="w-3.5 h-3.5 shrink-0" />
-          <span>Read by lighter AI model. Verify numbers and dates on the e-paper page.</span>
+          <span>Read by lighter AI model. Double-check numbers and dates on the e-paper page.</span>
         </div>
       )}
 
       {/* Bottom Action Row */}
-      <div className="pt-2 flex items-center justify-between border-t border-black/5 dark:border-white/5 text-xs text-[#007aff]">
+      <div className="pt-2 flex items-center justify-between border-t border-[var(--border-subtle)] text-xs text-[#007aff]">
         {/* Page jump */}
         {item.page ? (
           <button
             onClick={() => onOpenPage && onOpenPage(paper, item.page)}
-            className="flex items-center gap-1.5 font-semibold hover:opacity-80 py-1"
+            className="flex items-center gap-1.5 font-bold hover:opacity-80 py-1"
           >
             <Newspaper className="w-3.5 h-3.5" />
             <span>Page {item.page}</span>
@@ -179,16 +249,11 @@ export const ItemCard: React.FC<ItemCardProps> = ({
 
         {/* Right side actions */}
         <div className="flex items-center gap-3">
-          {/* Ask AI Menu */}
-          <AskAIMenu
-            story={saved}
-            onOpenInAppChat={onOpenInAppChat}
-          />
+          <AskAIMenu story={saved} onOpenInAppChat={onOpenInAppChat} />
 
-          {/* Share */}
           <button
             onClick={handleShare}
-            className="p-1.5 rounded-full hover:bg-[#007aff]/10 transition-colors"
+            className="p-1.5 rounded-lg hover:bg-black/5 dark:hover:bg-white/5 text-[var(--text-secondary)] hover:text-[#007aff] transition-colors"
             title="Share or copy story"
           >
             {copiedShare ? (
@@ -198,11 +263,10 @@ export const ItemCard: React.FC<ItemCardProps> = ({
             )}
           </button>
 
-          {/* Bookmark */}
           <button
             onClick={() => onToggleBookmark(saved)}
-            className={`p-1.5 rounded-full hover:bg-[#007aff]/10 transition-colors active:scale-90 ${
-              isBookmarked ? 'text-[#007aff]' : 'text-neutral-400 dark:text-neutral-500'
+            className={`p-1.5 rounded-lg hover:bg-black/5 dark:hover:bg-white/5 transition-colors active:scale-90 ${
+              isBookmarked ? 'text-[#007aff]' : 'text-neutral-400'
             }`}
             title={isBookmarked ? 'Remove from Saved' : 'Save for Revision'}
           >

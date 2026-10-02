@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { RotateCcw, Award } from 'lucide-react';
+import { RotateCcw, Award, Layers } from 'lucide-react';
 import { Digest, PaperId, Mcq, PAPERS } from '../types';
 import { McqCard } from '../components/McqCard';
 import { PaperBadge } from '../components/PaperBadge';
@@ -11,6 +11,7 @@ interface PracticeViewProps {
   onAnswerQuestion: (questionId: string, option: string) => void;
   onResetAnswers: () => void;
   onOpenInAppChat: (prompt: string, contextTitle: string) => void;
+  onOpenFlashcards: () => void;
 }
 
 export const PracticeView: React.FC<PracticeViewProps> = ({
@@ -20,6 +21,7 @@ export const PracticeView: React.FC<PracticeViewProps> = ({
   onAnswerQuestion,
   onResetAnswers,
   onOpenInAppChat,
+  onOpenFlashcards,
 }) => {
   const [paperFilter, setPaperFilter] = useState<PaperId | null>(null);
 
@@ -34,7 +36,7 @@ export const PracticeView: React.FC<PracticeViewProps> = ({
   }
 
   const questions: QuestionItem[] = visibleDigests.flatMap((d) =>
-    d.mcqs.map((mcq, idx) => ({
+    d.mcqs.map((mcq) => ({
       id: `${d.date}|${d.paper}|${mcq.question}`,
       paper: d.paper,
       mcq,
@@ -51,15 +53,15 @@ export const PracticeView: React.FC<PracticeViewProps> = ({
     totalQuestions > 0 ? (answeredCount / totalQuestions) * 100 : 0;
 
   return (
-    <div className="space-y-4 pb-24">
+    <div className="space-y-4 pb-28 max-w-3xl mx-auto">
       {/* Paper Segmented Control */}
-      <div className="bg-black/5 dark:bg-white/10 p-0.5 rounded-xl flex text-xs font-semibold select-none">
+      <div className="bg-black/5 dark:bg-white/5 p-1 rounded-xl flex text-xs font-semibold select-none border border-black/5 dark:border-white/5">
         <button
           onClick={() => setPaperFilter(null)}
           className={`flex-1 py-1.5 rounded-lg transition-all text-center ${
             paperFilter === null
-              ? 'bg-white dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 shadow-xs'
-              : 'text-neutral-600 dark:text-neutral-400 hover:text-neutral-900'
+              ? 'bg-[var(--bg-surface)] text-[var(--text-primary)] shadow-2xs font-bold'
+              : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
           }`}
         >
           Both Papers
@@ -68,8 +70,8 @@ export const PracticeView: React.FC<PracticeViewProps> = ({
           onClick={() => setPaperFilter('dailystar')}
           className={`flex-1 py-1.5 rounded-lg transition-all text-center flex items-center justify-center gap-1.5 ${
             paperFilter === 'dailystar'
-              ? 'bg-white dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 shadow-xs'
-              : 'text-neutral-600 dark:text-neutral-400 hover:text-neutral-900'
+              ? 'bg-[var(--bg-surface)] text-[var(--text-primary)] shadow-2xs font-bold'
+              : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
           }`}
         >
           <PaperBadge paper="dailystar" size="sm" />
@@ -79,8 +81,8 @@ export const PracticeView: React.FC<PracticeViewProps> = ({
           onClick={() => setPaperFilter('prothomalo')}
           className={`flex-1 py-1.5 rounded-lg transition-all text-center flex items-center justify-center gap-1.5 ${
             paperFilter === 'prothomalo'
-              ? 'bg-white dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 shadow-xs'
-              : 'text-neutral-600 dark:text-neutral-400 hover:text-neutral-900'
+              ? 'bg-[var(--bg-surface)] text-[var(--text-primary)] shadow-2xs font-bold'
+              : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
           }`}
         >
           <PaperBadge paper="prothomalo" size="sm" />
@@ -90,7 +92,7 @@ export const PracticeView: React.FC<PracticeViewProps> = ({
 
       {/* Score Progress Card */}
       {totalQuestions > 0 && (
-        <div className="bg-white dark:bg-[#1c1c1e] rounded-2xl p-4 sm:p-5 shadow-xs border border-black/5 dark:border-white/5 flex items-center justify-between gap-4">
+        <div className="bg-[var(--bg-surface)] rounded-2xl p-4 sm:p-5 shadow-xs border border-[var(--border-subtle)] flex items-center justify-between gap-4">
           <div className="flex items-center gap-4">
             {/* Circular Progress Ring */}
             <div className="relative w-14 h-14 shrink-0 flex items-center justify-center">
@@ -99,7 +101,7 @@ export const PracticeView: React.FC<PracticeViewProps> = ({
                   cx="24"
                   cy="24"
                   r="19"
-                  className="stroke-neutral-200 dark:stroke-neutral-800"
+                  className="stroke-black/10 dark:stroke-white/10"
                   strokeWidth="5"
                   fill="transparent"
                 />
@@ -117,45 +119,56 @@ export const PracticeView: React.FC<PracticeViewProps> = ({
                   fill="transparent"
                 />
               </svg>
-              <span className="absolute font-bold text-base text-neutral-900 dark:text-neutral-100">
+              <span className="absolute font-bold text-base text-[var(--text-primary)]">
                 {correctCount}
               </span>
             </div>
 
-            {/* Score Text */}
             <div className="space-y-0.5">
-              <div className="text-sm font-bold text-neutral-900 dark:text-neutral-100">
+              <div className="text-sm font-bold text-[var(--text-primary)]">
                 {correctCount} correct of {answeredCount} answered
               </div>
-              <div className="text-xs text-neutral-500">
-                {totalQuestions} questions · {totalQuestions - answeredCount} left
+              <div className="text-xs text-[var(--text-muted)]">
+                {totalQuestions} questions · {totalQuestions - answeredCount} remaining
               </div>
             </div>
           </div>
 
-          {answeredCount > 0 && (
+          <div className="flex items-center gap-2">
             <button
-              onClick={onResetAnswers}
-              className="px-3 py-1.5 rounded-lg border border-black/10 dark:border-white/10 text-xs font-semibold text-neutral-600 dark:text-neutral-300 hover:bg-black/5 dark:hover:bg-white/5 flex items-center gap-1.5 transition-colors"
+              onClick={onOpenFlashcards}
+              className="px-3 py-1.5 rounded-xl bg-amber-500/10 text-amber-700 dark:text-amber-400 font-semibold text-xs flex items-center gap-1.5 hover:bg-amber-500/20 transition-colors"
+              title="Open Flashcards quiz"
             >
-              <RotateCcw className="w-3.5 h-3.5" />
-              <span>Reset</span>
+              <Layers className="w-3.5 h-3.5" />
+              <span className="hidden sm:inline">Flashcards</span>
             </button>
-          )}
+
+            {answeredCount > 0 && (
+              <button
+                onClick={onResetAnswers}
+                className="px-3 py-1.5 rounded-xl border border-[var(--border-subtle)] text-xs font-semibold text-[var(--text-secondary)] hover:bg-black/5 dark:hover:bg-white/5 flex items-center gap-1.5 transition-colors"
+                title="Reset answers for this date"
+              >
+                <RotateCcw className="w-3.5 h-3.5" />
+                <span>Reset</span>
+              </button>
+            )}
+          </div>
         </div>
       )}
 
       {/* MCQs List */}
       {questions.length === 0 ? (
-        <div className="bg-white dark:bg-[#1c1c1e] rounded-2xl p-10 text-center border border-black/5 dark:border-white/5 space-y-2">
+        <div className="bg-[var(--bg-surface)] rounded-2xl p-10 text-center border border-[var(--border-subtle)] space-y-2">
           <div className="w-12 h-12 rounded-full bg-[#007aff]/10 text-[#007aff] flex items-center justify-center mx-auto mb-3">
             <Award className="w-6 h-6" />
           </div>
-          <h4 className="font-bold text-neutral-900 dark:text-neutral-100 text-sm">
-            No MCQs for this day
+          <h4 className="font-bold text-[var(--text-primary)] text-sm">
+            No MCQs generated for this date
           </h4>
-          <p className="text-xs text-neutral-500 max-w-xs mx-auto">
-            MCQs are generated each morning with the day's digest. Use ◀ to test past days!
+          <p className="text-xs text-[var(--text-muted)] max-w-xs mx-auto">
+            MCQs are created alongside today's digest. Navigate dates with ◀ or run a fresh digest on Today tab.
           </p>
         </div>
       ) : (

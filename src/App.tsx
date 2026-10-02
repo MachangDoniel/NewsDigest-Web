@@ -18,12 +18,17 @@ import {
   saveAnswersToStorage,
   loadSettings,
   saveSettingsToStorage,
+  stepDhakaDate,
 } from './services/store';
 
-import { Header } from './components/Header';
+import { Header, ViewMode, ThemeMode } from './components/Header';
 import { TabBar } from './components/TabBar';
 import { CalendarModal } from './components/CalendarModal';
 import { AIChatModal } from './components/AIChatModal';
+import { RevisionSheetModal } from './components/RevisionSheetModal';
+import { FlashcardsModal } from './components/FlashcardsModal';
+import { ShortcutsModal } from './components/ShortcutsModal';
+import { DesktopAudioBar } from './components/DesktopAudioBar';
 
 import { TodayView } from './views/TodayView';
 import { PracticeView } from './views/PracticeView';
@@ -45,7 +50,14 @@ export default function App() {
   const [runStatus, setRunStatus] = useState<RunStatus[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isCompiling, setIsCompiling] = useState<boolean>(false);
+
+  // Web V2 States
+  const [viewMode, setViewMode] = useState<ViewMode>('editorial');
+  const [theme, setTheme] = useState<ThemeMode>('light');
   const [isCalendarOpen, setIsCalendarOpen] = useState<boolean>(false);
+  const [isRevisionSheetOpen, setIsRevisionSheetOpen] = useState<boolean>(false);
+  const [isFlashcardsOpen, setIsFlashcardsOpen] = useState<boolean>(false);
+  const [isShortcutsOpen, setIsShortcutsOpen] = useState<boolean>(false);
 
   // In-app AI chat modal state
   const [chatModal, setChatModal] = useState<{
@@ -71,6 +83,16 @@ export default function App() {
   // Jump to specific paper in Papers view
   const [targetPaper, setTargetPaper] = useState<PaperId | null>(null);
 
+  // Sync theme attribute to document element
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme);
+    if (theme === 'dark') {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [theme]);
+
   // Fetch digests from server
   const fetchDigests = useCallback(async (dateTarget?: string) => {
     setIsLoading(true);
@@ -80,7 +102,6 @@ export default function App() {
       if (res.ok) {
         const data: Digest[] = await res.json();
         setAllDigests((prev) => {
-          // Merge unique by id
           const map = new Map<number, Digest>();
           prev.forEach((d) => map.set(d.id, d));
           data.forEach((d) => map.set(d.id, d));
@@ -111,6 +132,44 @@ export default function App() {
     fetchDigests();
     fetchStatus(currentDate);
   }, [fetchDigests, fetchStatus, currentDate]);
+
+  // Keyboard shortcuts listener
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Don't trigger if user is typing in input or textarea
+      if (
+        ['INPUT', 'TEXTAREA', 'SELECT'].includes(
+          (document.activeElement?.tagName || '')
+        )
+      ) {
+        return;
+      }
+
+      if (e.key === '?' || (e.shiftKey && e.key === '/')) {
+        e.preventDefault();
+        setIsShortcutsOpen((prev) => !prev);
+      } else if (e.key === 'Escape') {
+        setIsCalendarOpen(false);
+        setIsRevisionSheetOpen(false);
+        setIsFlashcardsOpen(false);
+        setIsShortcutsOpen(false);
+        setChatModal((prev) => ({ ...prev, isOpen: false }));
+      } else if (e.key === '[' || e.key === 'h') {
+        setCurrentDate((d) => stepDhakaDate(d, -1));
+      } else if (e.key === ']' || e.key === 'l') {
+        setCurrentDate((d) => stepDhakaDate(d, 1));
+      } else if (e.key === 'm' || e.key === 'M') {
+        setActiveTab('practice');
+      } else if (e.key === 's' || e.key === 'S') {
+        setIsRevisionSheetOpen(true);
+      } else if (e.key === 'r' || e.key === 'R') {
+        handleRunDigestNow();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
 
   // Bookmarking
   const handleToggleBookmark = (item: SavedItem) => {
@@ -169,25 +228,48 @@ export default function App() {
     });
   };
 
-  // Available digests for current date
+  // Active digests for current date
   const dateDigests = allDigests.filter((d) => d.date === currentDate);
   const totalMcqCountForCurrentDate = dateDigests.reduce(
     (sum, d) => sum + d.mcqs.length,
     0
   );
 
+  // Flatten stories for audio bar
+  const storiesForAudio = dateDigests.flatMap((d) =>
+    d.sections.flatMap((s) =>
+      s.items.map((i) => ({
+        headline: i.headline,
+        bullets: i.bullets,
+        content: i.excerpt,
+        paper: d.paper,
+      }))
+    )
+  );
+
   return (
-    <div className="min-h-screen bg-[#f2f2f7] dark:bg-[#000000] text-neutral-900 dark:text-neutral-100 flex flex-col antialiased selection:bg-[#007aff]/20">
-      {/* Top Header */}
+    <div className="min-h-screen bg-[var(--bg-canvas)] text-[var(--text-primary)] flex flex-col antialiased selection:bg-[#007aff]/20 transition-colors duration-200">
+      {/* Top Header (3-Zone Contract with Desktop & Mobile controls) */}
       <Header
         currentDate={currentDate}
         onDateChange={(d) => setCurrentDate(d)}
         onOpenCalendar={() => setIsCalendarOpen(true)}
         activeTab={activeTab}
+        onTabChange={(tab) => {
+          setActiveTab(tab);
+          if (tab !== 'papers') setTargetPaper(null);
+        }}
+        viewMode={viewMode}
+        onViewModeChange={setViewMode}
+        theme={theme}
+        onThemeChange={setTheme}
+        onOpenRevisionSheet={() => setIsRevisionSheetOpen(true)}
+        onOpenShortcuts={() => setIsShortcutsOpen(true)}
+        mcqCount={totalMcqCountForCurrentDate}
       />
 
       {/* Main Content Viewport */}
-      <main className="flex-1 w-full max-w-3xl mx-auto px-4 pt-3">
+      <main className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 pt-4">
         {activeTab === 'today' && (
           <TodayView
             currentDate={currentDate}
@@ -207,6 +289,9 @@ export default function App() {
             onRunDigestNow={handleRunDigestNow}
             isCompiling={isCompiling}
             isLoading={isLoading && dateDigests.length === 0}
+            viewMode={viewMode}
+            onOpenRevisionSheet={() => setIsRevisionSheetOpen(true)}
+            onOpenFlashcards={() => setIsFlashcardsOpen(true)}
           />
         )}
 
@@ -218,6 +303,7 @@ export default function App() {
             onAnswerQuestion={handleAnswerQuestion}
             onResetAnswers={handleResetAnswers}
             onOpenInAppChat={handleOpenInAppChat}
+            onOpenFlashcards={() => setIsFlashcardsOpen(true)}
           />
         )}
 
@@ -243,35 +329,58 @@ export default function App() {
         )}
 
         {activeTab === 'settings' && (
-          <SettingsView
-            aiModel={aiModel}
-            onAiModelChange={(m) => {
-              setAiModel(m);
-              saveSettingsToStorage({ aiModel: m, summaryLanguage, speechVoice, speechRate: 1.0 });
-            }}
-            summaryLanguage={summaryLanguage}
-            onSummaryLanguageChange={(l) => {
-              setSummaryLanguage(l);
-              saveSettingsToStorage({ aiModel, summaryLanguage: l, speechVoice, speechRate: 1.0 });
-            }}
-            speechVoice={speechVoice}
-            onSpeechVoiceChange={(v) => {
-              setSpeechVoice(v);
-              saveSettingsToStorage({ aiModel, summaryLanguage, speechVoice: v, speechRate: 1.0 });
-            }}
-            onRunDigestNow={handleRunDigestNow}
-            isCompiling={isCompiling}
-          />
+          <div className="max-w-2xl mx-auto">
+            <SettingsView
+              aiModel={aiModel}
+              onAiModelChange={(m) => {
+                setAiModel(m);
+                saveSettingsToStorage({ aiModel: m, summaryLanguage, speechVoice, speechRate: 1.0 });
+              }}
+              summaryLanguage={summaryLanguage}
+              onSummaryLanguageChange={(l) => {
+                setSummaryLanguage(l);
+                saveSettingsToStorage({ aiModel, summaryLanguage: l, speechVoice, speechRate: 1.0 });
+              }}
+              speechVoice={speechVoice}
+              onSpeechVoiceChange={(v) => {
+                setSpeechVoice(v);
+                saveSettingsToStorage({ aiModel, summaryLanguage, speechVoice: v, speechRate: 1.0 });
+              }}
+              onRunDigestNow={handleRunDigestNow}
+              isCompiling={isCompiling}
+            />
+          </div>
         )}
       </main>
 
-      {/* Calendar Modal */}
+      {/* Calendar Jump Modal */}
       <CalendarModal
         isOpen={isCalendarOpen}
         onClose={() => setIsCalendarOpen(false)}
         currentDate={currentDate}
         onSelectDate={(newDate) => setCurrentDate(newDate)}
         availableDates={Array.from(new Set(allDigests.map((d) => d.date)))}
+      />
+
+      {/* Daily BCS Revision Broadsheet Modal */}
+      <RevisionSheetModal
+        isOpen={isRevisionSheetOpen}
+        onClose={() => setIsRevisionSheetOpen(false)}
+        date={currentDate}
+        digests={dateDigests}
+      />
+
+      {/* Interactive Key Facts Flashcards Modal */}
+      <FlashcardsModal
+        isOpen={isFlashcardsOpen}
+        onClose={() => setIsFlashcardsOpen(false)}
+        digests={dateDigests}
+      />
+
+      {/* Keyboard Shortcuts Cheat Sheet */}
+      <ShortcutsModal
+        isOpen={isShortcutsOpen}
+        onClose={() => setIsShortcutsOpen(false)}
       />
 
       {/* In-app AI Tutor Chat Modal */}
@@ -282,15 +391,23 @@ export default function App() {
         contextTitle={chatModal.contextTitle}
       />
 
-      {/* iOS Bottom Tab Bar */}
-      <TabBar
-        activeTab={activeTab}
-        onTabChange={(tab) => {
-          setActiveTab(tab);
-          if (tab !== 'papers') setTargetPaper(null);
-        }}
-        mcqCount={totalMcqCountForCurrentDate}
+      {/* Desktop Sticky Audio Player Bar */}
+      <DesktopAudioBar
+        stories={storiesForAudio}
+        currentDate={currentDate}
       />
+
+      {/* Mobile Bottom Tab Bar (hidden on lg viewports to give pure desktop feel) */}
+      <div className="md:hidden">
+        <TabBar
+          activeTab={activeTab}
+          onTabChange={(tab) => {
+            setActiveTab(tab);
+            if (tab !== 'papers') setTargetPaper(null);
+          }}
+          mcqCount={totalMcqCountForCurrentDate}
+        />
+      </div>
     </div>
   );
 }

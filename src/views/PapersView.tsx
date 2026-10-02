@@ -64,19 +64,17 @@ export const PapersView: React.FC<PapersViewProps> = ({
     }
   };
 
-  // Filter stories by page approximation (2-3 stories per page)
   const storiesForPage = stories.slice((activePage - 1) * 2, activePage * 2 + 1);
 
   if (!selectedPaper) {
-    // Top-level papers selection view
     return (
-      <div className="space-y-4 pb-24">
-        <div className="bg-white dark:bg-[#1c1c1e] rounded-2xl p-4 sm:p-5 border border-black/5 dark:border-white/5 space-y-1">
-          <h2 className="text-base font-bold text-neutral-900 dark:text-neutral-100">
-            E-Papers & Live News
+      <div className="space-y-4 pb-28 max-w-3xl mx-auto">
+        <div className="bg-[var(--bg-surface)] rounded-2xl p-5 border border-[var(--border-subtle)] space-y-1 shadow-xs">
+          <h2 className="text-base font-bold text-[var(--text-primary)]">
+            E-Papers & Online Editions
           </h2>
-          <p className="text-xs text-neutral-500">
-            Select a newspaper to browse today's edition, listen with Read Aloud, or generate instant BCS summaries.
+          <p className="text-xs text-[var(--text-secondary)]">
+            Browse today's published newspaper editions, read articles with audio speech narration, or ask for instant civil service exam summaries.
           </p>
         </div>
 
@@ -88,10 +86,9 @@ export const PapersView: React.FC<PapersViewProps> = ({
               <button
                 key={pid}
                 onClick={() => setSelectedPaper(pid)}
-                className="w-full bg-white dark:bg-[#1c1c1e] rounded-2xl p-4 sm:p-5 shadow-xs border border-black/5 dark:border-white/5 flex items-center justify-between text-left hover:scale-[1.01] active:scale-[0.99] transition-all group"
+                className="w-full bg-[var(--bg-surface)] rounded-2xl p-5 shadow-xs border border-[var(--border-subtle)] flex items-center justify-between text-left hover:scale-[1.01] active:scale-[0.99] transition-all group"
               >
                 <div className="flex items-center gap-4">
-                  {/* Monogram Box */}
                   <div
                     className="w-14 h-14 rounded-2xl flex items-center justify-center text-white font-black text-xl shadow-md font-bangla shrink-0"
                     style={{ backgroundColor: paper.color }}
@@ -100,28 +97,28 @@ export const PapersView: React.FC<PapersViewProps> = ({
                   </div>
 
                   <div className="space-y-1">
-                    <h3 className="font-bold text-base text-neutral-900 dark:text-neutral-100 group-hover:text-[#007aff] transition-colors">
+                    <h3 className="font-bold text-base text-[var(--text-primary)] group-hover:text-[#007aff] transition-colors">
                       {paper.name}
                     </h3>
-                    <p className="text-xs text-neutral-500 font-bangla">
+                    <p className="text-xs text-[var(--text-muted)] font-bangla">
                       Today's Live Edition & E-Paper Reader
                     </p>
                   </div>
                 </div>
 
-                <ChevronRight className="w-5 h-5 text-neutral-400 group-hover:text-[#007aff] transition-colors" />
+                <ChevronRight className="w-5 h-5 text-[var(--text-muted)] group-hover:text-[#007aff] transition-colors" />
               </button>
             );
           })}
         </div>
 
         {/* Note */}
-        <div className="p-4 rounded-2xl bg-neutral-100/70 dark:bg-neutral-900/50 text-xs text-neutral-500 space-y-1">
-          <div className="font-semibold text-neutral-700 dark:text-neutral-300">
-            Tip for Study Preparation:
+        <div className="p-4 rounded-2xl bg-black/5 dark:bg-white/5 text-xs text-[var(--text-secondary)] space-y-1">
+          <div className="font-semibold text-[var(--text-primary)]">
+            Civil Service Examination Tip:
           </div>
           <p>
-            Tap "Ask" inside any page or story to get an instant BCS summary with key facts, or open it directly in ChatGPT, Gemini, or Claude with exam prompts already prepared.
+            Tap "Ask" inside any story to get an instant BCS summary with key facts, or open it in ChatGPT, Gemini, or Claude with exam prompts already prepared.
           </p>
         </div>
       </div>
@@ -131,12 +128,12 @@ export const PapersView: React.FC<PapersViewProps> = ({
   const paperInfo = PAPERS[selectedPaper];
 
   return (
-    <div className="space-y-4 pb-28 relative">
+    <div className="space-y-4 pb-32 max-w-3xl mx-auto relative">
       {/* Top Bar inside reader */}
-      <div className="flex items-center justify-between bg-white dark:bg-[#1c1c1e] p-3 rounded-2xl border border-black/5 dark:border-white/5">
+      <div className="flex items-center justify-between bg-[var(--bg-surface)] p-3 rounded-2xl border border-[var(--border-subtle)] shadow-xs">
         <button
           onClick={() => setSelectedPaper(null)}
-          className="flex items-center gap-1.5 text-xs font-semibold text-neutral-600 dark:text-neutral-300 hover:text-neutral-900 transition-colors"
+          className="flex items-center gap-1.5 text-xs font-semibold text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
         >
           <ArrowLeft className="w-4 h-4" />
           <span>Papers</span>
@@ -144,7 +141,7 @@ export const PapersView: React.FC<PapersViewProps> = ({
 
         <div className="flex items-center gap-2">
           <PaperBadge paper={selectedPaper} size="sm" />
-          <span className="font-bold text-sm text-neutral-900 dark:text-neutral-100">
+          <span className="font-bold text-sm text-[var(--text-primary)]">
             {paperInfo.shortName}
           </span>
         </div>
@@ -162,7 +159,7 @@ export const PapersView: React.FC<PapersViewProps> = ({
       </div>
 
       {/* Page Navigation Strip */}
-      <div className="bg-white dark:bg-[#1c1c1e] p-2 rounded-2xl border border-black/5 dark:border-white/5 flex items-center gap-1.5 overflow-x-auto no-scrollbar">
+      <div className="bg-[var(--bg-surface)] p-2 rounded-2xl border border-[var(--border-subtle)] flex items-center gap-1.5 overflow-x-auto no-scrollbar shadow-xs">
         {[1, 2, 3, 4, 5, 6, 7, 8].map((pageNo) => (
           <button
             key={pageNo}
@@ -170,7 +167,7 @@ export const PapersView: React.FC<PapersViewProps> = ({
             className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold shrink-0 transition-all ${
               activePage === pageNo
                 ? 'text-white shadow-xs'
-                : 'text-neutral-600 dark:text-neutral-400 hover:bg-black/5 dark:hover:bg-white/5'
+                : 'text-[var(--text-secondary)] hover:bg-black/5 dark:hover:bg-white/5'
             }`}
             style={{
               backgroundColor: activePage === pageNo ? paperInfo.color : undefined,
@@ -187,17 +184,17 @@ export const PapersView: React.FC<PapersViewProps> = ({
           {[1, 2, 3].map((n) => (
             <div
               key={n}
-              className="bg-white dark:bg-[#1c1c1e] rounded-2xl p-5 border border-black/5 dark:border-white/5 animate-pulse space-y-3"
+              className="bg-[var(--bg-surface)] rounded-2xl p-5 border border-[var(--border-subtle)] animate-pulse space-y-3"
             >
-              <div className="w-3/4 h-5 bg-neutral-200 dark:bg-neutral-800 rounded" />
-              <div className="w-full h-16 bg-neutral-200 dark:bg-neutral-800 rounded" />
+              <div className="w-3/4 h-5 bg-black/10 dark:bg-white/10 rounded" />
+              <div className="w-full h-16 bg-black/10 dark:bg-white/10 rounded" />
             </div>
           ))}
         </div>
       ) : storiesForPage.length === 0 ? (
-        <div className="bg-white dark:bg-[#1c1c1e] rounded-2xl p-8 text-center border border-black/5 dark:border-white/5 space-y-2">
-          <BookOpen className="w-8 h-8 text-neutral-400 mx-auto" />
-          <h4 className="font-bold text-sm text-neutral-800 dark:text-neutral-200">
+        <div className="bg-[var(--bg-surface)] rounded-2xl p-8 text-center border border-[var(--border-subtle)] space-y-2">
+          <BookOpen className="w-8 h-8 text-[var(--text-muted)] mx-auto" />
+          <h4 className="font-bold text-sm text-[var(--text-primary)]">
             No articles loaded for Page {activePage}
           </h4>
           <button
@@ -214,11 +211,10 @@ export const PapersView: React.FC<PapersViewProps> = ({
             return (
               <div
                 key={idx}
-                className="bg-white dark:bg-[#1c1c1e] rounded-2xl p-4 sm:p-5 shadow-xs border border-black/5 dark:border-white/5 space-y-3"
+                className="bg-[var(--bg-surface)] rounded-2xl p-5 shadow-xs border border-[var(--border-subtle)] space-y-3"
               >
-                {/* Image if available */}
                 {story.image && (
-                  <div className="rounded-xl overflow-hidden max-h-48 border border-black/5 dark:border-white/5">
+                  <div className="rounded-xl overflow-hidden max-h-56 border border-black/5 dark:border-white/5">
                     <img
                       src={story.image}
                       alt={story.title}
@@ -229,16 +225,16 @@ export const PapersView: React.FC<PapersViewProps> = ({
                 )}
 
                 <div className="space-y-1">
-                  <div className="flex items-center justify-between text-xs text-neutral-400">
+                  <div className="flex items-center justify-between text-xs text-[var(--text-muted)]">
                     <span>{story.category || 'General'}</span>
                     <span>Page {activePage}</span>
                   </div>
-                  <h3 className="text-base font-bold text-neutral-900 dark:text-neutral-100 font-bangla leading-snug">
+                  <h3 className="text-base font-bold text-[var(--text-primary)] font-bangla leading-snug">
                     {story.title}
                   </h3>
                 </div>
 
-                <div className="text-xs sm:text-sm text-neutral-600 dark:text-neutral-300 font-bangla leading-relaxed">
+                <div className="text-xs sm:text-sm text-[var(--text-secondary)] font-bangla leading-relaxed">
                   {isExpanded
                     ? story.content || story.description
                     : story.description}
@@ -254,12 +250,12 @@ export const PapersView: React.FC<PapersViewProps> = ({
                 )}
 
                 {/* Bottom row */}
-                <div className="pt-2 border-t border-black/5 dark:border-white/5 flex items-center justify-between text-xs">
+                <div className="pt-2 border-t border-[var(--border-subtle)] flex items-center justify-between text-xs">
                   <a
                     href={story.link}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-1 font-semibold text-neutral-500 hover:text-neutral-800 dark:hover:text-neutral-200"
+                    className="flex items-center gap-1 font-semibold text-[var(--text-muted)] hover:text-[var(--text-primary)]"
                   >
                     <span>View original</span>
                     <ExternalLink className="w-3 h-3" />
@@ -289,17 +285,19 @@ export const PapersView: React.FC<PapersViewProps> = ({
         </div>
       )}
 
-      {/* Floating Read Aloud Pill */}
-      <ListenPill
-        stories={storiesForPage.map((s) => ({
-          headline: s.title,
-          content: s.description || s.content,
-        }))}
-        paperName={paperInfo.name}
-        tintColor={paperInfo.color}
-      />
+      {/* Floating Read Aloud Pill for mobile viewports */}
+      <div className="lg:hidden">
+        <ListenPill
+          stories={storiesForPage.map((s) => ({
+            headline: s.title,
+            content: s.description || s.content,
+          }))}
+          paperName={paperInfo.name}
+          tintColor={paperInfo.color}
+        />
+      </div>
 
-      {/* Floating Ask Button on Bottom Right */}
+      {/* Floating Ask Button */}
       <div className="fixed bottom-20 right-4 z-40">
         <AskAIMenu
           story={{
@@ -322,7 +320,7 @@ export const PapersView: React.FC<PapersViewProps> = ({
               className="flex items-center gap-2 px-4 py-2.5 rounded-full text-white shadow-xl hover:opacity-95 active:scale-95 transition-all text-xs font-semibold"
             >
               <Sparkles className="w-4 h-4" />
-              <span>Ask</span>
+              <span>Ask AI</span>
             </button>
           }
         />
