@@ -20,6 +20,7 @@ export const ShortcutsModal: React.FC<ShortcutsModalProps> = ({
     { key: 'P', desc: 'Toggle Audio Read Aloud player' },
     { key: 'R', desc: 'Trigger Live Digest compilation' },
     { key: 'S', desc: 'Open Daily BCS Revision Sheet' },
+    { key: 'T / D', desc: 'Toggle Dark / Light Mode' },
     { key: 'Esc', desc: 'Close any active modal or sheet' },
     { key: '?', desc: 'Toggle this keyboard shortcuts cheat sheet' },
   ];

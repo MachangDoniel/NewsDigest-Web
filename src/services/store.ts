@@ -62,6 +62,29 @@ export function stepDhakaDate(dateStr: string, days: number): string {
 const BOOKMARKS_KEY = 'newsdigest_bookmarks_v1';
 const ANSWERS_KEY = 'newsdigest_answers_v1';
 const SETTINGS_KEY = 'newsdigest_settings_v1';
+const THEME_KEY = 'newsdigest_theme_v2';
+
+export function loadSavedTheme(): 'light' | 'dark' | 'sepia' {
+  try {
+    const raw = localStorage.getItem(THEME_KEY);
+    if (raw === 'dark' || raw === 'light' || raw === 'sepia') return raw;
+    // Check system preference
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      return 'dark';
+    }
+    return 'light';
+  } catch {
+    return 'light';
+  }
+}
+
+export function saveThemeToStorage(theme: 'light' | 'dark' | 'sepia') {
+  try {
+    localStorage.setItem(THEME_KEY, theme);
+  } catch (e) {
+    console.error('Failed to save theme:', e);
+  }
+}
 
 export function loadSavedBookmarks(): SavedItem[] {
   try {

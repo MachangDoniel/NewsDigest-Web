@@ -18,6 +18,8 @@ import {
   saveAnswersToStorage,
   loadSettings,
   saveSettingsToStorage,
+  loadSavedTheme,
+  saveThemeToStorage,
   stepDhakaDate,
 } from './services/store';
 
@@ -53,11 +55,16 @@ export default function App() {
 
   // Web V2 States
   const [viewMode, setViewMode] = useState<ViewMode>('editorial');
-  const [theme, setTheme] = useState<ThemeMode>('light');
+  const [theme, setTheme] = useState<ThemeMode>(loadSavedTheme());
   const [isCalendarOpen, setIsCalendarOpen] = useState<boolean>(false);
   const [isRevisionSheetOpen, setIsRevisionSheetOpen] = useState<boolean>(false);
   const [isFlashcardsOpen, setIsFlashcardsOpen] = useState<boolean>(false);
   const [isShortcutsOpen, setIsShortcutsOpen] = useState<boolean>(false);
+
+  const handleThemeChange = (newTheme: ThemeMode) => {
+    setTheme(newTheme);
+    saveThemeToStorage(newTheme);
+  };
 
   // In-app AI chat modal state
   const [chatModal, setChatModal] = useState<{
@@ -162,6 +169,12 @@ export default function App() {
         setActiveTab('practice');
       } else if (e.key === 's' || e.key === 'S') {
         setIsRevisionSheetOpen(true);
+      } else if (e.key === 't' || e.key === 'T' || e.key === 'd' || e.key === 'D') {
+        setTheme((prev) => {
+          const next = prev === 'dark' ? 'light' : 'dark';
+          saveThemeToStorage(next);
+          return next;
+        });
       } else if (e.key === 'r' || e.key === 'R') {
         handleRunDigestNow();
       }
@@ -262,7 +275,7 @@ export default function App() {
         viewMode={viewMode}
         onViewModeChange={setViewMode}
         theme={theme}
-        onThemeChange={setTheme}
+        onThemeChange={handleThemeChange}
         onOpenRevisionSheet={() => setIsRevisionSheetOpen(true)}
         onOpenShortcuts={() => setIsShortcutsOpen(true)}
         mcqCount={totalMcqCountForCurrentDate}
@@ -331,6 +344,8 @@ export default function App() {
         {activeTab === 'settings' && (
           <div className="max-w-2xl mx-auto">
             <SettingsView
+              theme={theme}
+              onThemeChange={handleThemeChange}
               aiModel={aiModel}
               onAiModelChange={(m) => {
                 setAiModel(m);

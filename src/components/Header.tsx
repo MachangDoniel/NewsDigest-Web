@@ -3,15 +3,13 @@ import {
   ChevronLeft,
   ChevronRight,
   Calendar as CalendarIcon,
-  Sun,
-  Moon,
-  Coffee,
   LayoutGrid,
   List,
   FileText,
   HelpCircle,
 } from 'lucide-react';
 import { formatDhakaPretty, getTodayDhaka, stepDhakaDate } from '../services/store';
+import { ThemeToggle } from './ThemeToggle';
 
 export type ViewMode = 'editorial' | 'compact';
 export type ThemeMode = 'light' | 'sepia' | 'dark';
@@ -197,16 +195,8 @@ export const Header: React.FC<HeaderProps> = ({
             <span>Revision Sheet</span>
           </button>
 
-          {/* Theme Switcher (Paper / Sepia / Night) */}
-          <button
-            onClick={cycleTheme}
-            className="p-2 rounded-xl border border-[var(--border-subtle)] text-[var(--text-secondary)] hover:bg-black/5 dark:hover:bg-white/5 transition-colors shadow-2xs"
-            title={`Theme: ${theme.toUpperCase()} (Click to toggle)`}
-          >
-            {theme === 'light' && <Sun className="w-4 h-4 text-amber-500" />}
-            {theme === 'sepia' && <Coffee className="w-4 h-4 text-[#9a3412]" />}
-            {theme === 'dark' && <Moon className="w-4 h-4 text-blue-400" />}
-          </button>
+          {/* Dark / Light Mode Toggle Switch */}
+          <ThemeToggle theme={theme} onThemeChange={onThemeChange} />
 
           {/* Shortcuts Modal Trigger */}
           <button

@@ -8,10 +8,15 @@ import {
   RotateCw,
   Info,
   Server,
+  Palette,
 } from 'lucide-react';
 import { saveSettingsToStorage } from '../services/store';
+import { ThemeToggle } from '../components/ThemeToggle';
+import { ThemeMode } from '../components/Header';
 
 interface SettingsViewProps {
+  theme: ThemeMode;
+  onThemeChange: (theme: ThemeMode) => void;
   aiModel: string;
   onAiModelChange: (model: string) => void;
   summaryLanguage: string;
@@ -23,6 +28,8 @@ interface SettingsViewProps {
 }
 
 export const SettingsView: React.FC<SettingsViewProps> = ({
+  theme,
+  onThemeChange,
   aiModel,
   onAiModelChange,
   summaryLanguage,
@@ -56,6 +63,35 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
 
   return (
     <div className="space-y-6 pb-28">
+      {/* Appearance & Reading Theme Section */}
+      <section className="space-y-2">
+        <h3 className="text-xs font-bold uppercase tracking-wider text-neutral-500 px-1">
+          Appearance & Theme
+        </h3>
+
+        <div className="bg-[var(--bg-surface)] rounded-2xl border border-[var(--border-subtle)] p-4 space-y-3 text-xs sm:text-sm">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <Palette className="w-4 h-4 text-[#007aff]" />
+              <div>
+                <div className="font-semibold text-[var(--text-primary)]">
+                  Color Mode
+                </div>
+                <div className="text-xs text-[var(--text-muted)]">
+                  Optimized for comfortable civil service exam study
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <ThemeToggle
+            theme={theme}
+            onThemeChange={onThemeChange}
+            variant="segmented"
+          />
+        </div>
+      </section>
+
       {/* Account / Backend Section */}
       <section className="space-y-2">
         <h3 className="text-xs font-bold uppercase tracking-wider text-neutral-500 px-1">
