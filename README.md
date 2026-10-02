@@ -1,5 +1,7 @@
 # NewsDigest (Web Edition)
 
+🌐 **Live Web Application**: [https://newsdigest.ai.studio/](https://newsdigest.ai.studio/)
+
 > Daily newspaper digest for Bangladesh Civil Service (BCS) & competitive examination candidates, built with React 19, TypeScript, Tailwind CSS, Express, and Google Gemini AI.
 
 Fetches real-time daily news from **The Daily Star** and **Prothom Alo**, categorizes them into BCS syllabus areas, extracts key facts and bullets, produces practice MCQs, and provides an in-app AI study assistant and read-aloud voice player.
