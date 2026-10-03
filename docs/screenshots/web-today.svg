@@ -1,0 +1,406 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 800" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#0a0f1d" />
+      <stop offset="100%" stop-color="#0f172a" />
+    </linearGradient>
+    <linearGradient id="cardGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1e293b" stop-opacity="0.9" />
+      <stop offset="100%" stop-color="#141e33" stop-opacity="0.95" />
+    </linearGradient>
+    <linearGradient id="accentBlue" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#007aff" />
+      <stop offset="100%" stop-color="#38bdf8" />
+    </linearGradient>
+    <filter id="shadow" x="-5%" y="-5%" width="110%" height="110%">
+      <feDropShadow dx="0" dy="12" stdDeviation="16" flood-color="#000000" flood-opacity="0.45" />
+    </filter>
+  </defs>
+
+  <style>
+    .font-sans { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif; }
+    .font-serif { font-family: "Georgia", Cambria, "Times New Roman", serif; }
+    .font-bangla { font-family: "Hind Siliguri", "SolaimanLipi", "Kalpurush", sans-serif; }
+    .text-title { font-weight: 700; fill: #f8fafc; }
+    .text-muted { fill: #94a3b8; font-size: 12px; }
+  </style>
+
+  <!-- Desktop Browser Window Frame -->
+  <rect width="1280" height="800" rx="16" fill="url(#bgGrad)" />
+
+  <!-- macOS Window Chrome Bar -->
+  <path d="M0,0 H1280 V44 H0 Z" fill="#0f172a" />
+  <circle cx="24" cy="22" r="6" fill="#ef4444" />
+  <circle cx="44" cy="22" r="6" fill="#f59e0b" />
+  <circle cx="64" cy="22" r="6" fill="#10b981" />
+
+  <!-- URL Address Bar -->
+  <rect x="360" y="8" width="560" height="28" rx="8" fill="#1e293b" stroke="#334155" stroke-width="1" />
+  <text x="640" y="26" text-anchor="middle" class="font-sans" fill="#94a3b8" font-size="12">🔒 https://newsdigest.ai.studio — Dhaka Edition Live</text>
+
+  <!-- Web App Header (Zone 1: Branding, Zone 2: Navigation & Date, Zone 3: Actions) -->
+  <g transform="translate(0, 44)">
+    <rect width="1280" height="64" fill="#0d1527" stroke="#1e293b" stroke-width="1" />
+    
+    <!-- Branding -->
+    <text x="32" y="38" class="font-serif" font-size="22" font-weight="900" fill="#ffffff" letter-spacing="-0.5">NewsDigest</text>
+    <rect x="156" y="24" width="94" height="20" rx="10" fill="#10b981" fill-opacity="0.15" stroke="#10b981" stroke-width="1" />
+    <circle cx="168" cy="34" r="3.5" fill="#10b981" />
+    <text x="208" y="38" class="font-sans" font-size="10" font-weight="700" fill="#6ee7b7" text-anchor="middle">Dhaka Live</text>
+
+    <!-- Navigation Tabs (Center) -->
+    <g transform="translate(340, 16)">
+      <!-- Today Tab (Active) -->
+      <rect x="0" y="0" width="80" height="32" rx="8" fill="#007aff" />
+      <text x="40" y="20" class="font-sans" font-size="12" font-weight="700" fill="#ffffff" text-anchor="middle">Today</text>
+
+      <!-- Practice Tab -->
+      <text x="120" y="20" class="font-sans" font-size="12" font-weight="600" fill="#94a3b8" text-anchor="middle">Practice</text>
+      <circle cx="148" cy="12" r="7" fill="#f59e0b" />
+      <text x="148" y="16" class="font-sans" font-size="9" font-weight="800" fill="#000" text-anchor="middle">8</text>
+
+      <!-- Archive Tab -->
+      <text x="210" y="20" class="font-sans" font-size="12" font-weight="600" fill="#94a3b8" text-anchor="middle">Archive</text>
+
+      <!-- Papers Tab -->
+      <text x="280" y="20" class="font-sans" font-size="12" font-weight="600" fill="#94a3b8" text-anchor="middle">Papers</text>
+
+      <!-- Settings Tab -->
+      <text x="350" y="20" class="font-sans" font-size="12" font-weight="600" fill="#94a3b8" text-anchor="middle">Settings</text>
+    </g>
+
+    <!-- Right Controls: Date Stepper & Actions -->
+    <g transform="translate(860, 16)">
+      <!-- Date Stepper -->
+      <rect x="0" y="0" width="180" height="32" rx="8" fill="#1e293b" stroke="#334155" stroke-width="1" />
+      <text x="16" y="20" fill="#94a3b8" font-size="12" font-weight="700">◀</text>
+      <text x="90" y="20" class="font-sans" font-size="11" font-weight="700" fill="#f8fafc" text-anchor="middle">Wed, Oct 1, 2025</text>
+      <text x="164" y="20" fill="#94a3b8" font-size="12" font-weight="700">▶</text>
+
+      <!-- Revision Sheet Button -->
+      <rect x="192" y="0" width="120" height="32" rx="8" fill="#3b82f6" fill-opacity="0.15" stroke="#3b82f6" stroke-width="1" />
+      <text x="252" y="20" class="font-sans" font-size="11" font-weight="700" fill="#60a5fa" text-anchor="middle">📄 Revision Sheet</text>
+
+      <!-- Shortcuts ? -->
+      <circle cx="330" cy="16" r="14" fill="#1e293b" stroke="#334155" stroke-width="1" />
+      <text x="330" y="20" class="font-sans" font-size="11" font-weight="700" fill="#94a3b8" text-anchor="middle">?</text>
+    </g>
+  </g>
+
+  <!-- Filter & Subheader Bar -->
+  <g transform="translate(32, 124)">
+    <!-- Edition Switcher: All | E-Paper | Free -->
+    <rect x="0" y="0" width="260" height="36" rx="10" fill="#141e33" stroke="#1e293b" stroke-width="1" />
+    <rect x="4" y="4" width="70" height="28" rx="7" fill="#1e293b" />
+    <text x="39" y="22" class="font-sans" font-size="12" font-weight="700" fill="#f8fafc" text-anchor="middle">All (24)</text>
+
+    <text x="125" y="22" class="font-sans" font-size="12" font-weight="600" fill="#10b981" text-anchor="middle">📰 E-Paper (14)</text>
+    <text x="212" y="22" class="font-sans" font-size="12" font-weight="600" fill="#38bdf8" text-anchor="middle">🌐 Free (10)</text>
+
+    <!-- Paper Filter: Both | Daily Star | Prothom Alo -->
+    <g transform="translate(280, 0)">
+      <rect x="0" y="0" width="310" height="36" rx="10" fill="#141e33" stroke="#1e293b" stroke-width="1" />
+      <rect x="4" y="4" width="95" height="28" rx="7" fill="#007aff" />
+      <text x="51" y="22" class="font-sans" font-size="12" font-weight="700" fill="#ffffff" text-anchor="middle">Both Papers</text>
+
+      <!-- Daily Star Pill -->
+      <circle cx="122" cy="18" r="8" fill="#005c9e" />
+      <text x="122" y="21" class="font-sans" font-size="8" font-weight="800" fill="#ffffff" text-anchor="middle">DS</text>
+      <text x="160" y="22" class="font-sans" font-size="12" font-weight="600" fill="#cbd5e1">Daily Star</text>
+
+      <!-- Prothom Alo Pill -->
+      <circle cx="218" cy="18" r="8" fill="#cc1a21" />
+      <text x="218" y="22" class="font-bangla" font-size="9" font-weight="800" fill="#ffffff" text-anchor="middle">প্র</text>
+      <text x="260" y="22" class="font-bangla" font-size="12" font-weight="600" fill="#cbd5e1">প্রথম আলো</text>
+    </g>
+
+    <!-- Search Input Bar -->
+    <g transform="translate(610, 0)">
+      <rect x="0" y="0" width="340" height="36" rx="10" fill="#141e33" stroke="#1e293b" stroke-width="1" />
+      <text x="16" y="22" fill="#64748b" font-size="13">🔍</text>
+      <text x="42" y="22" class="font-sans" font-size="12" fill="#64748b">Search headlines, acts, numbers (Press /)</text>
+    </g>
+
+    <!-- High BCS Relevance Toggle -->
+    <g transform="translate(970, 0)">
+      <rect x="0" y="0" width="246" height="36" rx="10" fill="#141e33" stroke="#1e293b" stroke-width="1" />
+      <text x="18" y="22" font-size="13">🔥</text>
+      <text x="38" y="22" class="font-sans" font-size="12" font-weight="600" fill="#cbd5e1">High Exam Relevance</text>
+      <rect x="196" y="9" width="36" height="18" rx="9" fill="#1e293b" />
+      <circle cx="206" cy="18" r="6" fill="#64748b" />
+    </g>
+  </g>
+
+  <!-- Main Viewport: Dual Column (Left 8 cols: Feed, Right 4 cols: Study Inspector) -->
+  <g transform="translate(32, 178)">
+
+    <!-- ================= LEFT COLUMN: STORY FEED ================= -->
+    <g transform="translate(0, 0)">
+      
+      <!-- Story Card 1: The Daily Star (E-Paper) -->
+      <g transform="translate(0, 0)" filter="url(#shadow)">
+        <rect width="780" height="250" rx="16" fill="url(#cardGrad)" stroke="#334155" stroke-width="1" />
+
+        <!-- Card Header Badges -->
+        <g transform="translate(24, 20)">
+          <!-- DS Monogram -->
+          <circle cx="12" cy="12" r="12" fill="#005c9e" />
+          <text x="12" y="16" class="font-sans" font-size="10" font-weight="800" fill="#ffffff" text-anchor="middle">DS</text>
+          <text x="34" y="16" class="font-sans" font-size="12" font-weight="700" fill="#93c5fd">The Daily Star</text>
+
+          <rect x="130" y="0" width="76" height="24" rx="12" fill="#10b981" fill-opacity="0.18" stroke="#10b981" stroke-width="1" />
+          <text x="168" y="16" class="font-sans" font-size="10" font-weight="700" fill="#6ee7b7" text-anchor="middle">📰 E-Paper</text>
+
+          <rect x="214" y="0" width="60" height="24" rx="12" fill="#1e293b" stroke="#334155" stroke-width="1" />
+          <text x="244" y="16" class="font-sans" font-size="10" font-weight="600" fill="#cbd5e1" text-anchor="middle">Page 1</text>
+
+          <rect x="282" y="0" width="130" height="24" rx="12" fill="#3b82f6" fill-opacity="0.15" stroke="#3b82f6" stroke-width="1" />
+          <text x="347" y="16" class="font-sans" font-size="10" font-weight="700" fill="#93c5fd" text-anchor="middle">Bangladesh Affairs</text>
+
+          <rect x="420" y="0" width="76" height="24" rx="12" fill="#f59e0b" fill-opacity="0.18" stroke="#f59e0b" stroke-width="1" />
+          <text x="458" y="16" class="font-sans" font-size="10" font-weight="700" fill="#fcd34d" text-anchor="middle">🔥 High</text>
+        </g>
+
+        <!-- Headline -->
+        <text x="24" y="76" class="font-serif" font-size="18" font-weight="700" fill="#ffffff">
+          BTRC Recommends 60% Regulatory Allowance for Officials to Boost Revenue Drive
+        </text>
+
+        <!-- Bullet Points -->
+        <g transform="translate(24, 102)">
+          <circle cx="4" cy="4" r="3" fill="#38bdf8" />
+          <text x="16" y="8" class="font-sans" font-size="12" fill="#cbd5e1">
+            Over the past 25 years since inception, BTRC has deposited <tspan font-weight="700" fill="#38bdf8">৳85,779 crore</tspan> into the government exchequer.
+          </text>
+
+          <circle cx="4" cy="26" r="3" fill="#38bdf8" />
+          <text x="16" y="30" class="font-sans" font-size="12" fill="#cbd5e1">
+            The commission was established in 2002 under the <tspan font-weight="700" fill="#f8fafc">Bangladesh Telecommunication Act, 2001</tspan> as a statutory body.
+          </text>
+        </g>
+
+        <!-- Key Facts Tags -->
+        <g transform="translate(24, 150)">
+          <rect x="0" y="0" width="140" height="24" rx="6" fill="#1e293b" stroke="#334155" stroke-width="1" />
+          <text x="10" y="16" class="font-sans" font-size="11" fill="#94a3b8">💰 ৳85,779 Crore Revenue</text>
+
+          <rect x="150" y="0" width="130" height="24" rx="6" fill="#1e293b" stroke="#334155" stroke-width="1" />
+          <text x="160" y="16" class="font-sans" font-size="11" fill="#94a3b8">⚖️ Telecom Act, 2001</text>
+
+          <rect x="290" y="0" width="115" height="24" rx="6" fill="#1e293b" stroke="#334155" stroke-width="1" />
+          <text x="300" y="16" class="font-sans" font-size="11" fill="#94a3b8">🏛️ Est. April 2002</text>
+        </g>
+
+        <!-- Card Footer: From the paper excerpt toggle & Action buttons -->
+        <line x1="24" y1="192" x2="756" y2="192" stroke="#334155" stroke-width="1" />
+        <g transform="translate(24, 208)">
+          <text x="0" y="16" class="font-sans" font-size="12" font-weight="600" fill="#38bdf8">▾ From the paper (excerpt)</text>
+
+          <!-- Right Action Buttons -->
+          <g transform="translate(480, 0)">
+            <rect x="0" y="0" width="76" height="26" rx="8" fill="#1e293b" stroke="#334155" stroke-width="1" />
+            <text x="38" y="17" class="font-sans" font-size="11" font-weight="600" fill="#cbd5e1" text-anchor="middle">Jump to P1</text>
+
+            <rect x="86" y="0" width="76" height="26" rx="8" fill="#007aff" />
+            <text x="124" y="17" class="font-sans" font-size="11" font-weight="600" fill="#ffffff" text-anchor="middle">Ask AI ▾</text>
+
+            <circle cx="186" cy="13" r="13" fill="#1e293b" stroke="#334155" stroke-width="1" />
+            <text x="186" y="17" font-size="11" text-anchor="middle">🔖</text>
+
+            <circle cx="218" cy="13" r="13" fill="#1e293b" stroke="#334155" stroke-width="1" />
+            <text x="218" y="17" font-size="11" text-anchor="middle">🔗</text>
+          </g>
+        </g>
+      </g>
+
+      <!-- Story Card 2: Prothom Alo (Free Live Web) -->
+      <g transform="translate(0, 266)" filter="url(#shadow)">
+        <rect width="780" height="250" rx="16" fill="url(#cardGrad)" stroke="#334155" stroke-width="1" />
+
+        <!-- Card Header Badges -->
+        <g transform="translate(24, 20)">
+          <!-- PA Monogram -->
+          <circle cx="12" cy="12" r="12" fill="#cc1a21" />
+          <text x="12" y="17" class="font-bangla" font-size="11" font-weight="800" fill="#ffffff" text-anchor="middle">প্র</text>
+          <text x="34" y="16" class="font-bangla" font-size="13" font-weight="700" fill="#fca5a5">প্রথম আলো</text>
+
+          <rect x="110" y="0" width="65" height="24" rx="12" fill="#0284c7" fill-opacity="0.18" stroke="#0284c7" stroke-width="1" />
+          <text x="142" y="16" class="font-sans" font-size="10" font-weight="700" fill="#38bdf8" text-anchor="middle">🌐 Free</text>
+
+          <rect x="184" y="0" width="130" height="24" rx="12" fill="#8b5cf6" fill-opacity="0.15" stroke="#8b5cf6" stroke-width="1" />
+          <text x="249" y="16" class="font-bangla" font-size="11" font-weight="700" fill="#c4b5fd" text-anchor="middle">বাংলাদেশ বিষয়াবলী</text>
+
+          <rect x="322" y="0" width="76" height="24" rx="12" fill="#f59e0b" fill-opacity="0.18" stroke="#f59e0b" stroke-width="1" />
+          <text x="360" y="16" class="font-sans" font-size="10" font-weight="700" fill="#fcd34d" text-anchor="middle">🔥 High</text>
+        </g>
+
+        <!-- Headline Bangla -->
+        <text x="24" y="76" class="font-serif font-bangla" font-size="19" font-weight="700" fill="#ffffff">
+          নারী শ্রমশক্তি ও সরকারি ডে-কেয়ার সংকট: শ্রম জরিপ ২০২৪ ও সরকারি নীতি পর্যালোচনা
+        </text>
+
+        <!-- Bullet Points Bangla -->
+        <g transform="translate(24, 102)">
+          <circle cx="4" cy="4" r="3" fill="#f87171" />
+          <text x="16" y="8" class="font-bangla" font-size="13" fill="#cbd5e1">
+            বিবিএস শ্রমশক্তি জরিপ ২০২৪ অনুযায়ী দেশে নারী শ্রমশক্তি <tspan font-weight="700" fill="#fca5a5">২ কোটি ৩৬ লাখ</tspan>, কিন্তু প্রাতিষ্ঠানিক ডে-কেয়ার তীব্র অপ্রতুল।
+          </text>
+
+          <circle cx="4" cy="26" r="3" fill="#f87171" />
+          <text x="16" y="30" class="font-bangla" font-size="13" fill="#cbd5e1">
+            সারাদেশে মহিলা ও শিশু বিষয়ক মন্ত্রণালয়ের অধীনে ৬৪টি সরকারি ডে-কেয়ার সেন্টারে মোট আসন মাত্র <tspan font-weight="700" fill="#ffffff">৪,০৩০টি</tspan>।
+          </text>
+        </g>
+
+        <!-- Key Facts Tags -->
+        <g transform="translate(24, 150)">
+          <rect x="0" y="0" width="145" height="24" rx="6" fill="#1e293b" stroke="#334155" stroke-width="1" />
+          <text x="10" y="16" class="font-bangla" font-size="11" fill="#94a3b8">📊 ২.৩৬ কোটি কর্মজীবী নারী</text>
+
+          <rect x="155" y="0" width="125" height="24" rx="6" fill="#1e293b" stroke="#334155" stroke-width="1" />
+          <text x="165" y="16" class="font-bangla" font-size="11" fill="#94a3b8">🏢 ৬৪ সরকারি কেন্দ্র</text>
+
+          <rect x="290" y="0" width="120" height="24" rx="6" fill="#1e293b" stroke="#334155" stroke-width="1" />
+          <text x="300" y="16" class="font-bangla" font-size="11" fill="#94a3b8">🚼 ৪,০৩০ শিশু আসন</text>
+        </g>
+
+        <!-- Footer -->
+        <line x1="24" y1="192" x2="756" y2="192" stroke="#334155" stroke-width="1" />
+        <g transform="translate(24, 208)">
+          <text x="0" y="16" class="font-sans" font-size="12" font-weight="600" fill="#38bdf8">▾ From the paper (excerpt)</text>
+
+          <!-- Right Action Buttons -->
+          <g transform="translate(480, 0)">
+            <rect x="0" y="0" width="76" height="26" rx="8" fill="#1e293b" stroke="#334155" stroke-width="1" />
+            <text x="38" y="17" class="font-sans" font-size="11" font-weight="600" fill="#cbd5e1" text-anchor="middle">Jump to P4</text>
+
+            <rect x="86" y="0" width="76" height="26" rx="8" fill="#007aff" />
+            <text x="124" y="17" class="font-sans" font-size="11" font-weight="600" fill="#ffffff" text-anchor="middle">Ask AI ▾</text>
+
+            <circle cx="186" cy="13" r="13" fill="#1e293b" stroke="#334155" stroke-width="1" />
+            <text x="186" y="17" font-size="11" text-anchor="middle">🔖</text>
+
+            <circle cx="218" cy="13" r="13" fill="#1e293b" stroke="#334155" stroke-width="1" />
+            <text x="218" y="17" font-size="11" text-anchor="middle">🔗</text>
+          </g>
+        </g>
+      </g>
+    </g>
+
+    <!-- ================= RIGHT COLUMN: STUDY INSPECTOR (Desktop Sidebar) ================= -->
+    <g transform="translate(806, 0)">
+      
+      <!-- Box 1: Practice Callout -->
+      <g transform="translate(0, 0)">
+        <rect width="410" height="150" rx="16" fill="url(#cardGrad)" stroke="#334155" stroke-width="1" />
+        
+        <g transform="translate(20, 20)">
+          <rect x="0" y="0" width="100" height="22" rx="11" fill="#f59e0b" fill-opacity="0.18" stroke="#f59e0b" stroke-width="1" />
+          <text x="50" y="15" class="font-sans" font-size="10" font-weight="700" fill="#fcd34d" text-anchor="middle">⚡ DAILY PRACTICE</text>
+
+          <text x="0" y="46" class="font-serif" font-size="16" font-weight="700" fill="#ffffff">8 Examination MCQs Ready</text>
+          <text x="0" y="68" class="font-sans" font-size="12" fill="#94a3b8">Grounded directly on today's broadsheets.</text>
+
+          <!-- Button -->
+          <rect x="0" y="82" width="370" height="32" rx="10" fill="#007aff" />
+          <text x="185" y="102" class="font-sans" font-size="12" font-weight="700" fill="#ffffff" text-anchor="middle">Start Practice Quiz →</text>
+        </g>
+      </g>
+
+      <!-- Box 2: BCS Syllabus Breakdown -->
+      <g transform="translate(0, 166)">
+        <rect width="410" height="180" rx="16" fill="url(#cardGrad)" stroke="#334155" stroke-width="1" />
+
+        <g transform="translate(20, 20)">
+          <text x="0" y="0" class="font-sans" font-size="12" font-weight="800" fill="#94a3b8" letter-spacing="1">SYLLABUS DISTRIBUTION</text>
+
+          <!-- Category Progress 1 -->
+          <g transform="translate(0, 20)">
+            <text x="0" y="12" class="font-sans" font-size="12" font-weight="600" fill="#f8fafc">Bangladesh Affairs (10)</text>
+            <rect x="0" y="20" width="370" height="6" rx="3" fill="#1e293b" />
+            <rect x="0" y="20" width="220" height="6" rx="3" fill="#3b82f6" />
+          </g>
+
+          <!-- Category Progress 2 -->
+          <g transform="translate(0, 60)">
+            <text x="0" y="12" class="font-sans" font-size="12" font-weight="600" fill="#f8fafc">International Affairs (7)</text>
+            <rect x="0" y="20" width="370" height="6" rx="3" fill="#1e293b" />
+            <rect x="0" y="20" width="160" height="6" rx="3" fill="#10b981" />
+          </g>
+
+          <!-- Category Progress 3 -->
+          <g transform="translate(0, 100)">
+            <text x="0" y="12" class="font-sans" font-size="12" font-weight="600" fill="#f8fafc">Science, Tech &amp; Economy (7)</text>
+            <rect x="0" y="20" width="370" height="6" rx="3" fill="#1e293b" />
+            <rect x="0" y="20" width="150" height="6" rx="3" fill="#f59e0b" />
+          </g>
+        </g>
+      </g>
+
+      <!-- Box 3: Quick Study Tools -->
+      <g transform="translate(0, 362)">
+        <rect width="410" height="154" rx="16" fill="url(#cardGrad)" stroke="#334155" stroke-width="1" />
+
+        <g transform="translate(20, 20)">
+          <text x="0" y="0" class="font-sans" font-size="12" font-weight="800" fill="#94a3b8" letter-spacing="1">RAPID REVISION TOOLS</text>
+
+          <g transform="translate(0, 16)">
+            <!-- Tool 1: Interactive Flashcards -->
+            <rect x="0" y="0" width="180" height="84" rx="10" fill="#1e293b" stroke="#334155" stroke-width="1" />
+            <text x="16" y="28" font-size="18">🃏</text>
+            <text x="16" y="52" class="font-sans" font-size="12" font-weight="700" fill="#ffffff">Flashcards</text>
+            <text x="16" y="68" class="font-sans" font-size="10" fill="#94a3b8">24 Key facts to flip</text>
+
+            <!-- Tool 2: Printable Broadsheet -->
+            <rect x="190" y="0" width="180" height="84" rx="10" fill="#1e293b" stroke="#334155" stroke-width="1" />
+            <text x="206" y="28" font-size="18">🖨️</text>
+            <text x="206" y="52" class="font-sans" font-size="12" font-weight="700" fill="#ffffff">Printable Sheet</text>
+            <text x="206" y="68" class="font-sans" font-size="10" fill="#94a3b8">Dhaka 1-page digest</text>
+          </g>
+        </g>
+      </g>
+
+    </g>
+  </g>
+
+  <!-- Desktop Bottom Audio Narration Bar -->
+  <g transform="translate(0, 720)">
+    <rect width="1280" height="80" fill="#0d1527" stroke="#1e293b" stroke-width="1" />
+
+    <!-- Left: Now Playing Story -->
+    <g transform="translate(32, 20)">
+      <circle cx="20" cy="20" r="18" fill="#007aff" />
+      <text x="20" y="25" font-size="14" fill="#ffffff" text-anchor="middle">🎧</text>
+      
+      <text x="48" y="16" class="font-sans" font-size="12" font-weight="700" fill="#ffffff">
+        BTRC Recommends 60% Regulatory Allowance...
+      </text>
+      <text x="48" y="32" class="font-sans" font-size="11" fill="#94a3b8">
+        The Daily Star • Sentence 2 of 5
+      </text>
+    </g>
+
+    <!-- Center: Audio Controls & Waveform Progress -->
+    <g transform="translate(560, 16)">
+      <g transform="translate(0, 0)">
+        <text x="-50" y="22" font-size="12" fill="#94a3b8">⏮ -5s</text>
+        <circle cx="0" cy="18" r="16" fill="#007aff" />
+        <text x="0" y="23" font-size="12" fill="#ffffff" text-anchor="middle">⏸</text>
+        <text x="50" y="22" font-size="12" fill="#94a3b8">+5s ⏭</text>
+      </g>
+
+      <!-- Progress bar -->
+      <rect x="-140" y="38" width="280" height="4" rx="2" fill="#1e293b" />
+      <rect x="-140" y="38" width="120" height="4" rx="2" fill="#007aff" />
+    </g>
+
+    <!-- Right: Speed Selector & Voice Pill -->
+    <g transform="translate(1080, 24)">
+      <rect x="0" y="0" width="56" height="28" rx="8" fill="#1e293b" stroke="#334155" stroke-width="1" />
+      <text x="28" y="18" class="font-sans" font-size="11" font-weight="700" fill="#38bdf8" text-anchor="middle">1.0x</text>
+
+      <rect x="66" y="0" width="100" height="28" rx="8" fill="#1e293b" stroke="#334155" stroke-width="1" />
+      <text x="116" y="18" class="font-sans" font-size="11" font-weight="600" fill="#cbd5e1" text-anchor="middle">🔊 Bengali / EN</text>
+    </g>
+  </g>
+</svg>

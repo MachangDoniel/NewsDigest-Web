@@ -5,11 +5,11 @@
 </p>
 
 <p align="center">
-  <a href="https://newsdigest.ai.studio/"><img src="https://img.shields.io/badge/Live%20App-newsdigest.ai.studio-007aff?style=for-the-badge&logo=googlechrome&logoColor=white" alt="Live Demo" /></a>
-  <img src="https://img.shields.io/badge/Dhaka%20Edition-Active-10b981?style=for-the-badge&logo=lightning&logoColor=white" alt="Dhaka Edition" />
-  <img src="https://img.shields.io/badge/BCS%20Prep-MCQ%20%2B%20Facts-f59e0b?style=for-the-badge" alt="BCS Prep" />
-  <img src="https://img.shields.io/badge/React%2019-TypeScript-3178c6?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript" />
-  <img src="https://img.shields.io/badge/Gemini%20AI-Flash-8b5cf6?style=for-the-badge&logo=google&logoColor=white" alt="Gemini AI" />
+  <a href="https://newsdigest.ai.studio/"><img src="https://img.shields.io/badge/Live%20Web%20App-newsdigest.ai.studio-007aff?style=for-the-badge&logo=googlechrome&logoColor=white" alt="Live Demo" /></a>
+  <img src="https://img.shields.io/badge/Dhaka%20Edition-Live-10b981?style=for-the-badge&logo=lightning&logoColor=white" alt="Dhaka Edition" />
+  <img src="https://img.shields.io/badge/BCS%20Exam%20Prep-Syllabus%20%2B%20MCQs-f59e0b?style=for-the-badge" alt="BCS Prep" />
+  <img src="https://img.shields.io/badge/React%2019-TypeScript%20%2B%20Tailwind-3178c6?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript" />
+  <img src="https://img.shields.io/badge/Gemini%20AI-Flash%203.8-8b5cf6?style=for-the-badge&logo=google&logoColor=white" alt="Gemini AI" />
 </p>
 
 🌐 **Live Web Application**: [https://newsdigest.ai.studio/](https://newsdigest.ai.studio/)
@@ -22,91 +22,75 @@ Web version based on [NewsDigest iOS](https://github.com/MachangDoniel/NewsDiges
 
 ---
 
-## 📸 Screenshots & Highlights
+## 📸 Web Application Showcase
 
-### 1. 📰 Today's Digest & Broadsheet Excerpts
-Browse daily curated news organized by syllabus relevance, with instant edition filtering (**E-Paper** vs. **Free**), date navigation, and collapsible quotes from the original newspaper.
+### 1. 📰 Today's Digest Feed & Desktop Study Inspector
+Full desktop browser experience with dual-column layout: curated news organized by syllabus relevance on the left, and the real-time **BCS Study Inspector** on the right.
 
 <p align="center">
-  <img src="docs/screenshots/today.png" width="45%" alt="Today's Digest View" />
-  &nbsp;&nbsp;&nbsp;&nbsp;
-  <img src="docs/screenshots/bangla-from-the-paper.png" width="45%" alt="From the original paper quote" />
+  <img src="docs/screenshots/web-today.svg" width="100%" alt="NewsDigest Web - Today's Feed & Desktop Study Inspector" />
 </p>
 
-- **Instant Search**: Quick search icon and reactive filter bar searching headlines, bullets, and exam facts in real time.
-- **Edition Switcher**: Filter between `All`, `📰 E-Paper` (broadsheet replica from Supabase), and `🌐 Free` (live web feed).
-- **Dhaka Date Stepper**: Jump between dates or open the interactive calendar modal.
+- **Instant Search**: Reactive search across headlines, analytical bullets, and key exam facts (press `/`).
+- **Edition Switcher**: Filter between `All`, `📰 E-Paper` (broadsheet replica from Supabase), and `🌐 Free` (live online feed).
+- **Dhaka Date Stepper**: Jump between dates with `◀` / `▶` (or keys `J` / `K`) and calendar picker.
 - **Segmented Paper Filter**: Filter by *Both Papers*, *Daily Star* (DS monogram in `#005c9e`), or *প্রথম আলো* (প্র monogram in `#cc1a21`).
-- **High-Yield Tags**: Key numbers, dates, organizations, and statutory acts marked for Prelims and Viva.
+- **BCS Study Inspector**: Live syllabus distribution tracker (Bangladesh Affairs, International, Science & Economy) and rapid flashcard shortcuts.
+- **Desktop Audio Bar**: Persistent hands-free audio narration with sentence tracking, skip ±5s, and speed control.
 
 ---
 
-### 2. 📝 Practice (Daily Examination MCQs)
+### 2. 📝 Practice (Daily Examination MCQs & Score Ring)
 Sharpen your preliminary exam score with multiple choice questions generated directly from today's newspaper articles.
 
 <p align="center">
-  <img src="docs/screenshots/practice.png" width="55%" alt="Practice MCQs Screen" />
+  <img src="docs/screenshots/web-practice.svg" width="100%" alt="NewsDigest Web - Daily Practice MCQs & Score Ring" />
 </p>
 
-- **Interactive Score Ring**: Visual circular progress tracking answered and correct questions.
-- **Instant Validation**: Clear green and red feedback states with explanation notes.
-- **Explain with AI**: One-click contextual explanation powered by Google Gemini.
+- **Interactive Score Ring**: Visual circular progress tracking answered questions and accuracy rate.
+- **Instant Validation**: Clear green and red feedback states with detailed explanation notes.
+- **🤖 Ask AI Mentor**: One-click contextual exam explanation powered by Google Gemini 3.8 Flash.
 
 ---
 
-### 3. 🗞️ Papers & Read Aloud Voice Player
-Read the original published editions or have stories narrated sentence-by-sentence with the built-in speech engine.
+### 3. 🗞️ Broadsheet E-Paper Reader & Page Navigator
+Read the original published morning broadsheet editions page-by-page.
 
 <p align="center">
-  <img src="docs/screenshots/papers.png" width="31%" alt="Papers View" />
-  &nbsp;
-  <img src="docs/screenshots/read-aloud.png" width="31%" alt="Read Aloud Player" />
-  &nbsp;
-  <img src="docs/screenshots/read-aloud-pill.png" width="31%" alt="Compact Audio Pill" />
+  <img src="docs/screenshots/web-papers.svg" width="100%" alt="NewsDigest Web - Broadsheet Reader & Page Navigator" />
 </p>
 
-- **Page-by-Page Navigation**: Browse Page 1 through 18+ for both newspapers.
-- **View Original E-Paper**: Direct one-tap jump to the official digital replica sites.
-- **Read Aloud Audio Pill**: Plays aloud with pause, skip, speed control (0.75x–1.5x), and folds into a minimal pill while listening.
+- **Page-by-Page Tabs**: Browse Front Page, National, Opinion, Business, and World (Pages 1–8).
+- **Official E-Paper Jump**: Direct link to open the official digital replica portal.
+- **Integrated Voice Narration**: One-tap "Listen with Voice" for any published broadsheet story.
 
 ---
 
-### 4. 🤖 In-App AI Study Assistant & Ask AI Menu
-Integrate study workflows with leading AI models or chat with the built-in BCS mentor.
+### 4. 🖨️ Printable Broadsheet Revision Sheet & In-App AI Study Mentor
+Comprehensive revision tools built specifically for civil service preliminary, written, and viva preparation.
 
 <p align="center">
-  <img src="docs/screenshots/ask-menu.png" width="45%" alt="Ask AI Menu" />
-  &nbsp;&nbsp;&nbsp;&nbsp;
-  <img src="docs/screenshots/summary-chat.png" width="45%" alt="BCS AI Study Assistant" />
+  <img src="docs/screenshots/web-tools.svg" width="100%" alt="NewsDigest Web - Revision Sheet & Gemini AI Study Mentor" />
 </p>
 
-- **Pre-Configured Exam Prompts**: Quick launch into ChatGPT, Gemini, Claude, Grok, Perplexity, and DeepSeek.
-- **Interactive Chat Sheet**: Discuss syllabus points, constitutional angles, and economic significance directly inside the web app.
-
----
-
-### 5. ⚙️ Settings & Speech Voice Customization
-Tailor your study experience with model choice, speech pitch, voice speed, and database sync.
-
-<p align="center">
-  <img src="docs/screenshots/settings-voice.png" width="50%" alt="Voice and Account Settings" />
-</p>
+- **Printable Broadsheet Sheet**: Printable 1-page daily briefing of high-frequency numbers, statutory acts, and constitutional articles.
+- **BCS Exam AI Mentor**: Interactive chat sheet to consult senior exam guidance, written arguments, and interview angles.
 
 ---
 
 ## 🌟 Key Capabilities Summary
 
-| Feature | Description |
+| Feature | Web Edition Experience |
 |---|---|
-| 📰 **Today's Feed** | Factual headlines, 2–3 analytical bullets, and syllabus categorization. |
-| 🔍 **Live Search** | Instant full-text search across headlines, facts, and excerpt quotes. |
+| 📰 **Today's Feed** | Dual-column responsive grid with syllabus tags, analytical bullets, and quote excerpts. |
+| 🔍 **Live Search** | Instant reactive search across headlines, facts, keywords, and dates. |
 | 🏷️ **E-Paper & Free** | Distinguishes printed broadsheet replicas (`E-Paper`) from online web articles (`Free`). |
 | ⚡ **Revision Sheet** | Broadsheet-style printable revision summary of the day's high-frequency facts. |
-| 🗂️ **Interactive Flashcards** | Rapid memorization tool for numbers, dates, and names. |
-| 📝 **Practice MCQs** | Real daily Prelims questions with score ring and instant AI explanations. |
-| 🎧 **Voice Narrator** | Listen to stories hands-free with background audio pill. |
+| 🗂️ **Interactive Flashcards** | Rapid memorization tool for numbers, dates, and organizations. |
+| 📝 **Practice MCQs** | Real daily Prelims questions with interactive circular score ring. |
+| 🎧 **Voice Narrator** | Persistent bottom audio player with sentence tracking and speech speed. |
 | 🗄️ **Archive & Bookmarks** | Complete historical date archive and bookmarked revision vault. |
-| 🌐 **Supabase Sync** | Built-in Supabase database connection with custom project support. |
+| 🔒 **Admin Access** | Stealth passcode unlock for live crawling and database connections. |
 
 ---
 

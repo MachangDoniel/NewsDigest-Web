@@ -1,0 +1,189 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 800" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#0a0f1d" />
+      <stop offset="100%" stop-color="#0f172a" />
+    </linearGradient>
+    <linearGradient id="cardGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1e293b" stop-opacity="0.9" />
+      <stop offset="100%" stop-color="#141e33" stop-opacity="0.95" />
+    </linearGradient>
+    <filter id="shadow" x="-5%" y="-5%" width="110%" height="110%">
+      <feDropShadow dx="0" dy="12" stdDeviation="16" flood-color="#000000" flood-opacity="0.4" />
+    </filter>
+  </defs>
+
+  <style>
+    .font-sans { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    .font-serif { font-family: "Georgia", Cambria, serif; }
+    .font-bangla { font-family: "Hind Siliguri", "SolaimanLipi", sans-serif; }
+  </style>
+
+  <!-- Browser Frame -->
+  <rect width="1280" height="800" rx="16" fill="url(#bgGrad)" />
+
+  <!-- Chrome Bar -->
+  <path d="M0,0 H1280 V44 H0 Z" fill="#0f172a" />
+  <circle cx="24" cy="22" r="6" fill="#ef4444" />
+  <circle cx="44" cy="22" r="6" fill="#f59e0b" />
+  <circle cx="64" cy="22" r="6" fill="#10b981" />
+  <rect x="360" y="8" width="560" height="28" rx="8" fill="#1e293b" stroke="#334155" stroke-width="1" />
+  <text x="640" y="26" text-anchor="middle" class="font-sans" fill="#94a3b8" font-size="12">🔒 https://newsdigest.ai.studio/practice — BCS Daily Practice &amp; MCQs</text>
+
+  <!-- Header -->
+  <g transform="translate(0, 44)">
+    <rect width="1280" height="64" fill="#0d1527" stroke="#1e293b" stroke-width="1" />
+    <text x="32" y="38" class="font-serif" font-size="22" font-weight="900" fill="#ffffff">NewsDigest</text>
+    <rect x="156" y="24" width="94" height="20" rx="10" fill="#10b981" fill-opacity="0.15" stroke="#10b981" stroke-width="1" />
+    <circle cx="168" cy="34" r="3.5" fill="#10b981" />
+    <text x="208" y="38" class="font-sans" font-size="10" font-weight="700" fill="#6ee7b7" text-anchor="middle">Dhaka Live</text>
+
+    <!-- Navigation Tabs (Center) -->
+    <g transform="translate(340, 16)">
+      <text x="40" y="20" class="font-sans" font-size="12" font-weight="600" fill="#94a3b8" text-anchor="middle">Today</text>
+
+      <!-- Practice Tab (Active) -->
+      <rect x="76" y="0" width="94" height="32" rx="8" fill="#007aff" />
+      <text x="123" y="20" class="font-sans" font-size="12" font-weight="700" fill="#ffffff" text-anchor="middle">Practice</text>
+
+      <text x="210" y="20" class="font-sans" font-size="12" font-weight="600" fill="#94a3b8" text-anchor="middle">Archive</text>
+      <text x="280" y="20" class="font-sans" font-size="12" font-weight="600" fill="#94a3b8" text-anchor="middle">Papers</text>
+      <text x="350" y="20" class="font-sans" font-size="12" font-weight="600" fill="#94a3b8" text-anchor="middle">Settings</text>
+    </g>
+
+    <!-- Right Controls -->
+    <g transform="translate(900, 16)">
+      <rect x="0" y="0" width="180" height="32" rx="8" fill="#1e293b" stroke="#334155" stroke-width="1" />
+      <text x="16" y="20" fill="#94a3b8" font-size="12">◀</text>
+      <text x="90" y="20" class="font-sans" font-size="11" font-weight="700" fill="#f8fafc" text-anchor="middle">Wed, Oct 1, 2025</text>
+      <text x="164" y="20" fill="#94a3b8" font-size="12">▶</text>
+
+      <rect x="192" y="0" width="140" height="32" rx="8" fill="#8b5cf6" fill-opacity="0.15" stroke="#8b5cf6" stroke-width="1" />
+      <text x="262" y="20" class="font-sans" font-size="11" font-weight="700" fill="#c4b5fd" text-anchor="middle">🃏 Rapid Flashcards</text>
+    </g>
+  </g>
+
+  <!-- Practice Main View -->
+  <g transform="translate(180, 136)">
+
+    <!-- Top Score Ring & Summary Banner -->
+    <g transform="translate(0, 0)" filter="url(#shadow)">
+      <rect width="920" height="110" rx="16" fill="url(#cardGrad)" stroke="#334155" stroke-width="1" />
+
+      <!-- Circular Score Ring Graphic -->
+      <g transform="translate(60, 55)">
+        <circle cx="0" cy="0" r="34" fill="none" stroke="#1e293b" stroke-width="6" />
+        <circle cx="0" cy="0" r="34" fill="none" stroke="#10b981" stroke-width="6" stroke-dasharray="213" stroke-dashoffset="53" transform="rotate(-90)" />
+        <text x="0" y="6" class="font-sans" font-size="15" font-weight="800" fill="#10b981" text-anchor="middle">75%</text>
+      </g>
+
+      <g transform="translate(120, 36)">
+        <text x="0" y="0" class="font-serif" font-size="20" font-weight="700" fill="#ffffff">Today's Practice Session</text>
+        <text x="0" y="22" class="font-sans" font-size="12" fill="#94a3b8">6 of 8 questions completed • 5 correct • 1 review needed</text>
+      </g>
+
+      <!-- Action buttons -->
+      <g transform="translate(680, 38)">
+        <rect x="0" y="0" width="105" height="34" rx="8" fill="#1e293b" stroke="#334155" stroke-width="1" />
+        <text x="52" y="22" class="font-sans" font-size="11" font-weight="600" fill="#cbd5e1" text-anchor="middle">Reset answers</text>
+
+        <rect x="115" y="0" width="115" height="34" rx="8" fill="#007aff" />
+        <text x="172" y="22" class="font-sans" font-size="11" font-weight="700" fill="#ffffff" text-anchor="middle">BCS Study Notes →</text>
+      </g>
+    </g>
+
+    <!-- MCQ Question Card 1 (English / Daily Star) -->
+    <g transform="translate(0, 130)" filter="url(#shadow)">
+      <rect width="920" height="280" rx="16" fill="url(#cardGrad)" stroke="#334155" stroke-width="1" />
+
+      <!-- Question Header -->
+      <g transform="translate(28, 22)">
+        <rect x="0" y="0" width="90" height="22" rx="11" fill="#005c9e" fill-opacity="0.3" stroke="#005c9e" stroke-width="1" />
+        <text x="45" y="15" class="font-sans" font-size="10" font-weight="700" fill="#93c5fd" text-anchor="middle">Question 1 • DS</text>
+
+        <rect x="100" y="0" width="130" height="22" rx="11" fill="#3b82f6" fill-opacity="0.15" stroke="#3b82f6" stroke-width="1" />
+        <text x="165" y="15" class="font-sans" font-size="10" font-weight="700" fill="#60a5fa" text-anchor="middle">Bangladesh Affairs</text>
+      </g>
+
+      <!-- Question Title -->
+      <text x="28" y="74" class="font-serif" font-size="16" font-weight="700" fill="#ffffff">
+        Under which legislation was the Bangladesh Telecommunication Regulatory Commission (BTRC) created in 2002?
+      </text>
+
+      <!-- Options Grid (2x2) -->
+      <g transform="translate(28, 98)">
+        <!-- Option A -->
+        <rect x="0" y="0" width="418" height="42" rx="10" fill="#141e33" stroke="#334155" stroke-width="1" />
+        <text x="20" y="26" class="font-sans" font-size="12" fill="#cbd5e1">A. The Telegraph Act, 1885</text>
+
+        <!-- Option B (Correct Selected) -->
+        <rect x="446" y="0" width="418" height="42" rx="10" fill="#10b981" fill-opacity="0.18" stroke="#10b981" stroke-width="1.5" />
+        <circle cx="468" cy="21" r="9" fill="#10b981" />
+        <text x="468" y="25" fill="#ffffff" font-size="11" font-weight="900" text-anchor="middle">✓</text>
+        <text x="488" y="26" class="font-sans" font-size="12" font-weight="700" fill="#a7f3d0">B. Bangladesh Telecommunication Act, 2001 (Correct)</text>
+
+        <!-- Option C -->
+        <rect x="0" y="52" width="418" height="42" rx="10" fill="#141e33" stroke="#334155" stroke-width="1" />
+        <text x="20" y="78" class="font-sans" font-size="12" fill="#cbd5e1">C. Information and Communication Technology Act, 2006</text>
+
+        <!-- Option D -->
+        <rect x="446" y="52" width="418" height="42" rx="10" fill="#141e33" stroke="#334155" stroke-width="1" />
+        <text x="468" y="78" class="font-sans" font-size="12" fill="#cbd5e1">D. Cyber Security Act, 2023</text>
+      </g>
+
+      <!-- Tutor Explanation Box -->
+      <g transform="translate(28, 208)">
+        <rect width="864" height="52" rx="10" fill="#10b981" fill-opacity="0.08" stroke="#10b981" stroke-width="1" />
+        <text x="16" y="22" font-size="14">💡</text>
+        <text x="40" y="22" class="font-sans" font-size="11" font-weight="700" fill="#6ee7b7">EXAM SYLLABUS INSIGHT:</text>
+        <text x="40" y="38" class="font-sans" font-size="11" fill="#cbd5e1">
+          BTRC was established on 31 January 2002 under the Bangladesh Telecommunication Act, 2001 (Act No. XVIII of 2001).
+        </text>
+
+        <!-- Explain with AI Button -->
+        <rect x="710" y="10" width="140" height="32" rx="8" fill="#007aff" />
+        <text x="780" y="30" class="font-sans" font-size="11" font-weight="700" fill="#ffffff" text-anchor="middle">🤖 Ask AI Mentor</text>
+      </g>
+    </g>
+
+    <!-- MCQ Question Card 2 (Bangla / Prothom Alo) -->
+    <g transform="translate(0, 430)" filter="url(#shadow)">
+      <rect width="920" height="200" rx="16" fill="url(#cardGrad)" stroke="#334155" stroke-width="1" />
+
+      <!-- Question Header -->
+      <g transform="translate(28, 22)">
+        <rect x="0" y="0" width="90" height="22" rx="11" fill="#cc1a21" fill-opacity="0.3" stroke="#cc1a21" stroke-width="1" />
+        <text x="45" y="15" class="font-bangla" font-size="11" font-weight="700" fill="#fca5a5" text-anchor="middle">প্রশ্ন ২ • প্রথম আলো</text>
+
+        <rect x="100" y="0" width="125" height="22" rx="11" fill="#8b5cf6" fill-opacity="0.15" stroke="#8b5cf6" stroke-width="1" />
+        <text x="162" y="15" class="font-bangla" font-size="11" font-weight="700" fill="#c4b5fd" text-anchor="middle">বাংলাদেশ বিষয়াবলী</text>
+      </g>
+
+      <!-- Question Title Bangla -->
+      <text x="28" y="74" class="font-serif font-bangla" font-size="17" font-weight="700" fill="#ffffff">
+        মহিলা ও শিশু বিষয়ক মন্ত্রণালয়ের অধীনে সারাদেশে বর্তমানে কতটি সরকারি শিশু দিবাযত্ন (ডে-কেয়ার) কেন্দ্র চালু রয়েছে?
+      </text>
+
+      <!-- Options Grid (2x2) -->
+      <g transform="translate(28, 98)">
+        <!-- Option A (Correct Selected) -->
+        <rect x="0" y="0" width="418" height="42" rx="10" fill="#10b981" fill-opacity="0.18" stroke="#10b981" stroke-width="1.5" />
+        <circle cx="22" cy="21" r="9" fill="#10b981" />
+        <text x="22" y="25" fill="#ffffff" font-size="11" font-weight="900" text-anchor="middle">✓</text>
+        <text x="42" y="26" class="font-bangla" font-size="13" font-weight="700" fill="#a7f3d0">ক. ৬৪টি কেন্দ্র (সঠিক উত্তর)</text>
+
+        <!-- Option B -->
+        <rect x="446" y="0" width="418" height="42" rx="10" fill="#141e33" stroke="#334155" stroke-width="1" />
+        <text x="468" y="26" class="font-bangla" font-size="13" fill="#cbd5e1">খ. ৮৮টি কেন্দ্র</text>
+
+        <!-- Option C -->
+        <rect x="0" y="52" width="418" height="42" rx="10" fill="#141e33" stroke="#334155" stroke-width="1" />
+        <text x="20" y="78" class="font-bangla" font-size="13" fill="#cbd5e1">গ. ১২০টি কেন্দ্র</text>
+
+        <!-- Option D -->
+        <rect x="446" y="52" width="418" height="42" rx="10" fill="#141e33" stroke="#334155" stroke-width="1" />
+        <text x="468" y="78" class="font-bangla" font-size="13" fill="#cbd5e1">ঘ. ৪২টি কেন্দ্র</text>
+      </g>
+    </g>
+  </g>
+</svg>

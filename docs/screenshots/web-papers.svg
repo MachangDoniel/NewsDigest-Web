@@ -1,0 +1,197 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 800" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#0a0f1d" />
+      <stop offset="100%" stop-color="#0f172a" />
+    </linearGradient>
+    <linearGradient id="cardGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1e293b" stop-opacity="0.9" />
+      <stop offset="100%" stop-color="#141e33" stop-opacity="0.95" />
+    </linearGradient>
+    <filter id="shadow" x="-5%" y="-5%" width="110%" height="110%">
+      <feDropShadow dx="0" dy="12" stdDeviation="16" flood-color="#000000" flood-opacity="0.4" />
+    </filter>
+  </defs>
+
+  <style>
+    .font-sans { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    .font-serif { font-family: "Georgia", Cambria, serif; }
+    .font-bangla { font-family: "Hind Siliguri", "SolaimanLipi", sans-serif; }
+  </style>
+
+  <!-- Browser Frame -->
+  <rect width="1280" height="800" rx="16" fill="url(#bgGrad)" />
+
+  <!-- Chrome Bar -->
+  <path d="M0,0 H1280 V44 H0 Z" fill="#0f172a" />
+  <circle cx="24" cy="22" r="6" fill="#ef4444" />
+  <circle cx="44" cy="22" r="6" fill="#f59e0b" />
+  <circle cx="64" cy="22" r="6" fill="#10b981" />
+  <rect x="360" y="8" width="560" height="28" rx="8" fill="#1e293b" stroke="#334155" stroke-width="1" />
+  <text x="640" y="26" text-anchor="middle" class="font-sans" fill="#94a3b8" font-size="12">🔒 https://newsdigest.ai.studio/papers — E-Paper &amp; Live Broadsheet Reader</text>
+
+  <!-- Header -->
+  <g transform="translate(0, 44)">
+    <rect width="1280" height="64" fill="#0d1527" stroke="#1e293b" stroke-width="1" />
+    <text x="32" y="38" class="font-serif" font-size="22" font-weight="900" fill="#ffffff">NewsDigest</text>
+    <rect x="156" y="24" width="94" height="20" rx="10" fill="#10b981" fill-opacity="0.15" stroke="#10b981" stroke-width="1" />
+    <circle cx="168" cy="34" r="3.5" fill="#10b981" />
+    <text x="208" y="38" class="font-sans" font-size="10" font-weight="700" fill="#6ee7b7" text-anchor="middle">Dhaka Live</text>
+
+    <!-- Navigation Tabs (Center) -->
+    <g transform="translate(340, 16)">
+      <text x="40" y="20" class="font-sans" font-size="12" font-weight="600" fill="#94a3b8" text-anchor="middle">Today</text>
+      <text x="120" y="20" class="font-sans" font-size="12" font-weight="600" fill="#94a3b8" text-anchor="middle">Practice</text>
+      <text x="210" y="20" class="font-sans" font-size="12" font-weight="600" fill="#94a3b8" text-anchor="middle">Archive</text>
+
+      <!-- Papers Tab (Active) -->
+      <rect x="250" y="0" width="80" height="32" rx="8" fill="#007aff" />
+      <text x="290" y="20" class="font-sans" font-size="12" font-weight="700" fill="#ffffff" text-anchor="middle">Papers</text>
+
+      <text x="360" y="20" class="font-sans" font-size="12" font-weight="600" fill="#94a3b8" text-anchor="middle">Settings</text>
+    </g>
+
+    <!-- Date Stepper -->
+    <g transform="translate(900, 16)">
+      <rect x="0" y="0" width="180" height="32" rx="8" fill="#1e293b" stroke="#334155" stroke-width="1" />
+      <text x="16" y="20" fill="#94a3b8" font-size="12">◀</text>
+      <text x="90" y="20" class="font-sans" font-size="11" font-weight="700" fill="#f8fafc" text-anchor="middle">Wed, Oct 1, 2025</text>
+      <text x="164" y="20" fill="#94a3b8" font-size="12">▶</text>
+    </g>
+  </g>
+
+  <!-- Papers Main Content Area -->
+  <g transform="translate(32, 126)">
+    
+    <!-- Top Paper Selection Bar -->
+    <g transform="translate(0, 0)">
+      <!-- Daily Star Tab (Active) -->
+      <rect x="0" y="0" width="220" height="44" rx="12" fill="#005c9e" stroke="#3b82f6" stroke-width="1.5" />
+      <circle cx="28" cy="22" r="12" fill="#ffffff" />
+      <text x="28" y="26" class="font-sans" font-size="10" font-weight="900" fill="#005c9e" text-anchor="middle">DS</text>
+      <text x="50" y="27" class="font-sans" font-size="14" font-weight="700" fill="#ffffff">The Daily Star</text>
+
+      <!-- Prothom Alo Tab -->
+      <g transform="translate(230, 0)">
+        <rect x="0" y="0" width="220" height="44" rx="12" fill="#141e33" stroke="#1e293b" stroke-width="1" />
+        <circle cx="28" cy="22" r="12" fill="#cc1a21" />
+        <text x="28" y="27" class="font-bangla" font-size="12" font-weight="900" fill="#ffffff" text-anchor="middle">প্র</text>
+        <text x="50" y="27" class="font-bangla" font-size="14" font-weight="700" fill="#94a3b8">প্রথম আলো</text>
+      </g>
+
+      <!-- Direct Link to Official Broadsheet Replica -->
+      <g transform="translate(930, 6)">
+        <rect x="0" y="0" width="286" height="32" rx="8" fill="#10b981" fill-opacity="0.15" stroke="#10b981" stroke-width="1" />
+        <text x="143" y="20" class="font-sans" font-size="11" font-weight="700" fill="#6ee7b7" text-anchor="middle">🔗 Open Official E-Paper Portal ↗</text>
+      </g>
+    </g>
+
+    <!-- Page Number Navigation Bar (Pages 1 to 8) -->
+    <g transform="translate(0, 60)">
+      <rect width="1216" height="48" rx="12" fill="#141e33" stroke="#1e293b" stroke-width="1" />
+      
+      <!-- Page 1 (Active) -->
+      <rect x="8" y="8" width="130" height="32" rx="8" fill="#007aff" />
+      <text x="73" y="28" class="font-sans" font-size="12" font-weight="700" fill="#ffffff" text-anchor="middle">Page 1 (Front Page)</text>
+
+      <!-- Page 2 -->
+      <rect x="146" y="8" width="110" height="32" rx="8" fill="#1e293b" />
+      <text x="201" y="28" class="font-sans" font-size="12" font-weight="600" fill="#94a3b8" text-anchor="middle">Page 2 (National)</text>
+
+      <!-- Page 3 -->
+      <rect x="264" y="8" width="120" height="32" rx="8" fill="#1e293b" />
+      <text x="324" y="28" class="font-sans" font-size="12" font-weight="600" fill="#94a3b8" text-anchor="middle">Page 3 (Opinion)</text>
+
+      <!-- Page 4 -->
+      <rect x="392" y="8" width="120" height="32" rx="8" fill="#1e293b" />
+      <text x="452" y="28" class="font-sans" font-size="12" font-weight="600" fill="#94a3b8" text-anchor="middle">Page 4 (Business)</text>
+
+      <!-- Page 5 -->
+      <rect x="520" y="8" width="120" height="32" rx="8" fill="#1e293b" />
+      <text x="580" y="28" class="font-sans" font-size="12" font-weight="600" fill="#94a3b8" text-anchor="middle">Page 5 (World)</text>
+    </g>
+
+    <!-- Page Content Reader (Two-Column Layout) -->
+    <g transform="translate(0, 126)">
+      <!-- Left Column: Frontpage Article Preview -->
+      <g transform="translate(0, 0)" filter="url(#shadow)">
+        <rect width="780" height="420" rx="16" fill="url(#cardGrad)" stroke="#334155" stroke-width="1" />
+
+        <g transform="translate(32, 28)">
+          <rect x="0" y="0" width="80" height="22" rx="6" fill="#10b981" fill-opacity="0.2" />
+          <text x="40" y="15" class="font-sans" font-size="10" font-weight="700" fill="#6ee7b7" text-anchor="middle">LEAD STORY</text>
+
+          <text x="0" y="52" class="font-serif" font-size="22" font-weight="700" fill="#ffffff">
+            BTRC Recommends 60% Regulatory Allowance for Officials
+          </text>
+          <text x="0" y="74" class="font-sans" font-size="12" fill="#94a3b8">
+            Published in printed broadsheet edition • Dhaka, Wednesday, October 1, 2025
+          </text>
+
+          <!-- Full Article Paragraph Excerpts -->
+          <g transform="translate(0, 100)">
+            <text x="0" y="0" class="font-serif" font-size="14" fill="#cbd5e1" line-height="1.6">
+              The Bangladesh Telecommunication Regulatory Commission (BTRC) has formally proposed a
+            </text>
+            <text x="0" y="22" class="font-serif" font-size="14" fill="#cbd5e1">
+              60 percent regulatory allowance for its officers and staff members to recognize their efforts in revenue
+            </text>
+            <text x="0" y="44" class="font-serif" font-size="14" fill="#cbd5e1">
+              mobilization and ongoing spectrum auctions across mobile operators in the country.
+            </text>
+
+            <text x="0" y="80" class="font-serif" font-size="14" fill="#cbd5e1">
+              According to official commission documents placed before the Ministry of Posts and
+            </text>
+            <text x="0" y="102" class="font-serif" font-size="14" fill="#cbd5e1">
+              Telecommunications, BTRC has contributed over ৳85,779 crore to the public exchequer over the
+            </text>
+            <text x="0" y="124" class="font-serif" font-size="14" fill="#cbd5e1">
+              last two and a half decades since its establishment under the landmark Telecommunication Act 2001.
+            </text>
+          </g>
+
+          <!-- Interactive Action Buttons -->
+          <g transform="translate(0, 290)">
+            <rect x="0" y="0" width="160" height="38" rx="10" fill="#007aff" />
+            <text x="80" y="24" class="font-sans" font-size="12" font-weight="700" fill="#ffffff" text-anchor="middle">🎧 Listen with Voice</text>
+
+            <rect x="172" y="0" width="160" height="38" rx="10" fill="#1e293b" stroke="#334155" stroke-width="1" />
+            <text x="252" y="24" class="font-sans" font-size="12" font-weight="700" fill="#cbd5e1" text-anchor="middle">🤖 Ask BCS Tutor</text>
+          </g>
+        </g>
+      </g>
+
+      <!-- Right Column: Page Index & Articles On This Page -->
+      <g transform="translate(806, 0)">
+        <rect width="410" height="420" rx="16" fill="url(#cardGrad)" stroke="#334155" stroke-width="1" />
+
+        <g transform="translate(24, 24)">
+          <text x="0" y="0" class="font-sans" font-size="12" font-weight="800" fill="#94a3b8" letter-spacing="1">STORIES ON PAGE 1 (4)</text>
+
+          <!-- Item 1 (Selected) -->
+          <g transform="translate(0, 18)">
+            <rect width="362" height="74" rx="10" fill="#007aff" fill-opacity="0.15" stroke="#007aff" stroke-width="1.2" />
+            <text x="16" y="26" class="font-serif" font-size="13" font-weight="700" fill="#ffffff">BTRC 60% Regulatory Allowance</text>
+            <text x="16" y="44" class="font-sans" font-size="11" fill="#93c5fd">Bangladesh Affairs • ৳85,779 crore fact</text>
+            <text x="16" y="60" class="font-sans" font-size="10" fill="#6ee7b7">✓ MCQ Practice Included</text>
+          </g>
+
+          <!-- Item 2 -->
+          <g transform="translate(0, 102)">
+            <rect width="362" height="74" rx="10" fill="#141e33" stroke="#1e293b" stroke-width="1" />
+            <text x="16" y="26" class="font-serif" font-size="13" font-weight="700" fill="#ffffff">Forex Reserves Cross $21.5 Billion</text>
+            <text x="16" y="44" class="font-sans" font-size="11" fill="#94a3b8">Economy • Bangladesh Bank Report</text>
+          </g>
+
+          <!-- Item 3 -->
+          <g transform="translate(0, 186)">
+            <rect width="362" height="74" rx="10" fill="#141e33" stroke="#1e293b" stroke-width="1" />
+            <text x="16" y="26" class="font-serif" font-size="13" font-weight="700" fill="#ffffff">Matarbari Port Phase 2 Finalized</text>
+            <text x="16" y="44" class="font-sans" font-size="11" fill="#94a3b8">Infrastructure • Deep Sea Harbor</text>
+          </g>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

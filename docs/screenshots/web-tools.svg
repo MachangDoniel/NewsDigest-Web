@@ -1,0 +1,168 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 800" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#0a0f1d" />
+      <stop offset="100%" stop-color="#0f172a" />
+    </linearGradient>
+    <linearGradient id="cardGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1e293b" stop-opacity="0.9" />
+      <stop offset="100%" stop-color="#141e33" stop-opacity="0.95" />
+    </linearGradient>
+    <filter id="shadow" x="-5%" y="-5%" width="110%" height="110%">
+      <feDropShadow dx="0" dy="16" stdDeviation="20" flood-color="#000000" flood-opacity="0.5" />
+    </filter>
+  </defs>
+
+  <style>
+    .font-sans { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    .font-serif { font-family: "Georgia", Cambria, serif; }
+    .font-bangla { font-family: "Hind Siliguri", "SolaimanLipi", sans-serif; }
+  </style>
+
+  <!-- Browser Frame -->
+  <rect width="1280" height="800" rx="16" fill="url(#bgGrad)" />
+
+  <!-- Chrome Bar -->
+  <path d="M0,0 H1280 V44 H0 Z" fill="#0f172a" />
+  <circle cx="24" cy="22" r="6" fill="#ef4444" />
+  <circle cx="44" cy="22" r="6" fill="#f59e0b" />
+  <circle cx="64" cy="22" r="6" fill="#10b981" />
+  <rect x="360" y="8" width="560" height="28" rx="8" fill="#1e293b" stroke="#334155" stroke-width="1" />
+  <text x="640" y="26" text-anchor="middle" class="font-sans" fill="#94a3b8" font-size="12">🔒 https://newsdigest.ai.studio — Civil Service Revision Tools</text>
+
+  <!-- Main View Showcase: 2 Floating Modals / Sheets -->
+  <g transform="translate(60, 80)">
+
+    <!-- Panel 1: Broadsheet Revision Sheet Modal (Left) -->
+    <g transform="translate(0, 0)" filter="url(#shadow)">
+      <rect width="560" height="660" rx="16" fill="#ffffff" stroke="#cbd5e1" stroke-width="1" />
+      
+      <!-- Modal Header -->
+      <g transform="translate(32, 32)">
+        <text x="0" y="0" class="font-serif" font-size="24" font-weight="900" fill="#0f172a" letter-spacing="-0.5">
+          DAILY EXAM REVISION BRIEFING
+        </text>
+        <text x="0" y="22" class="font-sans" font-size="11" font-weight="700" fill="#64748b">
+          DHAKA BROADSHEET DIGEST • WEDNESDAY, OCTOBER 1, 2025
+        </text>
+        <line x1="0" y1="36" x2="496" y2="36" stroke="#0f172a" stroke-width="2" />
+
+        <!-- 3-Column Stats Summary in Revision Sheet -->
+        <g transform="translate(0, 52)">
+          <rect width="496" height="56" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1" />
+          <text x="30" y="22" class="font-sans" font-size="10" font-weight="700" fill="#64748b">EXAM BULLETS</text>
+          <text x="30" y="42" class="font-sans" font-size="18" font-weight="900" fill="#0f172a">24 Stories</text>
+
+          <text x="190" y="22" class="font-sans" font-size="10" font-weight="700" fill="#64748b">HIGH RELEVANCE</text>
+          <text x="190" y="42" class="font-sans" font-size="18" font-weight="900" fill="#d97706">14 Key Facts</text>
+
+          <text x="350" y="22" class="font-sans" font-size="10" font-weight="700" fill="#64748b">PRELIMS MCQs</text>
+          <text x="350" y="42" class="font-sans" font-size="18" font-weight="900" fill="#0284c7">8 Questions</text>
+        </g>
+
+        <!-- High-Frequency Numbers & Facts Table -->
+        <g transform="translate(0, 130)">
+          <text x="0" y="0" class="font-sans" font-size="11" font-weight="800" fill="#0f172a" letter-spacing="1">
+            KEY NUMBERS &amp; AMOUNTS FOR PRELIMS
+          </text>
+
+          <g transform="translate(0, 14)">
+            <rect width="496" height="32" rx="4" fill="#f1f5f9" />
+            <text x="12" y="20" class="font-sans" font-size="11" font-weight="700" fill="#0f172a">৳85,779 Crore</text>
+            <text x="140" y="20" class="font-sans" font-size="11" fill="#334155">BTRC 25-year revenue contribution</text>
+            <text x="440" y="20" class="font-sans" font-size="10" font-weight="700" fill="#2563eb">P1 (DS)</text>
+          </g>
+
+          <g transform="translate(0, 52)">
+            <rect width="496" height="32" rx="4" fill="#ffffff" />
+            <text x="12" y="20" class="font-bangla" font-size="12" font-weight="700" fill="#0f172a">২.৩৬ কোটি</text>
+            <text x="140" y="20" class="font-bangla" font-size="12" fill="#334155">বিবিএস শ্রমশক্তি জরিপ ২০২৪ কর্মজীবী নারী</text>
+            <text x="440" y="20" class="font-bangla" font-size="10" font-weight="700" fill="#cc1a21">P4 (প্র)</text>
+          </g>
+
+          <g transform="translate(0, 90)">
+            <rect width="496" height="32" rx="4" fill="#f1f5f9" />
+            <text x="12" y="20" class="font-bangla" font-size="12" font-weight="700" fill="#0f172a">৪,০৩০ আসন</text>
+            <text x="140" y="20" class="font-bangla" font-size="12" fill="#334155">সারাদেশে ৬৪টি সরকারি ডে-কেয়ার ধারণক্ষমতা</text>
+            <text x="440" y="20" class="font-bangla" font-size="10" font-weight="700" fill="#cc1a21">P4 (প্র)</text>
+          </g>
+        </g>
+
+        <!-- Statutory Acts & Treaties -->
+        <g transform="translate(0, 280)">
+          <text x="0" y="0" class="font-sans" font-size="11" font-weight="800" fill="#0f172a" letter-spacing="1">
+            STATUTORY ACTS &amp; CONSTITUTIONAL ARTICLES
+          </text>
+          <g transform="translate(0, 14)">
+            <rect width="496" height="50" rx="6" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1" />
+            <text x="12" y="20" class="font-sans" font-size="12" font-weight="700" fill="#0f172a">Bangladesh Telecommunication Act, 2001 (Act XVIII)</text>
+            <text x="12" y="38" class="font-sans" font-size="11" fill="#64748b">Established BTRC as an autonomous regulatory body in January 2002.</text>
+          </g>
+        </g>
+
+        <!-- Print & Export Buttons -->
+        <g transform="translate(0, 530)">
+          <rect width="240" height="38" rx="8" fill="#007aff" />
+          <text x="120" y="24" class="font-sans" font-size="12" font-weight="700" fill="#ffffff" text-anchor="middle">🖨️ Print Broadsheet Sheet</text>
+
+          <rect x="256" width="240" height="38" rx="8" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="1" />
+          <text x="376" y="24" class="font-sans" font-size="12" font-weight="700" fill="#0f172a" text-anchor="middle">📋 Copy Revision Notes</text>
+        </g>
+      </g>
+    </g>
+
+    <!-- Panel 2: In-App AI Study Assistant & Chat (Right) -->
+    <g transform="translate(590, 0)" filter="url(#shadow)">
+      <rect width="570" height="660" rx="16" fill="url(#cardGrad)" stroke="#334155" stroke-width="1" />
+
+      <!-- Chat Header -->
+      <g transform="translate(28, 24)">
+        <circle cx="18" cy="18" r="16" fill="#007aff" />
+        <text x="18" y="23" font-size="14" fill="#ffffff" text-anchor="middle">🤖</text>
+        <text x="46" y="16" class="font-serif" font-size="18" font-weight="700" fill="#ffffff">BCS Exam AI Mentor</text>
+        <text x="46" y="32" class="font-sans" font-size="11" fill="#6ee7b7">Powered by Google Gemini 3.8 Flash • Dhaka Context Active</text>
+      </g>
+      <line x1="0" y1="78" x2="570" y2="78" stroke="#334155" stroke-width="1" />
+
+      <!-- Conversation Thread -->
+      <g transform="translate(28, 96)">
+        
+        <!-- User Query Bubble -->
+        <g transform="translate(80, 0)">
+          <rect width="434" height="62" rx="12" fill="#007aff" />
+          <text x="16" y="24" class="font-sans" font-size="12" font-weight="500" fill="#ffffff">
+            How can the BTRC revenue contribution be framed as an argument in BCS Written Paper (Bangladesh Affairs)?
+          </text>
+        </g>
+
+        <!-- Assistant AI Response Bubble -->
+        <g transform="translate(0, 80)">
+          <rect width="480" height="240" rx="12" fill="#141e33" stroke="#334155" stroke-width="1" />
+          <g transform="translate(20, 20)">
+            <text x="0" y="0" class="font-sans" font-size="11" font-weight="800" fill="#38bdf8">SENIOR BCS MENTOR GUIDANCE:</text>
+            
+            <text x="0" y="24" class="font-sans" font-size="12" fill="#cbd5e1" line-height="1.5">
+              In BCS Written examination (Paper IV: Bangladesh Affairs), you can cite this under <tspan font-weight="700" fill="#ffffff">"Non-Tax Revenue Mobilization &amp; Telecom Governance"</tspan>:
+            </text>
+
+            <text x="12" y="70" class="font-sans" font-size="12" fill="#cbd5e1">• <tspan font-weight="700">Quantifiable Output:</tspan> ৳85,779 cr over 25 years demonstrates that statutory autonomous regulators can significantly relieve fiscal pressure.</text>
+
+            <text x="12" y="116" class="font-sans" font-size="12" fill="#cbd5e1">• <tspan font-weight="700">Institutional Framework:</tspan> Mention Section 21 of the Telecom Act, 2001 regarding the Telecommunication Development Fund (TDF).</text>
+
+            <text x="12" y="162" class="font-sans" font-size="12" fill="#cbd5e1">• <tspan font-weight="700">Policy Recommendation:</tspan> Conclude that incentive allowances must align with civil service reform standards to avoid inter-cadre pay disparity.</text>
+          </g>
+        </g>
+
+        <!-- Chat Input Bar -->
+        <g transform="translate(0, 480)">
+          <rect width="514" height="46" rx="12" fill="#141e33" stroke="#334155" stroke-width="1" />
+          <text x="20" y="28" class="font-sans" font-size="12" fill="#64748b">Ask follow-up exam questions or request viva hints...</text>
+          
+          <rect x="440" y="7" width="64" height="32" rx="8" fill="#007aff" />
+          <text x="472" y="27" class="font-sans" font-size="11" font-weight="700" fill="#ffffff" text-anchor="middle">Send ↵</text>
+        </g>
+      </g>
+    </g>
+
+  </g>
+</svg>
