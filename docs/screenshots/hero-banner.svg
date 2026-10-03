@@ -1,0 +1,157 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 480" width="100%" height="100%">
+  <defs>
+    <!-- Background Gradient -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0a0f1d" />
+      <stop offset="50%" stop-color="#0f172a" />
+      <stop offset="100%" stop-color="#020617" />
+    </linearGradient>
+
+    <!-- Glass Card Gradient -->
+    <linearGradient id="cardGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1e293b" stop-opacity="0.8" />
+      <stop offset="100%" stop-color="#0f172a" stop-opacity="0.9" />
+    </linearGradient>
+
+    <!-- Accent Blue Gradient -->
+    <linearGradient id="blueGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#38bdf8" />
+      <stop offset="100%" stop-color="#2563eb" />
+    </linearGradient>
+
+    <!-- Emerald E-Paper Gradient -->
+    <linearGradient id="emeraldGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#10b981" />
+      <stop offset="100%" stop-color="#059669" />
+    </linearGradient>
+
+    <!-- Glowing Orb Filter -->
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="60" result="blur" />
+    </filter>
+  </defs>
+
+  <style>
+    .title { font-family: 'Georgia', serif; font-size: 54px; font-weight: 900; fill: #ffffff; letter-spacing: -1.5px; }
+    .subtitle { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 19px; fill: #94a3b8; font-weight: 400; }
+    .badge-text { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 13px; font-weight: 700; }
+    .card-title { font-family: 'Georgia', serif; font-size: 18px; font-weight: 700; fill: #f8fafc; }
+    .card-body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 13px; fill: #cbd5e1; line-height: 1.5; }
+    .bangla { font-family: 'SolaimanLipi', 'Bangla', sans-serif; }
+  </style>
+
+  <!-- Background Base -->
+  <rect width="1200" height="480" fill="url(#bgGrad)" />
+
+  <!-- Ambient Light Orbs -->
+  <circle cx="200" cy="120" r="140" fill="#0284c7" opacity="0.25" filter="url(#glow)" />
+  <circle cx="1000" cy="360" r="180" fill="#059669" opacity="0.2" filter="url(#glow)" />
+  <circle cx="650" cy="200" r="100" fill="#6366f1" opacity="0.15" filter="url(#glow)" />
+
+  <!-- Top Badges -->
+  <g transform="translate(60, 50)">
+    <!-- Version Pill -->
+    <rect x="0" y="0" width="130" height="30" rx="15" fill="#007aff" fill-opacity="0.15" stroke="#007aff" stroke-width="1.5" />
+    <text x="65" y="19" text-anchor="middle" fill="#38bdf8" class="badge-text" letter-spacing="1">WEB EDITION</text>
+
+    <!-- Dhaka Live Indicator -->
+    <rect x="142" y="0" width="180" height="30" rx="15" fill="#10b981" fill-opacity="0.12" stroke="#10b981" stroke-width="1.5" />
+    <circle cx="160" cy="15" r="5" fill="#10b981" />
+    <text x="238" y="19" text-anchor="middle" fill="#6ee7b7" class="badge-text">Dhaka Edition Active</text>
+
+    <!-- BCS Exam Prep Badge -->
+    <rect x="334" y="0" width="170" height="30" rx="15" fill="#f59e0b" fill-opacity="0.12" stroke="#f59e0b" stroke-width="1.5" />
+    <text x="419" y="19" text-anchor="middle" fill="#fcd34d" class="badge-text">⚡ BCS Exam Digest</text>
+  </g>
+
+  <!-- Masthead Heading -->
+  <g transform="translate(60, 135)">
+    <text x="0" y="0" class="title">NewsDigest <tspan fill="#38bdf8" font-family="-apple-system, sans-serif" font-size="28" font-weight="700">Web v2</tspan></text>
+    <text x="0" y="38" class="subtitle">Daily Exam Digest from The Daily Star &amp; Prothom Alo for Bangladesh Civil Service</text>
+  </g>
+
+  <!-- Interactive Mockup Feature Cards in Banner -->
+  <g transform="translate(60, 215)">
+    <!-- Card 1: Today's Story Mockup -->
+    <g transform="translate(0, 0)">
+      <rect width="345" height="210" rx="18" fill="url(#cardGrad)" stroke="#334155" stroke-width="1.2" />
+      
+      <!-- Source Badges: E-Paper & Daily Star -->
+      <g transform="translate(20, 20)">
+        <rect x="0" y="0" width="82" height="24" rx="12" fill="#10b981" fill-opacity="0.2" stroke="#10b981" stroke-width="1" />
+        <text x="41" y="16" text-anchor="middle" fill="#6ee7b7" font-size="11" font-weight="700">📰 E-Paper</text>
+
+        <rect x="90" y="0" width="84" height="24" rx="12" fill="#005c9e" fill-opacity="0.3" stroke="#005c9e" stroke-width="1" />
+        <text x="132" y="16" text-anchor="middle" fill="#93c5fd" font-size="11" font-weight="700">Daily Star</text>
+
+        <rect x="182" y="0" width="70" height="24" rx="12" fill="#f59e0b" fill-opacity="0.2" stroke="#f59e0b" stroke-width="1" />
+        <text x="217" y="16" text-anchor="middle" fill="#fcd34d" font-size="11" font-weight="700">🔥 High</text>
+      </g>
+
+      <text x="20" y="74" class="card-title" font-size="16">BTRC Revenue &amp; Regulatory</text>
+      <text x="20" y="96" class="card-title" font-size="16">Allowance Proposal</text>
+
+      <text x="20" y="128" class="card-body">• 25-yr revenue: ৳85,779 crore collected</text>
+      <text x="20" y="148" class="card-body">• Established in 2002 under 2001 Act</text>
+
+      <!-- Key Fact Tag -->
+      <rect x="20" y="168" width="180" height="24" rx="8" fill="#ffffff" fill-opacity="0.08" />
+      <text x="30" y="184" fill="#f1f5f9" font-size="11" font-weight="600">60% Proposed Allowance</text>
+    </g>
+
+    <!-- Card 2: Prothom Alo Bangla Story Mockup -->
+    <g transform="translate(365, 0)">
+      <rect width="345" height="210" rx="18" fill="url(#cardGrad)" stroke="#334155" stroke-width="1.2" />
+
+      <!-- Source Badges: Free & Prothom Alo -->
+      <g transform="translate(20, 20)">
+        <rect x="0" y="0" width="68" height="24" rx="12" fill="#0284c7" fill-opacity="0.2" stroke="#0284c7" stroke-width="1" />
+        <text x="34" y="16" text-anchor="middle" fill="#38bdf8" font-size="11" font-weight="700">🌐 Free</text>
+
+        <rect x="76" y="0" width="86" height="24" rx="12" fill="#cc1a21" fill-opacity="0.3" stroke="#cc1a21" stroke-width="1" />
+        <text x="119" y="16" text-anchor="middle" fill="#fca5a5" font-size="11" font-weight="700">প্রথম আলো</text>
+
+        <rect x="170" y="0" width="110" height="24" rx="12" fill="#8b5cf6" fill-opacity="0.2" stroke="#8b5cf6" stroke-width="1" />
+        <text x="225" y="16" text-anchor="middle" fill="#c4b5fd" font-size="11" font-weight="700">বাংলাদেশ বিষয়াবলী</text>
+      </g>
+
+      <text x="20" y="74" class="card-title bangla" font-size="17">নারী শ্রমশক্তি ও সরকারি ডে-কেয়ার</text>
+      <text x="20" y="96" class="card-title bangla" font-size="17">সংকট: শ্রম জরিপ ২০২৪</text>
+
+      <text x="20" y="128" class="card-body bangla">• ২ কোটি ৩৬ লাখ কর্মজীবী নারী</text>
+      <text x="20" y="148" class="card-body bangla">• সারাদেশে ৬৪টি সরকারি কেন্দ্রে ৪,০৩০ আসন</text>
+
+      <rect x="20" y="168" width="170" height="24" rx="8" fill="#ffffff" fill-opacity="0.08" />
+      <text x="30" y="184" fill="#f1f5f9" font-size="11" font-weight="600" class="bangla">প্রিলি ও ভাইভা গুরুত্বপূর্ণ তথ্য</text>
+    </g>
+
+    <!-- Card 3: Practice MCQ & AI Study Mentor -->
+    <g transform="translate(730, 0)">
+      <rect width="350" height="210" rx="18" fill="url(#cardGrad)" stroke="#334155" stroke-width="1.2" />
+
+      <g transform="translate(20, 20)">
+        <rect x="0" y="0" width="115" height="24" rx="12" fill="#3b82f6" fill-opacity="0.2" stroke="#3b82f6" stroke-width="1" />
+        <text x="57" y="16" text-anchor="middle" fill="#93c5fd" font-size="11" font-weight="700">📝 Practice MCQ</text>
+
+        <rect x="123" y="0" width="105" height="24" rx="12" fill="#10b981" fill-opacity="0.2" stroke="#10b981" stroke-width="1" />
+        <text x="175" y="16" text-anchor="middle" fill="#6ee7b7" font-size="11" font-weight="700">✓ 100% Score</text>
+      </g>
+
+      <text x="20" y="72" class="card-title" font-size="15">Under which Act was BTRC created?</text>
+
+      <!-- MCQ Option Correct -->
+      <rect x="20" y="88" width="310" height="32" rx="10" fill="#10b981" fill-opacity="0.18" stroke="#10b981" stroke-width="1.2" />
+      <circle cx="36" cy="104" r="6" fill="#10b981" />
+      <text x="52" y="109" fill="#a7f3d0" font-size="12" font-weight="700">B. Telecom Act, 2001 (Correct)</text>
+
+      <!-- Instant AI Tutor button -->
+      <rect x="20" y="130" width="310" height="32" rx="10" fill="#007aff" fill-opacity="0.15" stroke="#007aff" stroke-width="1" />
+      <text x="36" y="151" fill="#60a5fa" font-size="12" font-weight="600">🤖 Explain with Gemini BCS Mentor</text>
+
+      <!-- Read Aloud & Revision Sheet -->
+      <g transform="translate(20, 172)">
+        <text x="0" y="16" fill="#94a3b8" font-size="11" font-weight="500">🎧 Speech Voice Player  •  📄 Revision Sheet</text>
+      </g>
+    </g>
+  </g>
+</svg>
