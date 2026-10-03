@@ -763,67 +763,86 @@ app.get('/api/health', (req, res) => {
   });
 });
 
-// Get digests (attempts Supabase first, falls back to local cache)
+// Get digests (returns both Supabase E-Paper and Free RSS digests)
 app.get('/api/digests', async (req, res) => {
   try {
-    const { date, paper, limit } = req.query;
+    const { date, paper, limit, source } = req.query;
 
-    // 1. Try Supabase first
-    try {
-      let query = supabase.from('digests').select('*').order('date', { ascending: false });
+    const mappedSupa: any[] = [];
+
+    // 1. Fetch Supabase E-Paper digests
+    if (source !== 'free' && source !== 'rss') {
+      try {
+        let query = supabase.from('digests').select('*').order('date', { ascending: false });
+
+        if (date && typeof date === 'string') {
+          query = query.eq('date', date);
+        }
+        if (paper && typeof paper === 'string' && paper !== 'both') {
+          query = query.eq('paper', paper);
+        }
+        if (limit) {
+          query = query.limit(Number(limit));
+        }
+
+        const { data: supaDigests, error } = await query;
+
+        if (!error && supaDigests && supaDigests.length > 0) {
+          mappedSupa.push(
+            ...supaDigests.map((d: any) => ({
+              id: d.id,
+              date: d.date,
+              paper: d.paper,
+              sections: d.sections || [],
+              mcqs: d.mcqs || [],
+              pageCount: d.page_count ?? d.pageCount ?? 0,
+              sourceType: 'supabase',
+            }))
+          );
+        }
+      } catch (supaErr) {
+        console.warn('Supabase query error:', supaErr);
+      }
+    }
+
+    // 2. Fetch Free (RSS) digests
+    const mappedRss: any[] = [];
+    if (source !== 'epaper' && source !== 'supabase') {
+      let result = [...digestsCache];
 
       if (date && typeof date === 'string') {
-        query = query.eq('date', date);
+        result = result.filter((d) => d.date === date);
       }
+
       if (paper && typeof paper === 'string' && paper !== 'both') {
-        query = query.eq('paper', paper);
+        result = result.filter((d) => d.paper === paper);
       }
+
+      result.sort((a, b) => b.date.localeCompare(a.date));
+
       if (limit) {
-        query = query.limit(Number(limit));
+        result = result.slice(0, Number(limit));
       }
 
-      const { data: supaDigests, error } = await query;
-
-      if (!error && supaDigests && supaDigests.length > 0) {
-        const mapped = supaDigests.map((d: any) => ({
-          id: d.id,
-          date: d.date,
-          paper: d.paper,
-          sections: d.sections || [],
-          mcqs: d.mcqs || [],
-          pageCount: d.page_count ?? d.pageCount ?? 0,
-          sourceType: 'supabase',
-        }));
-        return res.json(mapped);
-      }
-    } catch (supaErr) {
-      console.warn('Supabase query error, falling back to cache:', supaErr);
+      mappedRss.push(
+        ...result.map((d) => ({
+          ...d,
+          id: typeof d.id === 'number' ? 500000 + d.id : `rss-${d.id}`,
+          sourceType: 'rss',
+        }))
+      );
     }
 
-    // 2. Fallback to local cache
-    let result = [...digestsCache];
-
-    if (date && typeof date === 'string') {
-      result = result.filter((d) => d.date === date);
+    if (source === 'epaper' || source === 'supabase') {
+      return res.json(mappedSupa);
+    }
+    if (source === 'free' || source === 'rss') {
+      return res.json(mappedRss);
     }
 
-    if (paper && typeof paper === 'string' && paper !== 'both') {
-      result = result.filter((d) => d.paper === paper);
-    }
-
-    // Sort by date descending
-    result.sort((a, b) => b.date.localeCompare(a.date));
-
-    if (limit) {
-      result = result.slice(0, Number(limit));
-    }
-
-    const mappedResult = result.map((d) => ({
-      ...d,
-      sourceType: 'rss',
-    }));
-
-    res.json(mappedResult);
+    // Default: Return both E-Paper and Free digests!
+    const combined = [...mappedSupa, ...mappedRss];
+    res.json(combined);
   } catch (err: any) {
     res.status(500).json({ error: err.message });
   }

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Flame,
   CheckSquare,
@@ -12,6 +12,9 @@ import {
   AlertCircle,
   Sparkles,
   ArrowRight,
+  Search,
+  X,
+  Newspaper,
 } from 'lucide-react';
 import {
   Digest,
@@ -72,6 +75,10 @@ export const TodayView: React.FC<TodayViewProps> = ({
   onOpenRevisionSheet,
   onOpenFlashcards,
 }) => {
+  const [searchQuery, setSearchQuery] = useState('');
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [editionFilter, setEditionFilter] = useState<'all' | 'epaper' | 'free'>('all');
+
   const visibleDigests = digests.filter(
     (d) => paperFilter === null || d.paper === paperFilter
   );
@@ -80,7 +87,7 @@ export const TodayView: React.FC<TodayViewProps> = ({
   const allItems: SavedItem[] = visibleDigests.flatMap((d) =>
     d.sections.flatMap((s) =>
       s.items.map((item) => ({
-        id: `${d.date}|${d.paper}|${item.headline}`,
+        id: `${d.date}|${d.paper}|${item.headline}|${d.sourceType || ''}`,
         date: d.date,
         paper: d.paper,
         category: s.category,
@@ -90,22 +97,53 @@ export const TodayView: React.FC<TodayViewProps> = ({
     )
   );
 
+  const epaperCount = allItems.filter((i) => i.sourceType === 'supabase').length;
+  const freeCount = allItems.filter((i) => i.sourceType === 'rss').length;
+
   const primarySource: 'supabase' | 'rss' =
     visibleDigests[0]?.sourceType ||
     (visibleDigests.some((d) => d.pageCount > 0) ? 'supabase' : 'rss');
 
-  const filteredByHigh = highOnly
-    ? allItems.filter((i) => i.item.bcsRelevance === 'high')
-    : allItems;
+  // 1. Filter by edition: All vs E-Paper vs Free
+  const filteredByEdition = allItems.filter((i) => {
+    if (editionFilter === 'epaper') return i.sourceType === 'supabase';
+    if (editionFilter === 'free') return i.sourceType === 'rss';
+    return true;
+  });
 
+  // 2. Filter by High relevance
+  const filteredByHigh = highOnly
+    ? filteredByEdition.filter((i) => i.item.bcsRelevance === 'high')
+    : filteredByEdition;
+
+  // Category counts based on edition
   const counts: Record<string, number> = {};
-  allItems.forEach((i) => {
+  filteredByEdition.forEach((i) => {
     counts[i.category] = (counts[i.category] || 0) + 1;
   });
 
-  const displayItems = selectedCategory
+  // 3. Filter by category
+  const filteredByCategory = selectedCategory
     ? filteredByHigh.filter((i) => i.category === selectedCategory)
     : filteredByHigh;
+
+  // 4. Search filter across headlines, bullets, facts, excerpts
+  const trimmedSearch = searchQuery.trim().toLowerCase();
+  const displayItems = trimmedSearch
+    ? filteredByCategory.filter((i) => {
+        const hay = [
+          i.item.headline,
+          ...(i.item.bullets || []),
+          ...(i.item.keyFacts || []),
+          i.item.excerpt || '',
+          i.item.sourceHeadline || '',
+          i.category,
+        ]
+          .join(' ')
+          .toLowerCase();
+        return hay.includes(trimmedSearch);
+      })
+    : filteredByCategory;
 
   const categoriesInOrder: Category[] = [
     'Bangladesh Affairs',
@@ -231,12 +269,102 @@ export const TodayView: React.FC<TodayViewProps> = ({
 
           {/* Sticky Filters: Segmented Paper + Carousel Chips */}
           <div className="sticky top-[58px] z-20 bg-[var(--bg-canvas)]/95 backdrop-blur-md pt-1 pb-2 space-y-2">
-            <div className="flex items-center justify-between text-xs px-1">
-              <span className="text-[11px] font-bold uppercase tracking-wider text-[var(--text-muted)]">
-                Paper Edition
-              </span>
-              <SourceBadge sourceType={primarySource} size="xs" variant="pill" />
+            {/* Top Filter Bar: Edition Switcher + Search Icon Button */}
+            <div className="flex items-center justify-between gap-2 px-0.5">
+              {/* Edition Pills: All | E-Paper | Free */}
+              <div className="flex items-center gap-1 bg-black/5 dark:bg-white/5 p-0.5 rounded-xl text-xs font-semibold select-none border border-black/5 dark:border-white/5">
+                <button
+                  onClick={() => setEditionFilter('all')}
+                  className={`px-2.5 py-1 rounded-lg transition-all text-xs font-semibold ${
+                    editionFilter === 'all'
+                      ? 'bg-[var(--bg-surface)] text-[var(--text-primary)] shadow-2xs font-bold'
+                      : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
+                  }`}
+                >
+                  All ({allItems.length})
+                </button>
+                <button
+                  onClick={() => setEditionFilter('epaper')}
+                  className={`px-2.5 py-1 rounded-lg transition-all text-xs font-semibold flex items-center gap-1 ${
+                    editionFilter === 'epaper'
+                      ? 'bg-[var(--bg-surface)] text-emerald-700 dark:text-emerald-300 shadow-2xs font-bold'
+                      : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
+                  }`}
+                  title="Printed broadsheet edition"
+                >
+                  <Newspaper className="w-3 h-3 text-emerald-600 dark:text-emerald-400" />
+                  <span>E-Paper</span>
+                  <span className="text-[10px] opacity-75">({epaperCount})</span>
+                </button>
+                <button
+                  onClick={() => setEditionFilter('free')}
+                  className={`px-2.5 py-1 rounded-lg transition-all text-xs font-semibold flex items-center gap-1 ${
+                    editionFilter === 'free'
+                      ? 'bg-[var(--bg-surface)] text-sky-700 dark:text-sky-300 shadow-2xs font-bold'
+                      : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
+                  }`}
+                  title="Free live website articles"
+                >
+                  <Globe className="w-3 h-3 text-sky-600 dark:text-sky-400" />
+                  <span>Free</span>
+                  <span className="text-[10px] opacity-75">({freeCount})</span>
+                </button>
+              </div>
+
+              {/* Search Toggle Button */}
+              <button
+                onClick={() => setIsSearchOpen(!isSearchOpen)}
+                className={`px-2.5 py-1 rounded-xl border transition-all flex items-center gap-1.5 text-xs font-semibold ${
+                  isSearchOpen || searchQuery
+                    ? 'bg-[#007aff] text-white border-[#007aff] shadow-xs'
+                    : 'bg-[var(--bg-surface)] text-[var(--text-secondary)] border-[var(--border-subtle)] hover:text-[var(--text-primary)]'
+                }`}
+                title="Search today's headlines & facts"
+                aria-label="Search stories"
+              >
+                <Search className="w-3.5 h-3.5" />
+                <span className="hidden sm:inline">Search</span>
+              </button>
             </div>
+
+            {/* Expandable Instant Search Bar */}
+            {(isSearchOpen || searchQuery) && (
+              <div className="relative pt-0.5">
+                <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-[var(--text-muted)]" />
+                <input
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder="Search today's headlines, keywords, budget, exam facts..."
+                  autoFocus
+                  className="w-full pl-9 pr-8 py-2 rounded-xl bg-[var(--bg-surface)] border border-[#007aff]/50 text-xs sm:text-sm text-[var(--text-primary)] placeholder:text-[var(--text-muted)] focus:outline-none focus:ring-2 focus:ring-[#007aff]/30 font-bangla shadow-xs"
+                />
+                {searchQuery && (
+                  <button
+                    onClick={() => setSearchQuery('')}
+                    className="absolute right-2.5 top-1/2 -translate-y-1/2 p-1 text-[var(--text-muted)] hover:text-[var(--text-primary)] rounded-full"
+                    title="Clear search"
+                  >
+                    <X className="w-3.5 h-3.5" />
+                  </button>
+                )}
+              </div>
+            )}
+
+            {/* Search query active banner */}
+            {trimmedSearch && (
+              <div className="flex items-center justify-between text-xs px-1 text-[var(--text-secondary)]">
+                <span>
+                  Showing <b>{displayItems.length}</b> result{displayItems.length === 1 ? '' : 's'} for "{searchQuery}"
+                </span>
+                <button
+                  onClick={() => setSearchQuery('')}
+                  className="text-[#007aff] font-semibold hover:underline"
+                >
+                  Clear search
+                </button>
+              </div>
+            )}
 
             {/* Paper Segmented Control */}
             <div className="bg-black/5 dark:bg-white/5 p-1 rounded-xl flex text-xs font-semibold select-none border border-black/5 dark:border-white/5">
@@ -352,14 +480,24 @@ export const TodayView: React.FC<TodayViewProps> = ({
               ))}
             </div>
           ) : displayItems.length === 0 ? (
-            <div className="bg-[var(--bg-surface)] rounded-2xl p-10 text-center border border-[var(--border-subtle)] space-y-2">
+            <div className="bg-[var(--bg-surface)] rounded-2xl p-10 text-center border border-[var(--border-subtle)] space-y-3">
               <div className="text-3xl">📰</div>
               <h4 className="font-bold text-[var(--text-primary)] text-sm">
-                No articles match these filters
+                {trimmedSearch ? `No stories found matching "${searchQuery}"` : 'No articles match these filters'}
               </h4>
               <p className="text-xs text-[var(--text-muted)] max-w-xs mx-auto">
-                Try switching the paper or category filter to reveal more stories.
+                {trimmedSearch
+                  ? 'Try searching for different keywords or check spelling.'
+                  : 'Try switching the paper or edition filter to reveal more stories.'}
               </p>
+              {trimmedSearch && (
+                <button
+                  onClick={() => setSearchQuery('')}
+                  className="px-3.5 py-1.5 rounded-xl bg-[#007aff] text-white text-xs font-semibold hover:bg-[#0062cc] transition-colors inline-block"
+                >
+                  Clear search
+                </button>
+              )}
             </div>
           ) : selectedCategory ? (
             <div className="space-y-3">
