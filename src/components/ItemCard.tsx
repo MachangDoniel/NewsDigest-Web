@@ -14,6 +14,7 @@ import {
 import { SavedItem, PAPERS } from '../types';
 import { PaperBadge } from './PaperBadge';
 import { AskAIMenu } from './AskAIMenu';
+import { SourceBadge } from './SourceBadge';
 
 interface ItemCardProps {
   saved: SavedItem;
@@ -74,8 +75,9 @@ export const ItemCard: React.FC<ItemCardProps> = ({
     return (
       <article className="bg-[var(--bg-surface)] rounded-xl p-3.5 border border-[var(--border-subtle)] shadow-2xs hover:border-[#007aff]/30 transition-all flex items-start justify-between gap-3 group">
         <div className="space-y-1 min-w-0 flex-1">
-          <div className="flex items-center gap-2 text-xs text-[var(--text-muted)] font-medium">
+          <div className="flex items-center gap-2 text-xs text-[var(--text-muted)] font-medium flex-wrap">
             <PaperBadge paper={paper} size="sm" />
+            <SourceBadge sourceType={saved.sourceType || 'supabase'} size="xs" variant="compact" />
             <span>{category}</span>
             <span>·</span>
             <span>Page {item.page}</span>
@@ -127,8 +129,9 @@ export const ItemCard: React.FC<ItemCardProps> = ({
     <article className="bg-[var(--bg-surface)] rounded-2xl p-5 sm:p-6 shadow-xs border border-[var(--border-subtle)] space-y-3.5 transition-all hover:shadow-md hover:border-[#007aff]/30">
       {/* Top Metadata Row (Unboxed Clean Metadata) */}
       <div className="flex items-center justify-between gap-2 flex-wrap text-xs text-[var(--text-muted)]">
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 flex-wrap">
           <PaperBadge paper={paper} size="sm" />
+          <SourceBadge sourceType={saved.sourceType || 'supabase'} size="xs" variant="compact" />
           <span className="font-semibold text-[var(--text-secondary)]">{category}</span>
           <span aria-hidden="true">·</span>
           <span>Page {item.page}</span>

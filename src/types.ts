@@ -46,6 +46,7 @@ export interface Digest {
   sections: DigestSection[];
   mcqs: Mcq[];
   pageCount: number;
+  sourceType?: 'supabase' | 'rss';
 }
 
 export interface RunStatus {
@@ -53,6 +54,7 @@ export interface RunStatus {
   paper: PaperId;
   state: 'ok' | 'login_expired' | 'challenge' | 'not_published' | 'error';
   message?: string;
+  source?: 'supabase' | 'rss';
 }
 
 export interface SavedItem {
@@ -61,6 +63,7 @@ export interface SavedItem {
   paper: PaperId;
   category: Category;
   item: DigestItem;
+  sourceType?: 'supabase' | 'rss';
 }
 
 export interface PaperInfo {

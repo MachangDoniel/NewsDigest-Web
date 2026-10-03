@@ -23,6 +23,7 @@ import {
 } from '../types';
 import { ItemCard } from '../components/ItemCard';
 import { PaperBadge } from '../components/PaperBadge';
+import { SourceBadge } from '../components/SourceBadge';
 import { StudyInspector } from '../components/StudyInspector';
 import { ViewMode } from '../components/Header';
 
@@ -84,9 +85,14 @@ export const TodayView: React.FC<TodayViewProps> = ({
         paper: d.paper,
         category: s.category,
         item,
+        sourceType: d.sourceType || (d.pageCount > 0 ? 'supabase' : 'rss'),
       }))
     )
   );
+
+  const primarySource: 'supabase' | 'rss' =
+    visibleDigests[0]?.sourceType ||
+    (visibleDigests.some((d) => d.pageCount > 0) ? 'supabase' : 'rss');
 
   const filteredByHigh = highOnly
     ? allItems.filter((i) => i.item.bcsRelevance === 'high')
@@ -225,6 +231,13 @@ export const TodayView: React.FC<TodayViewProps> = ({
 
           {/* Sticky Filters: Segmented Paper + Carousel Chips */}
           <div className="sticky top-[58px] z-20 bg-[var(--bg-canvas)]/95 backdrop-blur-md pt-1 pb-2 space-y-2">
+            <div className="flex items-center justify-between text-xs px-1">
+              <span className="text-[11px] font-bold uppercase tracking-wider text-[var(--text-muted)]">
+                Paper Edition
+              </span>
+              <SourceBadge sourceType={primarySource} size="xs" variant="pill" />
+            </div>
+
             {/* Paper Segmented Control */}
             <div className="bg-black/5 dark:bg-white/5 p-1 rounded-xl flex text-xs font-semibold select-none border border-black/5 dark:border-white/5">
               <button

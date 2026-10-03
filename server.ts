@@ -792,6 +792,7 @@ app.get('/api/digests', async (req, res) => {
           sections: d.sections || [],
           mcqs: d.mcqs || [],
           pageCount: d.page_count ?? d.pageCount ?? 0,
+          sourceType: 'supabase',
         }));
         return res.json(mapped);
       }
@@ -817,7 +818,12 @@ app.get('/api/digests', async (req, res) => {
       result = result.slice(0, Number(limit));
     }
 
-    res.json(result);
+    const mappedResult = result.map((d) => ({
+      ...d,
+      sourceType: 'rss',
+    }));
+
+    res.json(mappedResult);
   } catch (err: any) {
     res.status(500).json({ error: err.message });
   }
@@ -841,6 +847,7 @@ app.get('/api/status', async (req, res) => {
           paper: s.paper,
           state: s.state,
           message: s.message,
+          source: 'supabase',
         }))
       );
     }
@@ -858,12 +865,14 @@ app.get('/api/status', async (req, res) => {
       paper: 'dailystar',
       state: dsExists ? 'ok' : 'not_published',
       message: dsExists ? 'Daily Star digest ready.' : 'Checking today’s published edition.',
+      source: 'rss',
     },
     {
       date,
       paper: 'prothomalo',
       state: paExists ? 'ok' : 'not_published',
       message: paExists ? 'Prothom Alo digest ready.' : 'Checking today’s published edition.',
+      source: 'rss',
     },
   ];
 

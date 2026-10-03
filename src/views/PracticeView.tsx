@@ -3,6 +3,7 @@ import { RotateCcw, Award, Layers } from 'lucide-react';
 import { Digest, PaperId, Mcq, PAPERS } from '../types';
 import { McqCard } from '../components/McqCard';
 import { PaperBadge } from '../components/PaperBadge';
+import { SourceBadge } from '../components/SourceBadge';
 
 interface PracticeViewProps {
   currentDate: string;
@@ -52,8 +53,19 @@ export const PracticeView: React.FC<PracticeViewProps> = ({
   const percentComplete =
     totalQuestions > 0 ? (answeredCount / totalQuestions) * 100 : 0;
 
+  const primarySource =
+    visibleDigests[0]?.sourceType ||
+    (visibleDigests.some((d) => d.pageCount > 0) ? 'supabase' : 'rss');
+
   return (
     <div className="space-y-4 pb-28 max-w-3xl mx-auto">
+      <div className="flex items-center justify-between text-xs px-1">
+        <span className="text-[11px] font-bold uppercase tracking-wider text-[var(--text-muted)]">
+          Questions Origin
+        </span>
+        <SourceBadge sourceType={primarySource} size="xs" variant="pill" />
+      </div>
+
       {/* Paper Segmented Control */}
       <div className="bg-black/5 dark:bg-white/5 p-1 rounded-xl flex text-xs font-semibold select-none border border-black/5 dark:border-white/5">
         <button

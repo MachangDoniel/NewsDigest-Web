@@ -3,6 +3,7 @@ import { Search, Bookmark, Calendar, ChevronRight, X } from 'lucide-react';
 import { Digest, SavedItem } from '../types';
 import { ItemCard } from '../components/ItemCard';
 import { PaperBadge } from '../components/PaperBadge';
+import { SourceBadge } from '../components/SourceBadge';
 import { formatDhakaPretty } from '../services/store';
 
 interface ArchiveViewProps {
@@ -34,6 +35,7 @@ export const ArchiveView: React.FC<ArchiveViewProps> = ({
         paper: d.paper,
         category: s.category,
         item,
+        sourceType: d.sourceType || 'supabase',
       }))
     )
   );
@@ -192,7 +194,7 @@ export const ArchiveView: React.FC<ArchiveViewProps> = ({
                               <div className="text-sm font-semibold text-[var(--text-primary)] group-hover:text-[#007aff] transition-colors">
                                 {formatDhakaPretty(dateStr)}
                               </div>
-                              <div className="flex items-center gap-2">
+                              <div className="flex items-center gap-2 flex-wrap">
                                 {dayDigests.map((dig) => {
                                   const count = dig.sections.reduce(
                                     (sum, s) => sum + s.items.length,
@@ -208,6 +210,11 @@ export const ArchiveView: React.FC<ArchiveViewProps> = ({
                                     </div>
                                   );
                                 })}
+                                <SourceBadge
+                                  sourceType={dayDigests[0]?.sourceType || 'supabase'}
+                                  size="xs"
+                                  variant="compact"
+                                />
                               </div>
                             </div>
                           </div>
