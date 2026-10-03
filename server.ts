@@ -47,7 +47,6 @@ function verifyAdminToken(token?: string): boolean {
     const data = JSON.parse(str);
     if (!data.isAdmin) return false;
     if (Date.now() > data.expiresAt) return false;
-    if (data.email?.toLowerCase() !== ADMIN_EMAIL) return false;
     return true;
   } catch {
     return false;
@@ -938,46 +937,6 @@ app.get('/api/status', async (req, res) => {
 });
 
 // Authentication endpoints
-app.post('/api/auth/google-login', (req, res) => {
-  try {
-    const { credential } = req.body;
-    if (!credential || typeof credential !== 'string') {
-      return res.status(400).json({ ok: false, message: 'Google credential token is required' });
-    }
-
-    const parts = credential.split('.');
-    if (parts.length < 2) {
-      return res.status(400).json({ ok: false, message: 'Invalid JWT token' });
-    }
-
-    const payload = JSON.parse(Buffer.from(parts[1], 'base64url').toString('utf8'));
-    const email = (payload.email || '').toLowerCase().trim();
-    const name = payload.name || payload.given_name || 'User';
-    const picture = payload.picture || '';
-
-    const isAdmin = email === ADMIN_EMAIL;
-    if (isAdmin) {
-      const token = generateAdminToken(email);
-      return res.json({
-        ok: true,
-        isAdmin: true,
-        user: { email, name, picture },
-        token,
-        message: `Welcome back, Administrator ${name}!`,
-      });
-    }
-
-    return res.json({
-      ok: true,
-      isAdmin: false,
-      user: { email, name, picture },
-      message: 'Signed in as student reader. Admin features are reserved for authorized editors.',
-    });
-  } catch (err: any) {
-    res.status(500).json({ ok: false, message: err.message });
-  }
-});
-
 app.post('/api/auth/passcode-login', (req, res) => {
   try {
     const { passcode } = req.body;
@@ -986,20 +945,19 @@ app.post('/api/auth/passcode-login', (req, res) => {
     }
 
     if (passcode.trim() === ADMIN_SECRET) {
-      const token = generateAdminToken(ADMIN_EMAIL);
+      const token = generateAdminToken('admin');
       return res.json({
         ok: true,
         isAdmin: true,
         user: {
-          email: ADMIN_EMAIL,
           name: 'Administrator',
         },
         token,
-        message: 'Admin access unlocked via Master Key.',
+        message: 'Admin access unlocked.',
       });
     }
 
-    return res.status(401).json({ ok: false, message: 'Incorrect administrator passcode.' });
+    return res.status(401).json({ ok: false, message: 'Incorrect passcode.' });
   } catch (err: any) {
     res.status(500).json({ ok: false, message: err.message });
   }

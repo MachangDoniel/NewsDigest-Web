@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
   CheckCircle2,
   Sliders,
@@ -6,7 +6,6 @@ import {
   Headphones,
   Key,
   RotateCw,
-  Info,
   Server,
   Palette,
   ShieldCheck,
@@ -14,12 +13,10 @@ import {
   LogOut,
   AlertTriangle,
   Globe,
-  HelpCircle,
 } from 'lucide-react';
-import { saveSettingsToStorage } from '../services/store';
 import { ThemeToggle } from '../components/ThemeToggle';
 import { ThemeMode } from '../components/Header';
-import { AdminUser, loginWithPasscode, loginWithGoogleToken } from '../services/auth';
+import { AdminUser, loginWithPasscode } from '../services/auth';
 
 interface SettingsViewProps {
   theme: ThemeMode;
@@ -50,7 +47,6 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
   onRunDigestNow,
   isCompiling,
   isAdmin,
-  adminUser,
   onLoginSuccess,
   onLogout,
 }) => {
@@ -60,14 +56,12 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
   const [showCustomProject, setShowCustomProject] = useState(false);
   const [customUrl, setCustomUrl] = useState('');
   const [customKey, setCustomKey] = useState('');
-  const [saveSuccess, setSaveSuccess] = useState(false);
 
   // Admin login states
-  const [showPasscodeModal, setShowPasscodeModal] = useState(false);
+  const [showPasscodeField, setShowPasscodeField] = useState(false);
   const [passcode, setPasscode] = useState('');
   const [authError, setAuthError] = useState<string | null>(null);
   const [isAuthenticating, setIsAuthenticating] = useState(false);
-  const [googleStatus, setGoogleStatus] = useState<string | null>(null);
 
   const aiModels = [
     { id: 'auto', label: 'Auto (best available)' },
@@ -77,60 +71,6 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
     { id: 'groq:openai/gpt-oss-120b', label: 'Groq GPT-OSS 120B' },
     { id: 'groq:llama-3.3-70b-versatile', label: 'Groq Llama 3.3 70B' },
   ];
-
-  const handleSaveSettings = (key: string, value: any) => {
-    setSaveSuccess(true);
-    setTimeout(() => setSaveSuccess(false), 1500);
-  };
-
-  // Setup Google Identity Services button if available
-  useEffect(() => {
-    if (isAdmin) return;
-
-    // Check if google accounts id is present
-    const initGoogleSignIn = () => {
-      if ((window as any).google?.accounts?.id) {
-        try {
-          (window as any).google.accounts.id.initialize({
-            client_id:
-              '155832180601-16qf4ckq3e1kld66quu06ck7oae5h1e7.apps.googleusercontent.com',
-            callback: async (response: any) => {
-              if (response.credential) {
-                setIsAuthenticating(true);
-                setAuthError(null);
-                const res = await loginWithGoogleToken(response.credential);
-                setIsAuthenticating(false);
-                if (res.ok && res.isAdmin && res.user) {
-                  onLoginSuccess(res.user);
-                } else {
-                  setAuthError(
-                    res.message ||
-                      'Access denied: Signed in account is not authorized as administrator.'
-                  );
-                }
-              }
-            },
-          });
-
-          const btnEl = document.getElementById('google-signin-btn-container');
-          if (btnEl) {
-            btnEl.innerHTML = '';
-            (window as any).google.accounts.id.renderButton(btnEl, {
-              theme: theme === 'dark' ? 'filled_black' : 'outline',
-              size: 'large',
-              shape: 'pill',
-              text: 'signin_with',
-            });
-          }
-        } catch (e) {
-          console.warn('Google Identity initialization error:', e);
-        }
-      }
-    };
-
-    const timer = setTimeout(initGoogleSignIn, 500);
-    return () => clearTimeout(timer);
-  }, [isAdmin, theme]);
 
   const handlePasscodeSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -143,31 +83,26 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
 
     if (res.ok && res.isAdmin && res.user) {
       onLoginSuccess(res.user);
-      setShowPasscodeModal(false);
+      setShowPasscodeField(false);
       setPasscode('');
     } else {
-      setAuthError(res.message || 'Incorrect administrator passcode.');
+      setAuthError(res.message || 'Incorrect passcode.');
     }
   };
 
   return (
     <div className="space-y-6 pb-28">
-      {/* Admin Status Banner if Admin */}
+      {/* Admin Mode Bar if Admin */}
       {isAdmin && (
-        <div className="p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/25 flex items-center justify-between gap-4">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shrink-0">
-              <ShieldCheck className="w-5 h-5" />
+        <div className="p-3.5 rounded-2xl bg-emerald-500/10 border border-emerald-500/25 flex items-center justify-between gap-4">
+          <div className="flex items-center gap-2.5">
+            <div className="w-8 h-8 rounded-xl bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shrink-0">
+              <ShieldCheck className="w-4 h-4" />
             </div>
             <div>
-              <div className="flex items-center gap-2">
-                <span className="text-xs font-bold uppercase tracking-wider text-emerald-700 dark:text-emerald-400">
-                  Administrator Access
-                </span>
-                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-              </div>
-              <div className="text-xs font-medium text-[var(--text-primary)]">
-                {adminUser?.email || 'donieltripura1971@gmail.com'}
+              <div className="flex items-center gap-1.5 text-xs font-bold text-emerald-700 dark:text-emerald-400">
+                <span>Admin Controls Active</span>
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
               </div>
             </div>
           </div>
@@ -182,7 +117,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
         </div>
       )}
 
-      {/* Appearance & Reading Theme Section (Public) */}
+      {/* Appearance & Theme (Public) */}
       <section className="space-y-2">
         <h3 className="text-xs font-bold uppercase tracking-wider text-[var(--text-muted)] px-1">
           Appearance & Theme
@@ -197,7 +132,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
                   Color Mode
                 </div>
                 <div className="text-xs text-[var(--text-muted)]">
-                  Optimized for comfortable civil service exam study
+                  Light, Sepia or Dark reading environment
                 </div>
               </div>
             </div>
@@ -232,10 +167,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
 
           <select
             value={summaryLanguage}
-            onChange={(e) => {
-              onSummaryLanguageChange(e.target.value);
-              handleSaveSettings('summaryLanguage', e.target.value);
-            }}
+            onChange={(e) => onSummaryLanguageChange(e.target.value)}
             className="px-3 py-1.5 rounded-xl bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/5 text-[var(--text-primary)] font-medium text-xs focus:outline-none"
           >
             <option value="auto">Same as paper</option>
@@ -246,7 +178,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
         </div>
       </section>
 
-      {/* Read Aloud Section (Public) */}
+      {/* Read Aloud (Public) */}
       <section className="space-y-2">
         <h3 className="text-xs font-bold uppercase tracking-wider text-[var(--text-muted)] px-1">
           🎧 Read Aloud
@@ -267,10 +199,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
 
           <select
             value={speechVoice}
-            onChange={(e) => {
-              onSpeechVoiceChange(e.target.value);
-              handleSaveSettings('speechVoice', e.target.value);
-            }}
+            onChange={(e) => onSpeechVoiceChange(e.target.value)}
             className="px-3 py-1.5 rounded-xl bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/5 text-[var(--text-primary)] font-medium text-xs focus:outline-none"
           >
             <option value="natural">Natural Browser Voice</option>
@@ -314,20 +243,20 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
       </section>
 
       {/* ========================================================================= */}
-      {/* ADMIN CONTROLS (Shown ONLY if isAdmin === true) */}
+      {/* ADMIN CONTROLS (Only visible when unlocked) */}
       {/* ========================================================================= */}
       {isAdmin ? (
         <>
           {/* Admin Action: Run Digest Now */}
           <section className="space-y-2">
-            <h3 className="text-xs font-bold uppercase tracking-wider text-neutral-500 px-1 flex items-center gap-1.5">
+            <h3 className="text-xs font-bold uppercase tracking-wider text-[var(--text-muted)] px-1 flex items-center gap-1.5">
               <Sparkles className="w-3.5 h-3.5 text-[#007aff]" />
-              <span>Admin: Live Digest Compiler</span>
+              <span>Live Digest Compiler</span>
             </h3>
 
             <div className="bg-[var(--bg-surface)] rounded-2xl border border-[var(--border-subtle)] p-4 space-y-3 text-xs sm:text-sm">
               <p className="text-xs text-[var(--text-secondary)]">
-                Trigger real-time crawling of today's morning broadsheet editions and compile BCS-targeted summaries.
+                Trigger real-time crawling of today's morning broadsheet editions and compile fresh summaries.
               </p>
 
               <button
@@ -341,11 +270,11 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
             </div>
           </section>
 
-          {/* Admin Action: Account & Supabase Backend */}
+          {/* Admin Action: Supabase Backend */}
           <section className="space-y-2">
-            <h3 className="text-xs font-bold uppercase tracking-wider text-neutral-500 px-1 flex items-center gap-1.5">
+            <h3 className="text-xs font-bold uppercase tracking-wider text-[var(--text-muted)] px-1 flex items-center gap-1.5">
               <Server className="w-3.5 h-3.5 text-emerald-600" />
-              <span>Admin: Supabase Database</span>
+              <span>Supabase Database</span>
             </h3>
 
             <div className="bg-[var(--bg-surface)] rounded-2xl border border-[var(--border-subtle)] divide-y divide-[var(--border-subtle)] overflow-hidden text-xs sm:text-sm">
@@ -406,7 +335,6 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
                       <button
                         onClick={() => {
                           if (customUrl) setSupabaseUrl(customUrl);
-                          handleSaveSettings('customProject', { customUrl, customKey });
                         }}
                         className="px-3 py-1.5 rounded-xl bg-[#007aff] text-white text-xs font-semibold"
                       >
@@ -417,7 +345,6 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
                           setCustomUrl('');
                           setCustomKey('');
                           setSupabaseUrl('https://utjluiipjiznedsglqsm.supabase.co');
-                          handleSaveSettings('useDefault', true);
                         }}
                         className="px-3 py-1.5 rounded-xl border border-[var(--border-subtle)] text-xs font-semibold text-[var(--text-secondary)]"
                       >
@@ -432,9 +359,9 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
 
           {/* Admin Action: AI Model Configuration */}
           <section className="space-y-2">
-            <h3 className="text-xs font-bold uppercase tracking-wider text-neutral-500 px-1 flex items-center gap-1.5">
+            <h3 className="text-xs font-bold uppercase tracking-wider text-[var(--text-muted)] px-1 flex items-center gap-1.5">
               <Sliders className="w-3.5 h-3.5 text-purple-600" />
-              <span>Admin: AI Pipeline Models</span>
+              <span>AI Pipeline Models</span>
             </h3>
 
             <div className="bg-[var(--bg-surface)] rounded-2xl border border-[var(--border-subtle)] p-4 flex items-center justify-between gap-4 text-xs sm:text-sm">
@@ -449,10 +376,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
 
               <select
                 value={aiModel}
-                onChange={(e) => {
-                  onAiModelChange(e.target.value);
-                  handleSaveSettings('aiModel', e.target.value);
-                }}
+                onChange={(e) => onAiModelChange(e.target.value)}
                 className="px-3 py-1.5 rounded-xl bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/5 text-[var(--text-primary)] font-medium text-xs focus:outline-none"
               >
                 {aiModels.map((m) => (
@@ -463,105 +387,70 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
               </select>
             </div>
           </section>
-
-          {/* Admin Action: Diagnostics & Troubleshooting */}
-          <section className="space-y-2">
-            <h3 className="text-xs font-bold uppercase tracking-wider text-neutral-500 px-1">
-              Admin Troubleshooting
-            </h3>
-
-            <div className="bg-[var(--bg-surface)] rounded-2xl border border-[var(--border-subtle)] p-4 space-y-2.5 text-xs text-[var(--text-secondary)]">
-              <div className="flex items-start gap-2.5">
-                <Key className="w-4 h-4 text-neutral-400 shrink-0 mt-0.5" />
-                <p>
-                  <strong className="text-[var(--text-primary)]">Login credentials:</strong> DAILYSTAR_EMAIL / PROTHOMALO_EMAIL are maintained in the backend server.
-                </p>
-              </div>
-
-              <div className="flex items-start gap-2.5">
-                <RotateCw className="w-4 h-4 text-neutral-400 shrink-0 mt-0.5" />
-                <p>
-                  <strong className="text-[var(--text-primary)]">Cron jobs:</strong> The automated runner checks every hour for new Dhaka editions.
-                </p>
-              </div>
-            </div>
-          </section>
         </>
       ) : (
         /* ========================================================================= */
-        /* ADMINISTRATOR LOGIN PORTAL (Public View) */
+        /* CLEAN, SUBTLE ADMIN UNLOCK (No email, no Google sign in, no warnings) */
         /* ========================================================================= */
-        <section className="space-y-2 pt-4 border-t border-[var(--border-subtle)]">
-          <h3 className="text-xs font-bold uppercase tracking-wider text-[var(--text-muted)] px-1 flex items-center gap-1.5">
-            <Lock className="w-3.5 h-3.5" />
-            <span>Administrator Portal</span>
-          </h3>
-
-          <div className="bg-[var(--bg-surface)] rounded-2xl border border-[var(--border-subtle)] p-5 space-y-4">
-            <div className="space-y-1">
-              <div className="text-xs sm:text-sm font-bold text-[var(--text-primary)]">
-                Editor & Admin Controls
+        <div className="pt-6 flex flex-col items-center">
+          {!showPasscodeField ? (
+            <button
+              onClick={() => setShowPasscodeField(true)}
+              className="text-xs text-[var(--text-muted)] hover:text-[var(--text-secondary)] flex items-center gap-1.5 py-1 px-3 rounded-lg hover:bg-black/5 dark:hover:bg-white/5 transition-colors opacity-75 hover:opacity-100"
+              title="Unlock editor controls"
+            >
+              <Lock className="w-3 h-3" />
+              <span>Admin access</span>
+            </button>
+          ) : (
+            <form
+              onSubmit={handlePasscodeSubmit}
+              className="w-full max-w-sm p-4 rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-subtle)] shadow-xs space-y-3"
+            >
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-semibold text-[var(--text-primary)] flex items-center gap-1.5">
+                  <Key className="w-3.5 h-3.5 text-[#007aff]" />
+                  <span>Enter Passcode</span>
+                </span>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShowPasscodeField(false);
+                    setAuthError(null);
+                  }}
+                  className="text-xs text-[var(--text-muted)] hover:text-[var(--text-primary)]"
+                >
+                  Cancel
+                </button>
               </div>
-              <p className="text-xs text-[var(--text-muted)] leading-relaxed">
-                Live digest compilation, AI model selection, and backend database credentials are strictly restricted to authorized administrators (<span className="font-mono text-emerald-600 dark:text-emerald-400">donieltripura1971@gmail.com</span>).
-              </p>
-            </div>
 
-            {authError && (
-              <div className="p-3 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-700 dark:text-rose-300 text-xs flex items-center gap-2">
-                <AlertTriangle className="w-4 h-4 shrink-0" />
-                <span>{authError}</span>
-              </div>
-            )}
-
-            <div className="pt-2 flex flex-col sm:flex-row items-center gap-3">
-              {/* Google Sign-in Container rendered by GIS */}
-              <div id="google-signin-btn-container" className="min-h-[40px] flex items-center" />
-
-              <span className="text-xs text-[var(--text-muted)]">or</span>
-
-              {/* Master Key Passcode trigger */}
-              <button
-                onClick={() => setShowPasscodeModal(!showPasscodeModal)}
-                className="px-4 py-2 rounded-xl bg-black/5 dark:bg-white/5 hover:bg-black/10 dark:hover:bg-white/10 text-[var(--text-secondary)] text-xs font-semibold flex items-center gap-2 transition-colors border border-[var(--border-subtle)]"
-              >
-                <Key className="w-3.5 h-3.5 text-[#007aff]" />
-                <span>Unlock with Admin Passcode</span>
-              </button>
-            </div>
-
-            {/* Passcode Input Drawer */}
-            {showPasscodeModal && (
-              <form
-                onSubmit={handlePasscodeSubmit}
-                className="pt-3 border-t border-[var(--border-subtle)] space-y-3"
-              >
-                <div className="space-y-1">
-                  <label className="text-xs font-semibold text-[var(--text-secondary)]">
-                    Admin Master Passcode
-                  </label>
-                  <div className="flex gap-2">
-                    <input
-                      type="password"
-                      value={passcode}
-                      onChange={(e) => setPasscode(e.target.value)}
-                      placeholder="Enter administrator passcode..."
-                      autoFocus
-                      className="flex-1 px-3.5 py-2 rounded-xl bg-black/5 dark:bg-white/5 border border-[var(--border-subtle)] text-xs text-[var(--text-primary)] focus:outline-none focus:ring-2 focus:ring-[#007aff]/30"
-                    />
-                    <button
-                      type="submit"
-                      disabled={isAuthenticating || !passcode}
-                      className="px-4 py-2 rounded-xl bg-[#007aff] hover:bg-[#0062cc] disabled:opacity-50 text-white font-semibold text-xs shadow-xs transition-colors"
-                    >
-                      {isAuthenticating ? 'Verifying…' : 'Unlock'}
-                    </button>
-                  </div>
+              {authError && (
+                <div className="p-2 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-700 dark:text-rose-300 text-xs flex items-center gap-1.5">
+                  <AlertTriangle className="w-3.5 h-3.5 shrink-0" />
+                  <span>{authError}</span>
                 </div>
-              </form>
-            )}
-          </div>
-        </section>
+              )}
+
+              <div className="flex gap-2">
+                <input
+                  type="password"
+                  value={passcode}
+                  onChange={(e) => setPasscode(e.target.value)}
+                  placeholder="Passcode..."
+                  autoFocus
+                  className="flex-1 px-3 py-1.5 rounded-xl bg-black/5 dark:bg-white/5 border border-[var(--border-subtle)] text-xs text-[var(--text-primary)] focus:outline-none focus:ring-2 focus:ring-[#007aff]/30"
+                />
+                <button
+                  type="submit"
+                  disabled={isAuthenticating || !passcode}
+                  className="px-3.5 py-1.5 rounded-xl bg-[#007aff] hover:bg-[#0062cc] disabled:opacity-50 text-white font-semibold text-xs shadow-xs transition-colors"
+                >
+                  {isAuthenticating ? 'Checking…' : 'Unlock'}
+                </button>
+              </div>
+            </form>
+          )}
+        </div>
       )}
     </div>
   );

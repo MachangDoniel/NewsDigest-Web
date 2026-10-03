@@ -1,7 +1,5 @@
 export interface AdminUser {
-  email: string;
   name?: string;
-  picture?: string;
 }
 
 const TOKEN_KEY = 'newsdigest_admin_token';
@@ -30,28 +28,6 @@ export const clearAdminSession = (): void => {
   localStorage.removeItem(USER_KEY);
 };
 
-export const loginWithGoogleToken = async (credential: string): Promise<{
-  ok: boolean;
-  isAdmin: boolean;
-  user?: AdminUser;
-  message?: string;
-}> => {
-  try {
-    const res = await fetch('/api/auth/google-login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ credential }),
-    });
-    const data = await res.json();
-    if (data.ok && data.isAdmin && data.token) {
-      setAdminSession(data.token, data.user);
-    }
-    return data;
-  } catch (err: any) {
-    return { ok: false, isAdmin: false, message: err.message };
-  }
-};
-
 export const loginWithPasscode = async (passcode: string): Promise<{
   ok: boolean;
   isAdmin: boolean;
@@ -66,7 +42,7 @@ export const loginWithPasscode = async (passcode: string): Promise<{
     });
     const data = await res.json();
     if (data.ok && data.isAdmin && data.token) {
-      setAdminSession(data.token, data.user);
+      setAdminSession(data.token, data.user || { name: 'Administrator' });
     }
     return data;
   } catch (err: any) {
