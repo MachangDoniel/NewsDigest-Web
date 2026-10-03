@@ -1,6 +1,7 @@
 import 'dotenv/config';
 import express from 'express';
 import { XMLParser } from 'fast-xml-parser';
+import crypto from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -14,6 +15,44 @@ const app = express();
 const port = 3000;
 
 app.use(express.json({ limit: '10mb' }));
+
+// Admin credentials & access control
+const ADMIN_EMAIL = (process.env.ADMIN_EMAIL || 'donieltripura1971@gmail.com').toLowerCase();
+const ADMIN_SECRET = process.env.ADMIN_SECRET || 'newsdigest-admin-2026';
+const AUTH_SECRET_KEY = process.env.AUTH_SECRET_KEY || 'newsdigest-auth-jwt-secret-key-1971';
+
+function generateAdminToken(email: string) {
+  const payload = {
+    email: email.toLowerCase(),
+    isAdmin: true,
+    issuedAt: Date.now(),
+    expiresAt: Date.now() + 30 * 24 * 60 * 60 * 1000, // 30 days
+  };
+  const str = JSON.stringify(payload);
+  const sig = crypto.createHmac('sha256', AUTH_SECRET_KEY).update(str).digest('hex');
+  return Buffer.from(str).toString('base64url') + '.' + sig;
+}
+
+function verifyAdminToken(token?: string): boolean {
+  if (!token) return false;
+  if (token === ADMIN_SECRET) return true;
+
+  try {
+    const parts = token.split('.');
+    if (parts.length !== 2) return false;
+    const str = Buffer.from(parts[0], 'base64url').toString('utf8');
+    const expectedSig = crypto.createHmac('sha256', AUTH_SECRET_KEY).update(str).digest('hex');
+    if (parts[1] !== expectedSig) return false;
+
+    const data = JSON.parse(str);
+    if (!data.isAdmin) return false;
+    if (Date.now() > data.expiresAt) return false;
+    if (data.email?.toLowerCase() !== ADMIN_EMAIL) return false;
+    return true;
+  } catch {
+    return false;
+  }
+}
 
 // Supabase client for reading real e-paper digests
 const SUPABASE_URL = process.env.SUPABASE_URL || 'https://utjluiipjiznedsglqsm.supabase.co';
@@ -898,10 +937,101 @@ app.get('/api/status', async (req, res) => {
   res.json(statusList);
 });
 
-// Run digest now endpoint
-app.post('/api/run-digest', async (req, res) => {
+// Authentication endpoints
+app.post('/api/auth/google-login', (req, res) => {
   try {
-    console.log('User requested Run Digest Now...');
+    const { credential } = req.body;
+    if (!credential || typeof credential !== 'string') {
+      return res.status(400).json({ ok: false, message: 'Google credential token is required' });
+    }
+
+    const parts = credential.split('.');
+    if (parts.length < 2) {
+      return res.status(400).json({ ok: false, message: 'Invalid JWT token' });
+    }
+
+    const payload = JSON.parse(Buffer.from(parts[1], 'base64url').toString('utf8'));
+    const email = (payload.email || '').toLowerCase().trim();
+    const name = payload.name || payload.given_name || 'User';
+    const picture = payload.picture || '';
+
+    const isAdmin = email === ADMIN_EMAIL;
+    if (isAdmin) {
+      const token = generateAdminToken(email);
+      return res.json({
+        ok: true,
+        isAdmin: true,
+        user: { email, name, picture },
+        token,
+        message: `Welcome back, Administrator ${name}!`,
+      });
+    }
+
+    return res.json({
+      ok: true,
+      isAdmin: false,
+      user: { email, name, picture },
+      message: 'Signed in as student reader. Admin features are reserved for authorized editors.',
+    });
+  } catch (err: any) {
+    res.status(500).json({ ok: false, message: err.message });
+  }
+});
+
+app.post('/api/auth/passcode-login', (req, res) => {
+  try {
+    const { passcode } = req.body;
+    if (!passcode || typeof passcode !== 'string') {
+      return res.status(400).json({ ok: false, message: 'Admin passcode is required' });
+    }
+
+    if (passcode.trim() === ADMIN_SECRET) {
+      const token = generateAdminToken(ADMIN_EMAIL);
+      return res.json({
+        ok: true,
+        isAdmin: true,
+        user: {
+          email: ADMIN_EMAIL,
+          name: 'Administrator',
+        },
+        token,
+        message: 'Admin access unlocked via Master Key.',
+      });
+    }
+
+    return res.status(401).json({ ok: false, message: 'Incorrect administrator passcode.' });
+  } catch (err: any) {
+    res.status(500).json({ ok: false, message: err.message });
+  }
+});
+
+app.get('/api/auth/session', (req, res) => {
+  const authHeader = req.headers['authorization'] || req.headers['x-admin-token'];
+  const token = typeof authHeader === 'string' ? authHeader.replace(/^Bearer\s+/, '') : '';
+  const isAdmin = verifyAdminToken(token);
+
+  res.json({
+    ok: true,
+    isAdmin,
+    adminEmail: ADMIN_EMAIL,
+  });
+});
+
+// Run digest now endpoint (Admin Protected)
+app.post('/api/run-digest', async (req, res) => {
+  const authHeader = req.headers['authorization'] || req.headers['x-admin-token'];
+  const token = typeof authHeader === 'string' ? authHeader.replace(/^Bearer\s+/, '') : '';
+  const isAdmin = verifyAdminToken(token);
+
+  if (!isAdmin) {
+    return res.status(403).json({
+      ok: false,
+      message: 'Access denied: Administrator privileges required to trigger live digest compilation.',
+    });
+  }
+
+  try {
+    console.log(`Admin (${ADMIN_EMAIL}) authorized Run Digest Now...`);
     await ensureDigests(true);
     res.json({
       ok: true,

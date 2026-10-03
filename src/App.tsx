@@ -22,6 +22,13 @@ import {
   saveThemeToStorage,
   stepDhakaDate,
 } from './services/store';
+import {
+  getStoredAdminToken,
+  getStoredAdminUser,
+  checkAdminSession,
+  clearAdminSession,
+  AdminUser,
+} from './services/auth';
 
 import { Header, ViewMode, ThemeMode } from './components/Header';
 import { TabBar } from './components/TabBar';
@@ -90,6 +97,17 @@ export default function App() {
   // Jump to specific paper & page in Papers view
   const [targetPaper, setTargetPaper] = useState<PaperId | null>(null);
   const [targetPage, setTargetPage] = useState<number>(1);
+
+  // Admin Authentication State (Only donieltripura1971@gmail.com or Master Passcode)
+  const [isAdmin, setIsAdmin] = useState<boolean>(!!getStoredAdminToken());
+  const [adminUser, setAdminUser] = useState<AdminUser | null>(getStoredAdminUser());
+
+  useEffect(() => {
+    checkAdminSession().then((valid) => {
+      setIsAdmin(valid);
+      if (!valid) setAdminUser(null);
+    });
+  }, []);
 
   // Sync theme attribute to document element
   useEffect(() => {
@@ -209,11 +227,18 @@ export default function App() {
     saveAnswersToStorage({});
   };
 
-  // Run digest now
+  // Run digest now (admin protected)
   const handleRunDigestNow = async () => {
     setIsCompiling(true);
     try {
-      const res = await fetch('/api/run-digest', { method: 'POST' });
+      const token = getStoredAdminToken();
+      const res = await fetch('/api/run-digest', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-admin-token': token || '',
+        },
+      });
       const data = await res.json();
       if (data.ok) {
         await fetchDigests();
@@ -281,6 +306,7 @@ export default function App() {
         onOpenRevisionSheet={() => setIsRevisionSheetOpen(true)}
         onOpenShortcuts={() => setIsShortcutsOpen(true)}
         mcqCount={totalMcqCountForCurrentDate}
+        isAdmin={isAdmin}
       />
 
       {/* Main Content Viewport */}
@@ -307,6 +333,7 @@ export default function App() {
             viewMode={viewMode}
             onOpenRevisionSheet={() => setIsRevisionSheetOpen(true)}
             onOpenFlashcards={() => setIsFlashcardsOpen(true)}
+            isAdmin={isAdmin}
           />
         )}
 
@@ -366,6 +393,17 @@ export default function App() {
               }}
               onRunDigestNow={handleRunDigestNow}
               isCompiling={isCompiling}
+              isAdmin={isAdmin}
+              adminUser={adminUser}
+              onLoginSuccess={(u) => {
+                setIsAdmin(true);
+                setAdminUser(u);
+              }}
+              onLogout={() => {
+                clearAdminSession();
+                setIsAdmin(false);
+                setAdminUser(null);
+              }}
             />
           </div>
         )}

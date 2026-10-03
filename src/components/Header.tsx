@@ -27,6 +27,7 @@ interface HeaderProps {
   onOpenRevisionSheet: () => void;
   onOpenShortcuts: () => void;
   mcqCount?: number;
+  isAdmin?: boolean;
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -42,6 +43,7 @@ export const Header: React.FC<HeaderProps> = ({
   onOpenRevisionSheet,
   onOpenShortcuts,
   mcqCount = 0,
+  isAdmin = false,
 }) => {
   const today = getTodayDhaka();
   const isToday = currentDate === today;
@@ -73,6 +75,11 @@ export const Header: React.FC<HeaderProps> = ({
           <div className="hidden sm:flex items-center gap-1.5 text-[11px] text-[var(--text-muted)] font-medium pl-2 border-l border-[var(--border-subtle)]">
             <span className="w-2 h-2 rounded-full bg-emerald-500 inline-block animate-pulse" />
             <span>Dhaka Edition</span>
+            {isAdmin && (
+              <span className="ml-1 px-1.5 py-0.5 rounded-md bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 text-[10px] font-bold border border-emerald-500/25">
+                Admin
+              </span>
+            )}
           </div>
         </div>
 
