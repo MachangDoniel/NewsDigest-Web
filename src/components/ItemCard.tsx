@@ -80,7 +80,13 @@ export const ItemCard: React.FC<ItemCardProps> = ({
             <SourceBadge sourceType={saved.sourceType || 'supabase'} size="xs" variant="compact" />
             <span>{category}</span>
             <span>·</span>
-            <span>Page {item.page}</span>
+            <button
+              onClick={() => onOpenPage && onOpenPage(paper, item.page)}
+              className="hover:text-[#007aff] transition-colors hover:underline font-medium"
+              title={`Jump to Page ${item.page}`}
+            >
+              Page {item.page}
+            </button>
             {item.bcsRelevance === 'high' && (
               <>
                 <span>·</span>
@@ -215,13 +221,28 @@ export const ItemCard: React.FC<ItemCardProps> = ({
           </button>
 
           {fromPaperOpen && (
-            <div className="mt-2.5 space-y-1.5 text-xs text-[var(--text-secondary)] font-bangla leading-relaxed">
+            <div className="mt-2.5 space-y-2 text-xs text-[var(--text-secondary)] font-bangla leading-relaxed">
               {item.sourceHeadline && item.sourceHeadline !== item.headline && (
                 <div className="font-bold text-[var(--text-primary)]">
                   {item.sourceHeadline}
                 </div>
               )}
               {item.excerpt && <p className="opacity-95 italic">“{item.excerpt}”</p>}
+              <div className="pt-1.5 flex items-center justify-between text-[11px] font-sans border-t border-black/5 dark:border-white/5">
+                <span className="text-[var(--text-muted)]">
+                  Page {item.page} · {saved.date}
+                </span>
+                <a
+                  href={paperInfo.epaperUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1 font-semibold text-[#007aff] hover:underline"
+                  title={`Open official ${paperInfo.name} e-paper`}
+                >
+                  <span>Open {paperInfo.shortName} E-Paper</span>
+                  <ExternalLink className="w-3 h-3" />
+                </a>
+              </div>
             </div>
           )}
         </div>
@@ -236,19 +257,31 @@ export const ItemCard: React.FC<ItemCardProps> = ({
       )}
 
       {/* Bottom Action Row */}
-      <div className="pt-2 flex items-center justify-between border-t border-[var(--border-subtle)] text-xs text-[#007aff]">
-        {/* Page jump */}
-        {item.page ? (
-          <button
-            onClick={() => onOpenPage && onOpenPage(paper, item.page)}
-            className="flex items-center gap-1.5 font-bold hover:opacity-80 py-1"
+      <div className="pt-2 flex items-center justify-between border-t border-[var(--border-subtle)] text-xs text-[#007aff] flex-wrap gap-2">
+        {/* Page jump & View Original buttons */}
+        <div className="flex items-center gap-3">
+          {item.page ? (
+            <button
+              onClick={() => onOpenPage && onOpenPage(paper, item.page)}
+              className="flex items-center gap-1.5 font-bold hover:opacity-80 py-1"
+              title={`Jump to Page ${item.page} in the reader`}
+            >
+              <Newspaper className="w-3.5 h-3.5" />
+              <span>Page {item.page}</span>
+            </button>
+          ) : null}
+
+          <a
+            href={paperInfo.epaperUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-1 text-[11px] font-semibold text-[var(--text-secondary)] hover:text-[#007aff] transition-colors py-1"
+            title={`Open official ${paperInfo.name} e-paper edition`}
           >
-            <Newspaper className="w-3.5 h-3.5" />
-            <span>Page {item.page}</span>
-          </button>
-        ) : (
-          <div />
-        )}
+            <span>View Original</span>
+            <ExternalLink className="w-3 h-3" />
+          </a>
+        </div>
 
         {/* Right side actions */}
         <div className="flex items-center gap-3">

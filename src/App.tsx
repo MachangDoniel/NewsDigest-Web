@@ -87,8 +87,9 @@ export default function App() {
     initialSettings.speechVoice
   );
 
-  // Jump to specific paper in Papers view
+  // Jump to specific paper & page in Papers view
   const [targetPaper, setTargetPaper] = useState<PaperId | null>(null);
+  const [targetPage, setTargetPage] = useState<number>(1);
 
   // Sync theme attribute to document element
   useEffect(() => {
@@ -229,6 +230,7 @@ export default function App() {
   const handleOpenPage = (paperIdStr: string, pageNo: number) => {
     const pid = paperIdStr as PaperId;
     setTargetPaper(pid);
+    setTargetPage(pageNo || 1);
     setActiveTab('papers');
   };
 
@@ -337,6 +339,7 @@ export default function App() {
         {activeTab === 'papers' && (
           <PapersView
             initialPaper={targetPaper}
+            initialPage={targetPage}
             onOpenInAppChat={handleOpenInAppChat}
           />
         )}

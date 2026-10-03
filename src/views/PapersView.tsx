@@ -25,14 +25,16 @@ interface StoryRaw {
 interface PapersViewProps {
   onOpenInAppChat: (prompt: string, contextTitle: string) => void;
   initialPaper?: PaperId | null;
+  initialPage?: number | null;
 }
 
 export const PapersView: React.FC<PapersViewProps> = ({
   onOpenInAppChat,
   initialPaper = null,
+  initialPage = 1,
 }) => {
   const [selectedPaper, setSelectedPaper] = useState<PaperId | null>(initialPaper);
-  const [activePage, setActivePage] = useState<number>(1);
+  const [activePage, setActivePage] = useState<number>(initialPage || 1);
   const [stories, setStories] = useState<StoryRaw[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [expandedStory, setExpandedStory] = useState<number | null>(null);
@@ -42,6 +44,12 @@ export const PapersView: React.FC<PapersViewProps> = ({
       setSelectedPaper(initialPaper);
     }
   }, [initialPaper]);
+
+  useEffect(() => {
+    if (initialPage) {
+      setActivePage(initialPage);
+    }
+  }, [initialPage]);
 
   useEffect(() => {
     if (selectedPaper) {
@@ -150,23 +158,23 @@ export const PapersView: React.FC<PapersViewProps> = ({
           href={paperInfo.epaperUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="flex items-center gap-1 text-xs font-semibold text-[#007aff] hover:opacity-80"
-          title="Open official e-paper site"
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#007aff] text-white text-xs font-semibold hover:bg-[#0062cc] transition-all shadow-xs"
+          title={`Open official ${paperInfo.name} e-paper website`}
         >
-          <span>E-Paper</span>
+          <span>Open Official E-Paper</span>
           <ExternalLink className="w-3.5 h-3.5" />
         </a>
       </div>
 
       {/* Page Navigation Strip */}
       <div className="bg-[var(--bg-surface)] p-2 rounded-2xl border border-[var(--border-subtle)] flex items-center gap-1.5 overflow-x-auto no-scrollbar shadow-xs">
-        {[1, 2, 3, 4, 5, 6, 7, 8].map((pageNo) => (
+        {Array.from({ length: 18 }, (_, i) => i + 1).map((pageNo) => (
           <button
             key={pageNo}
             onClick={() => setActivePage(pageNo)}
             className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold shrink-0 transition-all ${
               activePage === pageNo
-                ? 'text-white shadow-xs'
+                ? 'text-white shadow-xs font-bold'
                 : 'text-[var(--text-secondary)] hover:bg-black/5 dark:hover:bg-white/5'
             }`}
             style={{
