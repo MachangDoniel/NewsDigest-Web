@@ -5,6 +5,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { GoogleGenAI } from '@google/genai';
+import { createClient } from '@supabase/supabase-js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -13,6 +14,17 @@ const app = express();
 const port = 3000;
 
 app.use(express.json({ limit: '10mb' }));
+
+// Supabase client for reading real e-paper digests
+const SUPABASE_URL = process.env.SUPABASE_URL || 'https://utjluiipjiznedsglqsm.supabase.co';
+const SUPABASE_KEY =
+  process.env.SUPABASE_SERVICE_ROLE_KEY ||
+  process.env.SUPABASE_ANON_KEY ||
+  'sb_publishable_30UE1vzeEt2MzIR3ufVWYw_lr0ZQm7V';
+
+const supabase = createClient(SUPABASE_URL, SUPABASE_KEY, {
+  auth: { persistSession: false },
+});
 
 // Initialize Gemini SDK if API key is present
 const apiKey = process.env.GEMINI_API_KEY || '';
@@ -751,18 +763,50 @@ app.get('/api/health', (req, res) => {
   });
 });
 
-// Get digests
+// Get digests (attempts Supabase first, falls back to local cache)
 app.get('/api/digests', async (req, res) => {
   try {
     const { date, paper, limit } = req.query;
 
+    // 1. Try Supabase first
+    try {
+      let query = supabase.from('digests').select('*').order('date', { ascending: false });
+
+      if (date && typeof date === 'string') {
+        query = query.eq('date', date);
+      }
+      if (paper && typeof paper === 'string' && paper !== 'both') {
+        query = query.eq('paper', paper);
+      }
+      if (limit) {
+        query = query.limit(Number(limit));
+      }
+
+      const { data: supaDigests, error } = await query;
+
+      if (!error && supaDigests && supaDigests.length > 0) {
+        const mapped = supaDigests.map((d: any) => ({
+          id: d.id,
+          date: d.date,
+          paper: d.paper,
+          sections: d.sections || [],
+          mcqs: d.mcqs || [],
+          pageCount: d.page_count ?? d.pageCount ?? 0,
+        }));
+        return res.json(mapped);
+      }
+    } catch (supaErr) {
+      console.warn('Supabase query error, falling back to cache:', supaErr);
+    }
+
+    // 2. Fallback to local cache
     let result = [...digestsCache];
 
     if (date && typeof date === 'string') {
       result = result.filter((d) => d.date === date);
     }
 
-    if (paper && typeof paper === 'string') {
+    if (paper && typeof paper === 'string' && paper !== 'both') {
       result = result.filter((d) => d.paper === paper);
     }
 
@@ -780,8 +824,31 @@ app.get('/api/digests', async (req, res) => {
 });
 
 // Run status for papers
-app.get('/api/status', (req, res) => {
+app.get('/api/status', async (req, res) => {
   const date = (req.query.date as string) || getDhakaDate();
+
+  // 1. Try Supabase run_status table
+  try {
+    const { data: supaStatus, error } = await supabase
+      .from('run_status')
+      .select('*')
+      .eq('date', date);
+
+    if (!error && supaStatus && supaStatus.length > 0) {
+      return res.json(
+        supaStatus.map((s: any) => ({
+          date: s.date,
+          paper: s.paper,
+          state: s.state,
+          message: s.message,
+        }))
+      );
+    }
+  } catch (supaErr) {
+    console.warn('Supabase status query error:', supaErr);
+  }
+
+  // 2. Fallback check
   const dsExists = digestsCache.some((d) => d.date === date && d.paper === 'dailystar');
   const paExists = digestsCache.some((d) => d.date === date && d.paper === 'prothomalo');
 
