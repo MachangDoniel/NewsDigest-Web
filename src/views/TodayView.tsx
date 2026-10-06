@@ -487,21 +487,35 @@ export const TodayView: React.FC<TodayViewProps> = ({
             <div className="bg-[var(--bg-surface)] rounded-2xl p-10 text-center border border-[var(--border-subtle)] space-y-3">
               <div className="text-3xl">📰</div>
               <h4 className="font-bold text-[var(--text-primary)] text-sm">
-                {trimmedSearch ? `No stories found matching "${searchQuery}"` : 'No articles match these filters'}
+                {trimmedSearch
+                  ? `No stories found matching "${searchQuery}"`
+                  : editionFilter === 'free' && freeCount === 0
+                  ? 'No Free Web Feed for this Archive Date'
+                  : 'No articles match these filters'}
               </h4>
-              <p className="text-xs text-[var(--text-muted)] max-w-xs mx-auto">
+              <p className="text-xs text-[var(--text-muted)] max-w-sm mx-auto leading-relaxed">
                 {trimmedSearch
                   ? 'Try searching for different keywords or check spelling.'
+                  : editionFilter === 'free' && freeCount === 0
+                  ? 'On historical archive dates, the printed morning broadsheet (E-Paper) was archived into the database. Free website news feeds only deliver live articles for today.'
                   : 'Try switching the paper or edition filter to reveal more stories.'}
               </p>
-              {trimmedSearch && (
+              {editionFilter === 'free' && freeCount === 0 && epaperCount > 0 ? (
+                <button
+                  onClick={() => setEditionFilter('epaper')}
+                  className="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold transition-colors inline-flex items-center gap-1.5"
+                >
+                  <Newspaper className="w-3.5 h-3.5" />
+                  <span>View E-Paper Edition ({epaperCount} stories)</span>
+                </button>
+              ) : trimmedSearch ? (
                 <button
                   onClick={() => setSearchQuery('')}
                   className="px-3.5 py-1.5 rounded-xl bg-[#007aff] text-white text-xs font-semibold hover:bg-[#0062cc] transition-colors inline-block"
                 >
                   Clear search
                 </button>
-              )}
+              ) : null}
             </div>
           ) : selectedCategory ? (
             <div className="space-y-3">

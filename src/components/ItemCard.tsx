@@ -37,6 +37,8 @@ export const ItemCard: React.FC<ItemCardProps> = ({
 }) => {
   const { item, paper, category } = saved;
   const paperInfo = PAPERS[paper] || PAPERS.dailystar;
+  const isFree = saved.sourceType === 'rss';
+  const articleUrl = item.url || (isFree ? paperInfo.website : paperInfo.epaperUrl);
   const [fromPaperOpen, setFromPaperOpen] = useState(item.source === 'paper');
   const [copiedShare, setCopiedShare] = useState(false);
 
@@ -80,13 +82,19 @@ export const ItemCard: React.FC<ItemCardProps> = ({
             <SourceBadge sourceType={saved.sourceType || 'supabase'} size="xs" variant="compact" />
             <span>{category}</span>
             <span>·</span>
-            <button
-              onClick={() => onOpenPage && onOpenPage(paper, item.page)}
-              className="hover:text-[#007aff] transition-colors hover:underline font-medium"
-              title={`Jump to Page ${item.page}`}
-            >
-              Page {item.page}
-            </button>
+            {isFree ? (
+              <span className="text-[10px] font-semibold text-sky-600 dark:text-sky-400">
+                Web
+              </span>
+            ) : item.page ? (
+              <button
+                onClick={() => onOpenPage && onOpenPage(paper, item.page)}
+                className="hover:text-[#007aff] transition-colors hover:underline font-medium"
+                title={`Jump to Page ${item.page} in broadsheet reader`}
+              >
+                Page {item.page}
+              </button>
+            ) : null}
             {item.bcsRelevance === 'high' && (
               <>
                 <span>·</span>
@@ -230,16 +238,16 @@ export const ItemCard: React.FC<ItemCardProps> = ({
               {item.excerpt && <p className="opacity-95 italic">“{item.excerpt}”</p>}
               <div className="pt-1.5 flex items-center justify-between text-[11px] font-sans border-t border-black/5 dark:border-white/5">
                 <span className="text-[var(--text-muted)]">
-                  Page {item.page} · {saved.date}
+                  {isFree ? `Web Edition · ${saved.date}` : `Page ${item.page} · ${saved.date}`}
                 </span>
                 <a
-                  href={paperInfo.epaperUrl}
+                  href={articleUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-1 font-semibold text-[#007aff] hover:underline"
-                  title={`Open official ${paperInfo.name} e-paper`}
+                  title={isFree ? `Read online story on ${paperInfo.name}` : `Open official ${paperInfo.name} e-paper`}
                 >
-                  <span>Open {paperInfo.shortName} E-Paper</span>
+                  <span>{isFree ? `Read online on ${paperInfo.shortName}` : `Open ${paperInfo.shortName} E-Paper`}</span>
                   <ExternalLink className="w-3 h-3" />
                 </a>
               </div>
@@ -260,25 +268,29 @@ export const ItemCard: React.FC<ItemCardProps> = ({
       <div className="pt-2 flex items-center justify-between border-t border-[var(--border-subtle)] text-xs text-[#007aff] flex-wrap gap-2">
         {/* Page jump & View Original buttons */}
         <div className="flex items-center gap-3">
-          {item.page ? (
+          {!isFree && item.page ? (
             <button
               onClick={() => onOpenPage && onOpenPage(paper, item.page)}
               className="flex items-center gap-1.5 font-bold hover:opacity-80 py-1"
-              title={`Jump to Page ${item.page} in the reader`}
+              title={`Jump to Page ${item.page} in the broadsheet reader`}
             >
               <Newspaper className="w-3.5 h-3.5" />
               <span>Page {item.page}</span>
             </button>
+          ) : isFree ? (
+            <span className="text-[11px] font-semibold text-sky-600 dark:text-sky-400 flex items-center gap-1">
+              <span>🌐 Web Edition</span>
+            </span>
           ) : null}
 
           <a
-            href={paperInfo.epaperUrl}
+            href={articleUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-1 text-[11px] font-semibold text-[var(--text-secondary)] hover:text-[#007aff] transition-colors py-1"
-            title={`Open official ${paperInfo.name} e-paper edition`}
+            title={isFree ? `Open original story on ${paperInfo.name} website` : `Open official ${paperInfo.name} e-paper edition`}
           >
-            <span>View Original</span>
+            <span>{isFree ? 'Read Online' : 'View E-Paper'}</span>
             <ExternalLink className="w-3 h-3" />
           </a>
         </div>

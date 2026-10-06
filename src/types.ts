@@ -21,6 +21,7 @@ export interface DigestItem {
   pageId?: string;
   sourceHeadline?: string;
   excerpt?: string;
+  url?: string;
   model?: string;
   source?: 'image' | 'text' | 'paper';
   story?: number;

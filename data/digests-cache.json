@@ -1,310 +1,109 @@
 [
   {
-    "id": 1791004196779,
-    "date": "2026-10-03",
+    "id": 1791248165126,
+    "date": "2026-10-06",
     "paper": "prothomalo",
     "sections": [
       {
         "category": "Bangladesh Affairs",
         "items": [
           {
-            "headline": "সেপ্টেম্বরে চাকরির বাজার কেমন ছিল, সামনে কী",
+            "headline": "পশ্চিমবঙ্গের নাম ‘পশ্চিমবঙ্গই’ রাখতে বিল আসছে বিধানসভায়",
             "bullets": [
-              "সেপ্টেম্বরে চাকরির বাজারে বড় পরিবর্তন আসেনি, তবে কয়েকটি বড় নিয়োগ বিজ্ঞপ্তি কর্মসংস্থান খাতকে সরব রেখেছে।",
-              "সরকারি খাতে একদিকে ৫১তম বিশেষ বিসিএসে ৫ হাজার পদ, অন্যদিকে পেট্রোবাংলায় ৭৫৩ ও বিমান বাংলাদেশ এয়ারলাইনসে ২৩৪ পদসহ বিভিন্ন সরকারি প্রতিষ্ঠান নিয়োগ দিয়েছে।",
-              "বেসরকারি খাতেও সেলস, ব্যাংক, এনজিও ও প্রযুক্তিনির্ভর কাজে নিয়োগ দেখা গেছে।"
+              "পশ্চিমবঙ্গের নাম পশ্চিমবঙ্গই থাকছে।",
+              "বাংলা বা ওয়েস্ট বেঙ্গল নয়, রাজ্যের নাম হবে ‘পশ্চিমবঙ্গ’।",
+              "এ নিয়ে রাজ্য বিধানসভার পরবর্তী অধিবেশনে একটি বিল আনা হবে।"
             ],
             "keyFacts": [
               "ঢাকা",
               "বাংলাদেশ",
-              "2026-10-03"
+              "2026-10-06"
             ],
             "bcsRelevance": "high",
             "page": 1,
             "pageId": "p-1",
-            "sourceHeadline": "সেপ্টেম্বরে চাকরির বাজার কেমন ছিল, সামনে কী",
-            "excerpt": "সেপ্টেম্বরে চাকরির বাজারে বড় পরিবর্তন আসেনি, তবে কয়েকটি বড় নিয়োগ বিজ্ঞপ্তি কর্মসংস্থান খাতকে সরব রেখেছে। সরকারি খাতে একদিকে ৫১তম বিশেষ বিসিএসে ৫ হাজার পদ, অন্যদিকে পেট্রোবাংলায় ৭৫৩ ও বিমান বাংলাদেশ এয়ারলাইনসে ২৩৪ পদসহ বিভিন্ন সরকারি প্রতিষ্ঠান নিয়োগ দিয়েছে। …",
+            "sourceHeadline": "পশ্চিমবঙ্গের নাম ‘পশ্চিমবঙ্গই’ রাখতে বিল আসছে বিধানসভায়",
+            "excerpt": "পশ্চিমবঙ্গের নাম পশ্চিমবঙ্গই থাকছে। বাংলা বা ওয়েস্ট বেঙ্গল নয়, রাজ্যের নাম হবে ‘পশ্চিমবঙ্গ’। এ নিয়ে রাজ্য বিধানসভার পরবর্তী অধিবেশনে একটি বিল আনা হবে। গতকাল সোমবার এক সংবাদ সম্মেলনে এ কথা জানিয়েছেন ভারতীয় জনতা পার্টির (বিজেপি) রাজ্য সভাপতি শমীক ভট্টাচার্য। …",
             "source": "text",
             "model": "NewsDigest Engine"
           },
           {
-            "headline": "‘ময়না’ ডাকলেই উড়ে আসে দুই শালিক, বলতে শিখেছে মা, বাবা, কুটুমসহ আরও শব্দ",
+            "headline": "সাংবাদিকদের দাবির মুখে হল প্রাধ্যক্ষকে অব্যাহতি, আরও যেসব সিদ্ধান্ত নিল প্রশাসন",
             "bullets": [
-              "বাড়ির উঠানে হঠাৎ উড়ে এসে বসল দুটি শালিক।",
-              "ইটের স্তূপে ছড়িয়ে থাকা ধুন্দুলের লতা-পাতার ফাঁক দিয়ে এসে তারা ডাকতে শুরু করল, ‘সাদিক’, ‘সাদিক’।",
-              "সাড়া না পেয়ে এবার ডাকল, ‘মা’, ‘বাবা’, ‘মা’, ‘বাবা’।"
+              "রাজশাহী বিশ্ববিদ্যালয়ে সাংবাদিকদের ওপর হামলার ঘটনায় শহীদ জিয়াউর রহমান হলের প্রাধ্যক্ষ অধ্যাপক মাহবুবুর রহমানকে তাৎক্ষণিকভাবে অব্যাহতি দিয়েছে বিশ্ববিদ্যালয় প্রশাসন।",
+              "একই সঙ্গে হামলার ঘটনা তদন্তে গঠিত কমিটিকে তিন কার্যদিবসের মধ্যে (বৃহস্পতিবার) প্রতিবেদন জমা দিতে বলা হয়েছে।",
+              "তদন্তে দোষী হিসেবে চিহ্নিত ব্যক্তিদের প্রাথমিকভাবে বহিষ্কার এবং তাঁদের নাম উল্লেখ করে মামলায় চার্জশিট দাখিল করা হবে বলে জানিয়েছে প্রশাসন।"
             ],
             "keyFacts": [
               "ঢাকা",
               "বাংলাদেশ",
-              "2026-10-03"
+              "2026-10-06"
             ],
             "bcsRelevance": "medium",
             "page": 2,
             "pageId": "p-2",
-            "sourceHeadline": "‘ময়না’ ডাকলেই উড়ে আসে দুই শালিক, বলতে শিখেছে মা, বাবা, কুটুমসহ আরও শব্দ",
-            "excerpt": "শুক্রবার বেলা ১১টা। বাড়ির উঠানে হঠাৎ উড়ে এসে বসল দুটি শালিক। ইটের স্তূপে ছড়িয়ে থাকা ধুন্দুলের লতা-পাতার ফাঁক দিয়ে এসে তারা ডাকতে শুরু করল, ‘সাদিক’, ‘সাদিক’। সাড়া না পেয়ে এবার ডাকল, ‘মা’, ‘বাবা’, ‘মা’, ‘বাবা’। …",
+            "sourceHeadline": "সাংবাদিকদের দাবির মুখে হল প্রাধ্যক্ষকে অব্যাহতি, আরও যেসব সিদ্ধান্ত নিল প্রশাসন",
+            "excerpt": "রাজশাহী বিশ্ববিদ্যালয়ে সাংবাদিকদের ওপর হামলার ঘটনায় শহীদ জিয়াউর রহমান হলের প্রাধ্যক্ষ অধ্যাপক মাহবুবুর রহমানকে তাৎক্ষণিকভাবে অব্যাহতি দিয়েছে বিশ্ববিদ্যালয় প্রশাসন। …",
             "source": "text",
             "model": "NewsDigest Engine"
           },
           {
-            "headline": "১ লাখ ইয়েমেনি সেনার সমন্বয়ে হুতিদের বিরুদ্ধে অভিযানের পরিকল্পনা সৌদির, সহায়তা দিচ্ছে যুক্তরাষ্ট্রসহ কয়েকটি দেশ",
+            "headline": "নাটোর, পিরোজপুর, বাগেরহাট জেলায় কৃতী শিক্ষার্থীদের সংবর্ধনা",
             "bullets": [
-              "ইয়েমেনে ইরান-সমর্থিত হুতি বিদ্রোহীদের বিরুদ্ধে বড় ধরনের সামরিক অভিযান চালানোর পরিকল্পনা করছে সৌদি আরব।",
-              "অভিযানে লোহিত সাগরে জাহাজ চলাচলের পথ নিরাপদ করতে উপকূলীয় এলাকায় অগ্রসর হওয়া কিংবা একাধিক দিক থেকে একযোগে হামলা চালানোর মতো বিকল্প বিবেচনা করা হচ্ছে।",
-              "আঞ্চলিক ও পশ্চিমা কর্মকর্তারা এ তথ্য জানিয়েছেন।"
+              "নাটোর, পিরোজপুর, বাগেরহাট জেলায় সোমবার কৃতী শিক্ষার্থী সংবর্ধনা অনুষ্ঠিত হয়েছে।",
+              "‘স্বপ্ন দেখো জীবন গড়ো’ স্লোগান নিয়ে প্রথম আলোর উদ্যোগে শিক্ষার ডিজিটাল প্ল্যাটফর্ম ‘শিখো’র পৃষ্ঠপোষকতায় এ সংবর্ধনা অনুষ্ঠিত হয়।",
+              "এরই মধ্যে দেশের অনেকে জেলায় এ সংবর্ধনা অনুষ্ঠিত হয়েছে।"
             ],
             "keyFacts": [
               "ঢাকা",
               "বাংলাদেশ",
-              "2026-10-03"
+              "2026-10-06"
             ],
             "bcsRelevance": "high",
             "page": 3,
             "pageId": "p-3",
-            "sourceHeadline": "১ লাখ ইয়েমেনি সেনার সমন্বয়ে হুতিদের বিরুদ্ধে অভিযানের পরিকল্পনা সৌদির, সহায়তা দিচ্ছে যুক্তরাষ্ট্রসহ কয়েকটি দেশ",
-            "excerpt": "ইয়েমেনে ইরান-সমর্থিত হুতি বিদ্রোহীদের বিরুদ্ধে বড় ধরনের সামরিক অভিযান চালানোর পরিকল্পনা করছে সৌদি আরব। অভিযানে লোহিত সাগরে জাহাজ চলাচলের পথ নিরাপদ করতে উপকূলীয় এলাকায় অগ্রসর হওয়া কিংবা একাধিক দিক থেকে একযোগে হামলা চালানোর মতো বিকল্প বিবেচনা করা হচ্ছে। …",
+            "sourceHeadline": "নাটোর, পিরোজপুর, বাগেরহাট জেলায় কৃতী শিক্ষার্থীদের সংবর্ধনা",
+            "excerpt": "নাটোর, পিরোজপুর, বাগেরহাট জেলায় সোমবার কৃতী শিক্ষার্থী সংবর্ধনা অনুষ্ঠিত হয়েছে। ‘স্বপ্ন দেখো জীবন গড়ো’ স্লোগান নিয়ে প্রথম আলোর উদ্যোগে শিক্ষার ডিজিটাল প্ল্যাটফর্ম ‘শিখো’র পৃষ্ঠপোষকতায় এ সংবর্ধনা অনুষ্ঠিত হয়। …",
             "source": "text",
             "model": "NewsDigest Engine"
           },
           {
-            "headline": "দত্তকের নামে শিশু কেনাবেচা, ফেসবুকে চলে দর–কষাকষি",
+            "headline": "১৪ মিনিটে ৪ গোল, বেলজিয়ামের বিপক্ষে নাটকীয় জয় ফ্রান্সের",
             "bullets": [
-              "চড়া দাম হাঁকিয়ে শিশু বিক্রির প্রস্তাব এসেছে ফেসবুকের একটি পোস্টে, ‘ইমার্জেন্সি একটা ছেলে বাচ্চা দেওয়া হবে, বয়স ৬ মাস, ডিমান্ড ২ লাখ টাকা, লোকেশন চট্টগ্রাম।",
-              "’ আমি পোস্টটি পড়লাম ‘সন্তান দত্তক দেওয়া-নেওয়া হয়’ নামের একটি গ্রুপে।",
-              "পোস্টদাতা প্রতারকদের দূরে থাকতে বলেছেন।"
+              "ফ্রান্স ৪ : ১ বেলজিয়াম প্রথমার্ধ শেষে ১-০ গোলে পিছিয়ে ছিল ফ্রান্স।",
+              "সর্বশেষ আট ম্যাচেই প্রথম ৪৫ মিনিটে কোনো গোল করতে পারেনি দলটি।",
+              "কিন্তু দ্বিতীয়ার্ধে আধা ঘণ্টা পেরিয়ে যাওয়ার পরও যখন গোল এল না, তখন দুশ্চিন্তার ভাঁজ ঠিকই পড়েছে ফরাসি কোচিং স্টাফদের কপালে।"
             ],
             "keyFacts": [
               "ঢাকা",
               "বাংলাদেশ",
-              "2026-10-03"
+              "2026-10-06"
             ],
             "bcsRelevance": "medium",
             "page": 4,
             "pageId": "p-4",
-            "sourceHeadline": "দত্তকের নামে শিশু কেনাবেচা, ফেসবুকে চলে দর–কষাকষি",
-            "excerpt": "চড়া দাম হাঁকিয়ে শিশু বিক্রির প্রস্তাব এসেছে ফেসবুকের একটি পোস্টে, ‘ইমার্জেন্সি একটা ছেলে বাচ্চা দেওয়া হবে, বয়স ৬ মাস, ডিমান্ড ২ লাখ টাকা, লোকেশন চট্টগ্রাম।’ আমি পোস্টটি পড়লাম ‘সন্তান দত্তক দেওয়া-নেওয়া হয়’ নামের একটি গ্রুপে। …",
+            "sourceHeadline": "১৪ মিনিটে ৪ গোল, বেলজিয়ামের বিপক্ষে নাটকীয় জয় ফ্রান্সের",
+            "excerpt": "ফ্রান্স ৪ : ১ বেলজিয়াম প্রথমার্ধ শেষে ১-০ গোলে পিছিয়ে ছিল ফ্রান্স। তা থাকতেই পারে। সর্বশেষ আট ম্যাচেই প্রথম ৪৫ মিনিটে কোনো গোল করতে পারেনি দলটি। …",
             "source": "text",
             "model": "NewsDigest Engine"
           },
           {
-            "headline": "আল্লাহকে নবী সোলাইমান যেভাবে ভালোবাসতেন",
+            "headline": "আবারও তুরস্ককে হারাল ইতালি, জিতল না পোল্যান্ড",
             "bullets": [
-              ") এমন বিস্ময়কর রাজত্বের অধিকারী ছিলেন, মানুষ ও জিন তো বটেই, অন্যান্য প্রাণীও ছিল যার অধীনস্থ।",
-              "এই বিশাল সাম্রাজ্যের মাঝে ডুবে থেকেও তিনি আল্লাহকে ভুলে যাননি।",
-              "রাজত্বের চেয়ে আল্লাহর সন্তুষ্টি ও জিকির ছিল তাঁর অধিক প্রিয়।"
+              "ইতালি ৩ : ১ তুরস্ক ইতালিতে রবার্তো মানচিনির এবারের শুরুটা হয়েছিল বেলজিয়ামের কাছে ২-০ গোলের হারে।",
+              "এরপর প্রথম জয়ের দেখা মিলেছিল তুরস্কে গিয়ে (৪-১)।",
+              "এক সপ্তাহ পর সেই তুরস্কের বিপক্ষেই আবার জিতল ইতালি।"
             ],
             "keyFacts": [
-              "753375"
+              "ঢাকা",
+              "বাংলাদেশ",
+              "2026-10-06"
             ],
             "bcsRelevance": "high",
             "page": 5,
             "pageId": "p-5",
-            "sourceHeadline": "আল্লাহকে নবী সোলাইমান যেভাবে ভালোবাসতেন",
-            "excerpt": "হজরত সোলাইমান (আ.) এমন বিস্ময়কর রাজত্বের অধিকারী ছিলেন, মানুষ ও জিন তো বটেই, অন্যান্য প্রাণীও ছিল যার অধীনস্থ। এই বিশাল সাম্রাজ্যের মাঝে ডুবে থেকেও তিনি আল্লাহকে ভুলে যাননি। রাজত্বের চেয়ে আল্লাহর সন্তুষ্টি ও জিকির ছিল তাঁর অধিক প্রিয়। …",
-            "source": "text",
-            "model": "NewsDigest Engine"
-          },
-          {
-            "headline": "প্রথম দিনেই ৯৫ কোটি আয়! বক্স অফিসে ‘দৃশ্যম’ ঝড়",
-            "bullets": [
-              "বিজয় সালগাঁওকরের গল্প শেষ।",
-              "কিন্তু তাঁকে ঘিরে দর্শকের কৌতূহল শেষ হয়নি; বরং ‘দৃশ্যম’ সিরিজের শেষ অধ্যায় শুরু হয়েছে আগের দুই কিস্তির চেয়ে অনেক বড় পরিসরে।",
-              "২ অক্টোবর গান্ধীজয়ন্তীর ছুটিতে মুক্তির পর প্রথম দিনেই বিশ্বব্যাপী ৯৫ কোটি ১০ লাখ রুপি আয় করেছে অজয় দেবগন অভিনীত ‘দৃশ্যম ৩: দ্য কনক্লুশন’।"
-            ],
-            "keyFacts": [
-              "ঢাকা",
-              "বাংলাদেশ",
-              "2026-10-03"
-            ],
-            "bcsRelevance": "medium",
-            "page": 6,
-            "pageId": "p-6",
-            "sourceHeadline": "প্রথম দিনেই ৯৫ কোটি আয়! বক্স অফিসে ‘দৃশ্যম’ ঝড়",
-            "excerpt": "বিজয় সালগাঁওকরের গল্প শেষ। কিন্তু তাঁকে ঘিরে দর্শকের কৌতূহল শেষ হয়নি; বরং ‘দৃশ্যম’ সিরিজের শেষ অধ্যায় শুরু হয়েছে আগের দুই কিস্তির চেয়ে অনেক বড় পরিসরে। …",
-            "source": "text",
-            "model": "NewsDigest Engine"
-          },
-          {
-            "headline": "সমুদ্রের নোনাপানি খেয়ে কীভাবে বাঁচে তিমি ও সিল",
-            "bullets": [
-              "ডলফিন, তিমি, ম্যানাটি, সিল ও ওয়ালরাসের মতো অনেক স্তন্যপায়ী প্রাণী পানিতে বাস করে।",
-              "এদের মধ্যে সিল ও ওয়ালরাস ডাঙা এবং পানি—দুই জায়গাতেই চলাফেরা করতে পারে।",
-              "অন্যান্য প্রাণীর মতোই এদেরও বেঁচে থাকার জন্য শরীরে পানির ভারসাম্য ঠিক রাখা জরুরি।"
-            ],
-            "keyFacts": [
-              "ঢাকা",
-              "বাংলাদেশ",
-              "2026-10-03"
-            ],
-            "bcsRelevance": "medium",
-            "page": 8,
-            "pageId": "p-8",
-            "sourceHeadline": "সমুদ্রের নোনাপানি খেয়ে কীভাবে বাঁচে তিমি ও সিল",
-            "excerpt": "ডলফিন, তিমি, ম্যানাটি, সিল ও ওয়ালরাসের মতো অনেক স্তন্যপায়ী প্রাণী পানিতে বাস করে। এদের মধ্যে সিল ও ওয়ালরাস ডাঙা এবং পানি—দুই জায়গাতেই চলাফেরা করতে পারে। অন্যান্য প্রাণীর মতোই এদেরও বেঁচে থাকার জন্য শরীরে পানির ভারসাম্য ঠিক রাখা জরুরি। …",
-            "source": "text",
-            "model": "NewsDigest Engine"
-          },
-          {
-            "headline": "সবজান্তা সমীপেষু",
-            "bullets": [
-              "সবজান্তা সমীপেষু।",
-              "গুরুত্বপূর্ণ জাতীয় ও প্রশাসনিক দিকগুলো পরীক্ষা উপযোগী হিসেবে আলোচিত।"
-            ],
-            "keyFacts": [
-              "ঢাকা",
-              "বাংলাদেশ",
-              "2026-10-03"
-            ],
-            "bcsRelevance": "high",
-            "page": 1,
-            "pageId": "p-1",
-            "sourceHeadline": "সবজান্তা সমীপেষু",
-            "excerpt": "",
-            "source": "text",
-            "model": "NewsDigest Engine"
-          },
-          {
-            "headline": "নিবেদন",
-            "bullets": [
-              "রোজ ভোরে ফুল কুড়াতাম আমরা দুজন।",
-              "দুজন মানে দীপক আর আমি।",
-              "মালা গেঁথে দীপকের হাতে দিয়ে তারপর এসে পড়তে বসতাম।"
-            ],
-            "keyFacts": [
-              "ঢাকা",
-              "বাংলাদেশ",
-              "2026-10-03"
-            ],
-            "bcsRelevance": "medium",
-            "page": 2,
-            "pageId": "p-2",
-            "sourceHeadline": "নিবেদন",
-            "excerpt": "রোজ ভোরে ফুল কুড়াতাম আমরা দুজন। দুজন মানে দীপক আর আমি। মালা গেঁথে দীপকের হাতে দিয়ে তারপর এসে পড়তে বসতাম। সেই স্মৃতিগুলো আজ আমার স্বপ্নের দরজায় এসে আঘাত হেনে যায়। দীপক ছিল আমার পাশের বাড়ির। দিনে দিনে আমরা বড় হতে থাকলাম। …",
-            "source": "text",
-            "model": "NewsDigest Engine"
-          },
-          {
-            "headline": "প্রতিমাশিল্পীদের ব্যস্ততা",
-            "bullets": [
-              "শুরু হতে যাচ্ছে শারদীয় দুর্গাপূজা।",
-              "এই পূজা সামনে রেখে ব্যস্ত সময় কাটছে প্রতিমাশিল্পীদের।",
-              "নানা রঙে প্রতিমাকে রূপ দিতে দিনরাত কাজ করছেন তাঁরা।"
-            ],
-            "keyFacts": [
-              "ঢাকা",
-              "বাংলাদেশ",
-              "2026-10-03"
-            ],
-            "bcsRelevance": "medium",
-            "page": 4,
-            "pageId": "p-4",
-            "sourceHeadline": "প্রতিমাশিল্পীদের ব্যস্ততা",
-            "excerpt": "শুরু হতে যাচ্ছে শারদীয় দুর্গাপূজা। এই পূজা সামনে রেখে ব্যস্ত সময় কাটছে প্রতিমাশিল্পীদের। নানা রঙে প্রতিমাকে রূপ দিতে দিনরাত কাজ করছেন তাঁরা। আগামী ১৪ তারিখের মধ্যে মণ্ডপে পাঠাতে হবে এসব প্রতিমা। …",
-            "source": "text",
-            "model": "NewsDigest Engine"
-          },
-          {
-            "headline": "কুকুর কেন মাথা হেলিয়ে তাকায়",
-            "bullets": [
-              "কুকুর কেন মাথা হেলিয়ে তাকায়।",
-              "গুরুত্বপূর্ণ জাতীয় ও প্রশাসনিক দিকগুলো পরীক্ষা উপযোগী হিসেবে আলোচিত।"
-            ],
-            "keyFacts": [
-              "ঢাকা",
-              "বাংলাদেশ",
-              "2026-10-03"
-            ],
-            "bcsRelevance": "high",
-            "page": 5,
-            "pageId": "p-5",
-            "sourceHeadline": "কুকুর কেন মাথা হেলিয়ে তাকায়",
-            "excerpt": "আপনি আপনার পোষা কুকুরের সঙ্গে কথা বলছেন আর সে হঠাৎ মাথাটা একপাশে কাত করে আপনার দিকে তাকাল—দৃশ্যটা খুবই মিষ্টি, তাই না? কিন্তু কুকুর কেন এমন করে? এর পেছনে কি কোনো বৈজ্ঞানিক কারণ আছে? বিস্তারিত ভিডিওতে—",
-            "source": "text",
-            "model": "NewsDigest Engine"
-          },
-          {
-            "headline": "বজ্রপাতে চোখের সামনে ছেলের বন্ধুর মৃত্যু, পরে ২১ হাজার তালবীজ রোপণ করেছেন ছবুর",
-            "bullets": [
-              "২০২১ সালের ১৫ অক্টোবরের বিকেল।",
-              "সমুদ্রসৈকতে ফুটবল খেলছিল একদল কিশোর।",
-              "এরপর শুরু হয় দমকা হাওয়া ও বৃষ্টি।"
-            ],
-            "keyFacts": [
-              "ঢাকা",
-              "বাংলাদেশ",
-              "2026-10-03"
-            ],
-            "bcsRelevance": "medium",
-            "page": 6,
-            "pageId": "p-6",
-            "sourceHeadline": "বজ্রপাতে চোখের সামনে ছেলের বন্ধুর মৃত্যু, পরে ২১ হাজার তালবীজ রোপণ করেছেন ছবুর",
-            "excerpt": "২০২১ সালের ১৫ অক্টোবরের বিকেল। সমুদ্রসৈকতে ফুটবল খেলছিল একদল কিশোর। এরপর শুরু হয় দমকা হাওয়া ও বৃষ্টি। আবদুল ছবুরের ছেলেও সেখানে খেলছিল। ছেলেকে আনতে তিনি সেখানে যান। পরে তাঁর চোখের সামনেই ছেলের সঙ্গে থাকা এক বন্ধুর বজ্রপাতে মৃত্যু হয়। …",
-            "source": "text",
-            "model": "NewsDigest Engine"
-          },
-          {
-            "headline": "লিটনদের এ কোন রূপ, শ্রীলঙ্কা ‘বি’ দলের কাছে বড় হারে জুটল না ব্রোঞ্জও",
-            "bullets": [
-              "এমন অসহায় আত্মসমর্পণ! তা–ও শ্রীলঙ্কার ‘বি’ দলের বিপক্ষে! এমন সকাল নিশ্চয়ই চাননি বাংলাদেশের সমর্থকেরা।",
-              "জাপানের নিশিনে লিটন দাসের দল ব্রোঞ্জের লড়াইয়ে শ্রীলঙ্কার কাছে হেরেছে ৬৩ রানে।",
-              "শ্রীলঙ্কার দেওয়া ১৬৬ রানের লক্ষ্যে ব্যাটিং করতে নেমে বাংলাদেশ গুটিয়ে গেছে ১৭।"
-            ],
-            "keyFacts": [
-              "ঢাকা",
-              "বাংলাদেশ",
-              "2026-10-03"
-            ],
-            "bcsRelevance": "high",
-            "page": 7,
-            "pageId": "p-7",
-            "sourceHeadline": "লিটনদের এ কোন রূপ, শ্রীলঙ্কা ‘বি’ দলের কাছে বড় হারে জুটল না ব্রোঞ্জও",
-            "excerpt": "এমন অসহায় আত্মসমর্পণ! তা–ও শ্রীলঙ্কার ‘বি’ দলের বিপক্ষে! এমন সকাল নিশ্চয়ই চাননি বাংলাদেশের সমর্থকেরা। জাপানের নিশিনে লিটন দাসের দল ব্রোঞ্জের লড়াইয়ে শ্রীলঙ্কার কাছে হেরেছে ৬৩ রানে। …",
-            "source": "text",
-            "model": "NewsDigest Engine"
-          }
-        ]
-      },
-      {
-        "category": "International Affairs",
-        "items": [
-          {
-            "headline": "গেইলকে পেছনে ফেলে টি–টুয়েন্টিতে সর্বোচ্চ রানের বিশ্ব রেকর্ড লুয়ানের",
-            "bullets": [
-              "ব্যাটিং করা তাঁর খুব প্রিয়।",
-              "অনুশীলন করেন বক্সারের মানসিকতায়।",
-              "ব্লুমফন্টেইনে গতকাল রাতে লুয়ান-ড্রে পিটোরিয়াসের ভেতর থেকে সেই ‘বক্সার’ই বুঝি বেরিয়ে এসেছিল! সিএসএ টি২০ চ্যালেঞ্জে নাইটসের মুখোমুখি হয় টাইটানস।"
-            ],
-            "keyFacts": [
-              "ঢাকা",
-              "বাংলাদেশ",
-              "2026-10-03"
-            ],
-            "bcsRelevance": "high",
-            "page": 7,
-            "pageId": "p-7",
-            "sourceHeadline": "গেইলকে পেছনে ফেলে টি–টুয়েন্টিতে সর্বোচ্চ রানের বিশ্ব রেকর্ড লুয়ানের",
-            "excerpt": "ব্যাটিং করা তাঁর খুব প্রিয়। অনুশীলন করেন বক্সারের মানসিকতায়। ব্লুমফন্টেইনে গতকাল রাতে লুয়ান-ড্রে পিটোরিয়াসের ভেতর থেকে সেই ‘বক্সার’ই বুঝি বেরিয়ে এসেছিল! সিএসএ টি২০ চ্যালেঞ্জে নাইটসের মুখোমুখি হয় টাইটানস। …",
-            "source": "text",
-            "model": "NewsDigest Engine"
-          },
-          {
-            "headline": "একাত্তরে মায়ের কোলে যুদ্ধ থেকে বেঁচেছিলাম, এবার নিজের চোখে দেখলাম আরেক ধরনের যুদ্ধ",
-            "bullets": [
-              "২৪ সেপ্টেম্বর হরমুজ প্রণালিতে ক্ষেপণাস্ত্র হামলার শিকার হয় ‘এমভি কেপ দাও’।",
-              "জাহাজটিতে আগুন ধরে মারা যান একজন নাবিক।",
-              "প্রাণে বেঁচে ফেরা ২৭ নাবিকের একজন জাহাজটির প্রধান প্রকৌশলী বাংলাদেশি মো।"
-            ],
-            "keyFacts": [
-              "ঢাকা",
-              "বাংলাদেশ",
-              "2026-10-03"
-            ],
-            "bcsRelevance": "high",
-            "page": 3,
-            "pageId": "p-3",
-            "sourceHeadline": "একাত্তরে মায়ের কোলে যুদ্ধ থেকে বেঁচেছিলাম, এবার নিজের চোখে দেখলাম আরেক ধরনের যুদ্ধ",
-            "excerpt": "২৪ সেপ্টেম্বর হরমুজ প্রণালিতে ক্ষেপণাস্ত্র হামলার শিকার হয় ‘এমভি কেপ দাও’। জাহাজটিতে আগুন ধরে মারা যান একজন নাবিক। প্রাণে বেঁচে ফেরা ২৭ নাবিকের একজন জাহাজটির প্রধান প্রকৌশলী বাংলাদেশি মো. আমান উল্লাহ । …",
+            "sourceHeadline": "আবারও তুরস্ককে হারাল ইতালি, জিতল না পোল্যান্ড",
+            "excerpt": "ইতালি ৩ : ১ তুরস্ক ইতালিতে রবার্তো মানচিনির এবারের শুরুটা হয়েছিল বেলজিয়ামের কাছে ২-০ গোলের হারে। এরপর প্রথম জয়ের দেখা মিলেছিল তুরস্কে গিয়ে (৪-১)। এক সপ্তাহ পর সেই তুরস্কের বিপক্ষেই আবার জিতল ইতালি। …",
             "source": "text",
             "model": "NewsDigest Engine"
           }
@@ -313,74 +112,62 @@
     ],
     "mcqs": [
       {
-        "question": "সাম্প্রতিক তথ্যানুযায়ী, সেপ্টেম্বরে চাকরির বাজার কেমন ছিল, সামনে কী... প্রসঙ্গে সঠিক তথ্য কোনটি?",
+        "question": "সাম্প্রতিক তথ্যানুযায়ী, পশ্চিমবঙ্গের নাম ‘পশ্চিমবঙ্গই’ রাখতে বিল আসছে বিধানসভায়... প্রসঙ্গে সঠিক তথ্য কোনটি?",
         "options": [
-          "সেপ্টেম্বরে চাকরির বাজারে বড় পরিবর্তন আসেনি, ",
+          "পশ্চিমবঙ্গের নাম পশ্চিমবঙ্গই থাকছে",
           "প্রকল্পের মেয়াদ আরও ৩ বছর বৃদ্ধি করা হয়েছে",
           "অনুমোদিত বাজেটের পরিমাণ ছিল ৫০ কোটি টাকা",
           "উক্ত কার্যক্রম আগামী বছর থেকে শুরু হতে যাচ্ছে"
         ],
-        "answer": "সেপ্টেম্বরে চাকরির বাজারে বড় পরিবর্তন আসেনি, ",
+        "answer": "পশ্চিমবঙ্গের নাম পশ্চিমবঙ্গই থাকছে",
         "source": "text",
         "model": "NewsDigest Engine"
       },
       {
-        "question": "সাম্প্রতিক তথ্যানুযায়ী, ‘ময়না’ ডাকলেই উড়ে আসে দুই শালিক, বলতে শিখেছে মা, বাবা, কুটুম... প্রসঙ্গে সঠিক তথ্য কোনটি?",
+        "question": "সাম্প্রতিক তথ্যানুযায়ী, সাংবাদিকদের দাবির মুখে হল প্রাধ্যক্ষকে অব্যাহতি, আরও যেসব সি... প্রসঙ্গে সঠিক তথ্য কোনটি?",
         "options": [
-          "বাড়ির উঠানে হঠাৎ উড়ে এসে বসল দুটি শালিক",
+          "রাজশাহী বিশ্ববিদ্যালয়ে সাংবাদিকদের ওপর হামলার",
           "প্রকল্পের মেয়াদ আরও ৩ বছর বৃদ্ধি করা হয়েছে",
           "অনুমোদিত বাজেটের পরিমাণ ছিল ৫০ কোটি টাকা",
           "উক্ত কার্যক্রম আগামী বছর থেকে শুরু হতে যাচ্ছে"
         ],
-        "answer": "বাড়ির উঠানে হঠাৎ উড়ে এসে বসল দুটি শালিক",
+        "answer": "রাজশাহী বিশ্ববিদ্যালয়ে সাংবাদিকদের ওপর হামলার",
         "source": "text",
         "model": "NewsDigest Engine"
       },
       {
-        "question": "সাম্প্রতিক তথ্যানুযায়ী, ১ লাখ ইয়েমেনি সেনার সমন্বয়ে হুতিদের বিরুদ্ধে অভিযানের পরিকল্... প্রসঙ্গে সঠিক তথ্য কোনটি?",
+        "question": "সাম্প্রতিক তথ্যানুযায়ী, নাটোর, পিরোজপুর, বাগেরহাট জেলায় কৃতী শিক্ষার্থীদের সংবর্ধনা... প্রসঙ্গে সঠিক তথ্য কোনটি?",
         "options": [
-          "ইয়েমেনে ইরান-সমর্থিত হুতি বিদ্রোহীদের বিরুদ্ধ",
+          "নাটোর, পিরোজপুর, বাগেরহাট জেলায় সোমবার কৃতী শ",
           "প্রকল্পের মেয়াদ আরও ৩ বছর বৃদ্ধি করা হয়েছে",
           "অনুমোদিত বাজেটের পরিমাণ ছিল ৫০ কোটি টাকা",
           "উক্ত কার্যক্রম আগামী বছর থেকে শুরু হতে যাচ্ছে"
         ],
-        "answer": "ইয়েমেনে ইরান-সমর্থিত হুতি বিদ্রোহীদের বিরুদ্ধ",
+        "answer": "নাটোর, পিরোজপুর, বাগেরহাট জেলায় সোমবার কৃতী শ",
         "source": "text",
         "model": "NewsDigest Engine"
       },
       {
-        "question": "সাম্প্রতিক তথ্যানুযায়ী, দত্তকের নামে শিশু কেনাবেচা, ফেসবুকে চলে দর–কষাকষি... প্রসঙ্গে সঠিক তথ্য কোনটি?",
+        "question": "সাম্প্রতিক তথ্যানুযায়ী, ১৪ মিনিটে ৪ গোল, বেলজিয়ামের বিপক্ষে নাটকীয় জয় ফ্রান্সের... প্রসঙ্গে সঠিক তথ্য কোনটি?",
         "options": [
-          "চড়া দাম হাঁকিয়ে শিশু বিক্রির প্রস্তাব এসেছে ফ",
+          "ফ্রান্স ৪ : ১ বেলজিয়াম প্রথমার্ধ শেষে ১-০ গোল",
           "প্রকল্পের মেয়াদ আরও ৩ বছর বৃদ্ধি করা হয়েছে",
           "অনুমোদিত বাজেটের পরিমাণ ছিল ৫০ কোটি টাকা",
           "উক্ত কার্যক্রম আগামী বছর থেকে শুরু হতে যাচ্ছে"
         ],
-        "answer": "চড়া দাম হাঁকিয়ে শিশু বিক্রির প্রস্তাব এসেছে ফ",
+        "answer": "ফ্রান্স ৪ : ১ বেলজিয়াম প্রথমার্ধ শেষে ১-০ গোল",
         "source": "text",
         "model": "NewsDigest Engine"
       },
       {
-        "question": "সাম্প্রতিক তথ্যানুযায়ী, আল্লাহকে নবী সোলাইমান যেভাবে ভালোবাসতেন... প্রসঙ্গে সঠিক তথ্য কোনটি?",
+        "question": "সাম্প্রতিক তথ্যানুযায়ী, আবারও তুরস্ককে হারাল ইতালি, জিতল না পোল্যান্ড... প্রসঙ্গে সঠিক তথ্য কোনটি?",
         "options": [
-          ") এমন বিস্ময়কর রাজত্বের অধিকারী ছিলেন, মানুষ",
+          "ইতালি ৩ : ১ তুরস্ক ইতালিতে রবার্তো মানচিনির এ",
           "প্রকল্পের মেয়াদ আরও ৩ বছর বৃদ্ধি করা হয়েছে",
           "অনুমোদিত বাজেটের পরিমাণ ছিল ৫০ কোটি টাকা",
           "উক্ত কার্যক্রম আগামী বছর থেকে শুরু হতে যাচ্ছে"
         ],
-        "answer": ") এমন বিস্ময়কর রাজত্বের অধিকারী ছিলেন, মানুষ",
-        "source": "text",
-        "model": "NewsDigest Engine"
-      },
-      {
-        "question": "সাম্প্রতিক তথ্যানুযায়ী, প্রথম দিনেই ৯৫ কোটি আয়! বক্স অফিসে ‘দৃশ্যম’ ঝড়... প্রসঙ্গে সঠিক তথ্য কোনটি?",
-        "options": [
-          "বিজয় সালগাঁওকরের গল্প শেষ",
-          "প্রকল্পের মেয়াদ আরও ৩ বছর বৃদ্ধি করা হয়েছে",
-          "অনুমোদিত বাজেটের পরিমাণ ছিল ৫০ কোটি টাকা",
-          "উক্ত কার্যক্রম আগামী বছর থেকে শুরু হতে যাচ্ছে"
-        ],
-        "answer": "বিজয় সালগাঁওকরের গল্প শেষ",
+        "answer": "ইতালি ৩ : ১ তুরস্ক ইতালিতে রবার্তো মানচিনির এ",
         "source": "text",
         "model": "NewsDigest Engine"
       }
@@ -388,8 +175,8 @@
     "pageCount": 8
   },
   {
-    "id": 1791004196454,
-    "date": "2026-10-03",
+    "id": 1791248161678,
+    "date": "2026-10-06",
     "paper": "dailystar",
     "sections": [
       {
@@ -398,9 +185,9 @@
           {
             "headline": "Ramisa rape and murder: Sohel Rana mentions new name as charges framed",
             "bullets": [
-              "Ramisa rape and murder: Sohel Rana mentions new name as charges framed prajukta@theda… Mon, 06/01/2026 - 16:43 Editor's Pick From more power to better power: Rethinking Bangladesh’s energy future 10 HOUR(s) • Big Picture Business Plus / Land without utilities: The Sirajganj industrial gridlock 11 HOUR(s) • Business What teachers need beyond recognition 3 HOUR(s) • Views Interactive / A city changes.",
-              "Plastic remains 2 October 2026 • Environment Time to prioritise the mental well-being of journalists 1 HOUR(s) • Views Ramisa rape and murder: Sohel Rana mentions new name as charges framed He claimed a man named 'Dollar' was also involved, while the tribunal fixed tomorrow for the start of the trial A new name has surfaced in the Ramisa rape and murder case, with prime accused Sohel Rana telling reporters today that a man called \"Dollar\" was responsible for the rape and murder of the eight-year-old girl.",
-              "However, no further details about the person were immediately available."
+              "Ramisa rape and murder: Sohel Rana mentions new name as charges framed prajukta@theda… Mon, 06/01/2026 - 16:43 Editor's Pick Dhaka’s battery rickshaw problem is economic, not just about traffic 6 HOUR(s) • Big Picture World Teachers’ Day / Teachers must be the pivot of change in our education system 5 October 2026 • Views Why does Tagore still trouble Bangladesh’s idea of ‘us’? 5 October 2026 • In Focus Is Bangladesh prepared for the next food shock? 4 October 2026 • Big Picture Can Bangladesh capitalise on the Bay of Bengal’s strategic rise? 4 October 2026 • Geopolitical Insights Ramisa rape and murder: Sohel Rana mentions new name as charges framed He claimed a man named 'Dollar' was also involved, while the tribunal fixed tomorrow for the start of the trial A new name has surfaced in the Ramisa rape and murder case, with prime accused Sohel Rana telling reporters today that a man called \"Dollar\" was responsible for the rape and murder of the eight-year-old girl.",
+              "However, no further details about the person were immediately available.",
+              "Tap here to add The Daily Star as a trusted source Sohel made the claim while being escorted to the courtroom of the Dhaka Metropolitan Children Violence Suppression Tribunal."
             ],
             "keyFacts": [
               "06",
@@ -412,7 +199,7 @@
             "page": 1,
             "pageId": "p-1",
             "sourceHeadline": "Ramisa rape and murder: Sohel Rana mentions new name as charges framed",
-            "excerpt": "Ramisa rape and murder: Sohel Rana mentions new name as charges framed prajukta@theda… Mon, 06/01/2026 - 16:43 Editor's Pick From more power to better power: Rethinking Bangladesh’s energy future 10 HOUR(s) • Big Picture Business Plus / Land without …",
+            "excerpt": "Ramisa rape and murder: Sohel Rana mentions new name as charges framed prajukta@theda… Mon, 06/01/2026 - 16:43 Editor's Pick Dhaka’s battery rickshaw problem is economic, not just about traffic 6 HOUR(s) • Big Picture World Teachers’ Day / Teachers must be …",
             "source": "text",
             "model": "NewsDigest Engine"
           },
@@ -555,7 +342,7 @@
           {
             "headline": "Fizz takes three in Mumbai rout",
             "bullets": [
-              "Fizz takes three in Mumbai rout atique_anam@ya… Sun, 05/08/2016 - 20:23 Editor's Pick Between Gabura and India: Work, loss and unequal choices 10 HOUR(s) • Unheard Voices How much higher can oil prices go? 2 October 2026 • Geopolitical Insights Growing out of LDC status: Bangladesh’s real negotiation at COP31 1 October 2026 • Big Picture The South Korea opportunity Bangladesh is overlooking 1 October 2026 • Geopolitical Insights Bangladesh needs to reform its trade policy to boost exports 1 October 2026 • Views Fizz takes three in Mumbai rout Pace sensation Mustafizur Rahman recorded his best bowling figures of the Indian Premier League today when he finished with 3 for 16 in Sunrisers Hyderabad’s 85-run victory over Mumbai Indians at Vishakhapatnam.",
+              "Fizz takes three in Mumbai rout atique_anam@ya… Sun, 05/08/2016 - 20:23 Editor's Pick World Investor Week / Why fewer than 1% people in Bangladesh invest in stocks 5 October 2026 • Economy Non-banks losing out to unfair rules 5 October 2026 • Business How long can farmers keep producing as costs keep rising? 4 October 2026 • Views Can incentives help Bangladesh attract more FDI? 4 October 2026 • Business From more power to better power: Rethinking Bangladesh’s energy future 3 October 2026 • Big Picture Fizz takes three in Mumbai rout Pace sensation Mustafizur Rahman recorded his best bowling figures of the Indian Premier League today when he finished with 3 for 16 in Sunrisers Hyderabad’s 85-run victory over Mumbai Indians at Vishakhapatnam.",
               "The three-wicket haul took the left-armer to joint-second in the wicket-takers’ list with a total tally of 13 scalps from nine matches.",
               "He is one short of Mitchell McClenaghan, who has taken 14 wickets in 10 matches."
             ],
@@ -569,7 +356,7 @@
             "page": 8,
             "pageId": "p-8",
             "sourceHeadline": "Fizz takes three in Mumbai rout",
-            "excerpt": "Fizz takes three in Mumbai rout atique_anam@ya… Sun, 05/08/2016 - 20:23 Editor's Pick Between Gabura and India: Work, loss and unequal choices 10 HOUR(s) • Unheard Voices How much higher can oil prices go? …",
+            "excerpt": "Fizz takes three in Mumbai rout atique_anam@ya… Sun, 05/08/2016 - 20:23 Editor's Pick World Investor Week / Why fewer than 1% people in Bangladesh invest in stocks 5 October 2026 • Economy Non-banks losing out to unfair rules 5 October 2026 • Business How …",
             "source": "text",
             "model": "NewsDigest Engine"
           }
@@ -654,7 +441,7 @@
   },
   {
     "id": 1001,
-    "date": "2026-10-02",
+    "date": "2026-10-05",
     "paper": "dailystar",
     "pageCount": 10,
     "sections": [
@@ -825,7 +612,7 @@
   },
   {
     "id": 2001,
-    "date": "2026-10-02",
+    "date": "2026-10-05",
     "paper": "prothomalo",
     "pageCount": 12,
     "sections": [
@@ -937,7 +724,7 @@
   },
   {
     "id": 1002,
-    "date": "2026-10-01",
+    "date": "2026-10-04",
     "paper": "dailystar",
     "pageCount": 10,
     "sections": [
@@ -1108,7 +895,7 @@
   },
   {
     "id": 2002,
-    "date": "2026-10-01",
+    "date": "2026-10-04",
     "paper": "prothomalo",
     "pageCount": 12,
     "sections": [
@@ -1220,7 +1007,7 @@
   },
   {
     "id": 1003,
-    "date": "2026-09-30",
+    "date": "2026-10-03",
     "paper": "dailystar",
     "pageCount": 10,
     "sections": [
@@ -1391,7 +1178,7 @@
   },
   {
     "id": 2003,
-    "date": "2026-09-30",
+    "date": "2026-10-03",
     "paper": "prothomalo",
     "pageCount": 12,
     "sections": [
@@ -1503,7 +1290,7 @@
   },
   {
     "id": 1005,
-    "date": "2026-09-28",
+    "date": "2026-10-01",
     "paper": "dailystar",
     "pageCount": 10,
     "sections": [
@@ -1674,7 +1461,7 @@
   },
   {
     "id": 2005,
-    "date": "2026-09-28",
+    "date": "2026-10-01",
     "paper": "prothomalo",
     "pageCount": 12,
     "sections": [
@@ -1786,7 +1573,7 @@
   },
   {
     "id": 1007,
-    "date": "2026-09-26",
+    "date": "2026-09-29",
     "paper": "dailystar",
     "pageCount": 10,
     "sections": [
@@ -1957,7 +1744,7 @@
   },
   {
     "id": 2007,
-    "date": "2026-09-26",
+    "date": "2026-09-29",
     "paper": "prothomalo",
     "pageCount": 12,
     "sections": [
@@ -2069,7 +1856,7 @@
   },
   {
     "id": 1012,
-    "date": "2026-09-21",
+    "date": "2026-09-24",
     "paper": "dailystar",
     "pageCount": 10,
     "sections": [
@@ -2240,7 +2027,7 @@
   },
   {
     "id": 2012,
-    "date": "2026-09-21",
+    "date": "2026-09-24",
     "paper": "prothomalo",
     "pageCount": 12,
     "sections": [
@@ -2352,7 +2139,7 @@
   },
   {
     "id": 1018,
-    "date": "2026-09-15",
+    "date": "2026-09-18",
     "paper": "dailystar",
     "pageCount": 10,
     "sections": [
@@ -2523,7 +2310,7 @@
   },
   {
     "id": 2018,
-    "date": "2026-09-15",
+    "date": "2026-09-18",
     "paper": "prothomalo",
     "pageCount": 12,
     "sections": [

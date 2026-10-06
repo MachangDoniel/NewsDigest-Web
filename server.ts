@@ -100,6 +100,7 @@ interface DigestItem {
   pageId?: string;
   sourceHeadline?: string;
   excerpt?: string;
+  url?: string;
   model?: string;
   source?: 'image' | 'text' | 'paper';
   story?: number;
@@ -368,6 +369,7 @@ function generateFallbackDigest(
       pageId: `p-${(idx % 8) + 1}`,
       sourceHeadline: story.title,
       excerpt: excerptOf(content, 260),
+      url: story.link || '',
       source: 'text',
       model: 'NewsDigest Engine',
     };
