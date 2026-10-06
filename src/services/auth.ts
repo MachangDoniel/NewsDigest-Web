@@ -1,5 +1,7 @@
 export interface AdminUser {
   name?: string;
+  email?: string;
+  token?: string;
 }
 
 const TOKEN_KEY = 'newsdigest_admin_token';
@@ -42,7 +44,9 @@ export const loginWithPasscode = async (passcode: string): Promise<{
     });
     const data = await res.json();
     if (data.ok && data.isAdmin && data.token) {
-      setAdminSession(data.token, data.user || { name: 'Administrator' });
+      const userObj = { ...(data.user || { name: 'Administrator' }), token: data.token };
+      setAdminSession(data.token, userObj);
+      return { ...data, user: userObj };
     }
     return data;
   } catch (err: any) {

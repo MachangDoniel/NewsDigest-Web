@@ -17,6 +17,7 @@ import {
 import { ThemeToggle } from '../components/ThemeToggle';
 import { ThemeMode } from '../components/Header';
 import { AdminUser, loginWithPasscode } from '../services/auth';
+import { AdminTelemetryDashboard } from '../components/AdminTelemetryDashboard';
 
 interface SettingsViewProps {
   theme: ThemeMode;
@@ -47,6 +48,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
   onRunDigestNow,
   isCompiling,
   isAdmin,
+  adminUser,
   onLoginSuccess,
   onLogout,
 }) => {
@@ -115,6 +117,13 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
             <span>Sign Out</span>
           </button>
         </div>
+      )}
+
+      {/* Admin Telemetry & Quota Visualization Dashboard */}
+      {isAdmin && (
+        <section className="space-y-4">
+          <AdminTelemetryDashboard token={adminUser?.token} />
+        </section>
       )}
 
       {/* Appearance & Theme (Public) */}

@@ -7,6 +7,15 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { GoogleGenAI } from '@google/genai';
 import { createClient } from '@supabase/supabase-js';
+import {
+  initTelemetry,
+  persistTelemetry,
+  logRequest,
+  trackSupabaseCall,
+  trackGeminiCall,
+  getTelemetrySummary,
+  resetTelemetry,
+} from './src/services/telemetryServer';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -14,7 +23,31 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const port = 3000;
 
+initTelemetry();
+setInterval(persistTelemetry, 30000);
+
 app.use(express.json({ limit: '10mb' }));
+
+// Telemetry request logging middleware
+app.use((req, res, next) => {
+  if (!req.path.startsWith('/api')) {
+    return next();
+  }
+
+  const start = Date.now();
+  const rawIp =
+    (req.headers['x-forwarded-for'] as string)?.split(',')[0].trim() ||
+    req.socket.remoteAddress ||
+    '127.0.0.1';
+  const ua = (req.headers['user-agent'] as string) || 'Browser Client';
+
+  res.on('finish', () => {
+    const duration = Date.now() - start;
+    logRequest(req.method, req.path, res.statusCode, duration, rawIp, ua);
+  });
+
+  next();
+});
 
 // Admin credentials & access control
 const ADMIN_EMAIL = (process.env.ADMIN_EMAIL || 'donieltripura1971@gmail.com').toLowerCase();
@@ -890,6 +923,7 @@ app.get('/api/digests', async (req, res) => {
     // 1. Fetch Supabase E-Paper digests
     if (source !== 'free' && source !== 'rss') {
       try {
+        const supaStart = Date.now();
         let query = supabase.from('digests').select('*').order('date', { ascending: false });
 
         if (date && typeof date === 'string') {
@@ -903,6 +937,7 @@ app.get('/api/digests', async (req, res) => {
         }
 
         const { data: supaDigests, error } = await query;
+        trackSupabaseCall(Date.now() - supaStart, Boolean(error), supaDigests?.length || 0);
 
         if (!error && supaDigests && supaDigests.length > 0) {
           mappedSupa.push(
@@ -994,10 +1029,12 @@ app.get('/api/status', async (req, res) => {
 
   // 1. Try Supabase run_status table
   try {
+    const supaStart = Date.now();
     const { data: supaStatus, error } = await supabase
       .from('run_status')
       .select('*')
       .eq('date', date);
+    trackSupabaseCall(Date.now() - supaStart, Boolean(error), supaStatus?.length || 0);
 
     if (!error && supaStatus && supaStatus.length > 0) {
       return res.json(
@@ -1147,12 +1184,14 @@ Instructions:
           contents: prompt,
         });
         text = response.text || '';
+        trackGeminiCall();
       } catch (e) {
         const response = await ai.models.generateContent({
           model: 'gemini-3.5-flash-lite',
           contents: prompt,
         });
         text = response.text || '';
+        trackGeminiCall();
       }
 
       return res.json({
@@ -1170,6 +1209,85 @@ Instructions:
   } catch (err: any) {
     console.error('Chat endpoint error:', err);
     res.status(500).json({ ok: false, message: err.message });
+  }
+});
+
+// ----------------- Admin Telemetry & Quota Endpoints -----------------
+
+// Live Telemetry & Quota Dashboard
+app.get('/api/admin/telemetry', (req, res) => {
+  const authHeader = req.headers['authorization'] || req.headers['x-admin-token'];
+  const token = typeof authHeader === 'string' ? authHeader.replace(/^Bearer\s+/, '') : '';
+  const isAdmin = verifyAdminToken(token);
+
+  if (!isAdmin) {
+    return res.status(403).json({ error: 'Access denied: Admin privileges required' });
+  }
+
+  res.json(getTelemetrySummary());
+});
+
+// Reset Telemetry Counters
+app.post('/api/admin/telemetry/reset', (req, res) => {
+  const authHeader = req.headers['authorization'] || req.headers['x-admin-token'];
+  const token = typeof authHeader === 'string' ? authHeader.replace(/^Bearer\s+/, '') : '';
+  const isAdmin = verifyAdminToken(token);
+
+  if (!isAdmin) {
+    return res.status(403).json({ error: 'Access denied: Admin privileges required' });
+  }
+
+  resetTelemetry();
+  res.json({ ok: true, message: 'Telemetry counters successfully reset' });
+});
+
+// Test Supabase Live Ping & Row Count Probe
+app.post('/api/admin/supabase-ping', async (req, res) => {
+  const authHeader = req.headers['authorization'] || req.headers['x-admin-token'];
+  const token = typeof authHeader === 'string' ? authHeader.replace(/^Bearer\s+/, '') : '';
+  const isAdmin = verifyAdminToken(token);
+
+  if (!isAdmin) {
+    return res.status(403).json({ error: 'Access denied: Admin privileges required' });
+  }
+
+  const start = Date.now();
+  try {
+    const { data, error, count } = await supabase
+      .from('digests')
+      .select('id', { count: 'exact', head: true });
+
+    const pingMs = Date.now() - start;
+    trackSupabaseCall(pingMs, Boolean(error), count || 0);
+
+    if (error) {
+      return res.json({
+        ok: false,
+        status: 'error',
+        pingMs,
+        error: error.message,
+        url: SUPABASE_URL,
+      });
+    }
+
+    res.json({
+      ok: true,
+      status: 'connected',
+      pingMs,
+      totalRows: count ?? 0,
+      url: SUPABASE_URL,
+      testedAt: new Date().toISOString(),
+    });
+  } catch (err: any) {
+    const pingMs = Date.now() - start;
+    trackSupabaseCall(pingMs, true, 0);
+    res.json({
+      ok: false,
+      status: 'error',
+      pingMs,
+      error: err.message,
+      url: SUPABASE_URL,
+    });
   }
 });
 
