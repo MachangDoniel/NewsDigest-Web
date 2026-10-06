@@ -126,6 +126,7 @@ interface Digest {
   sections: DigestSection[];
   mcqs: Mcq[];
   pageCount: number;
+  sourceType?: 'supabase' | 'rss';
 }
 
 // In-memory and disk cache
@@ -419,7 +420,8 @@ function generateFallbackDigest(
     paper,
     sections,
     mcqs: mcqs.slice(0, 6),
-    pageCount: 8,
+    pageCount: 0,
+    sourceType: 'rss',
   };
 }
 
@@ -508,7 +510,8 @@ ${storiesPrompt}`;
         model: 'gemini-2.5-flash',
         source: 'text',
       })),
-      pageCount: 8,
+      pageCount: 0,
+      sourceType: 'rss',
     };
   } catch (err) {
     console.error(`Gemini synthesis failed for ${paper}, falling back:`, err);
@@ -564,6 +567,7 @@ function seedHistoricalDigests() {
         date: dStr,
         paper: 'dailystar',
         pageCount: 10,
+        sourceType: 'supabase',
         sections: [
           {
             category: 'Bangladesh Affairs',
@@ -697,6 +701,7 @@ function seedHistoricalDigests() {
         date: dStr,
         paper: 'prothomalo',
         pageCount: 12,
+        sourceType: 'supabase',
         sections: [
           {
             category: 'Bangladesh Affairs',
@@ -843,29 +848,52 @@ app.get('/api/digests', async (req, res) => {
       } catch (supaErr) {
         console.warn('Supabase query error:', supaErr);
       }
+
+      // If Supabase returned nothing (e.g. offline mode or missing table rows), use cached broadsheets for E-Paper
+      if (mappedSupa.length === 0) {
+        let cachedBroadsheets = digestsCache.filter(
+          (d) => d.sourceType === 'supabase' || d.pageCount > 0
+        );
+
+        if (date && typeof date === 'string') {
+          cachedBroadsheets = cachedBroadsheets.filter((d) => d.date === date);
+        }
+        if (paper && typeof paper === 'string' && paper !== 'both') {
+          cachedBroadsheets = cachedBroadsheets.filter((d) => d.paper === paper);
+        }
+
+        mappedSupa.push(
+          ...cachedBroadsheets.map((d) => ({
+            ...d,
+            sourceType: 'supabase',
+          }))
+        );
+      }
     }
 
-    // 2. Fetch Free (RSS) digests
+    // 2. Fetch Free (RSS) digests - ONLY true online live news
     const mappedRss: any[] = [];
     if (source !== 'epaper' && source !== 'supabase') {
-      let result = [...digestsCache];
+      let liveWebStories = digestsCache.filter(
+        (d) => d.sourceType === 'rss' && (d.pageCount === 0 || !d.pageCount)
+      );
 
       if (date && typeof date === 'string') {
-        result = result.filter((d) => d.date === date);
+        liveWebStories = liveWebStories.filter((d) => d.date === date);
       }
 
       if (paper && typeof paper === 'string' && paper !== 'both') {
-        result = result.filter((d) => d.paper === paper);
+        liveWebStories = liveWebStories.filter((d) => d.paper === paper);
       }
 
-      result.sort((a, b) => b.date.localeCompare(a.date));
+      liveWebStories.sort((a, b) => b.date.localeCompare(a.date));
 
       if (limit) {
-        result = result.slice(0, Number(limit));
+        liveWebStories = liveWebStories.slice(0, Number(limit));
       }
 
       mappedRss.push(
-        ...result.map((d) => ({
+        ...liveWebStories.map((d) => ({
           ...d,
           id: typeof d.id === 'number' ? 500000 + d.id : `rss-${d.id}`,
           sourceType: 'rss',
