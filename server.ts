@@ -81,6 +81,19 @@ const CATEGORIES = [
 
 type Category = (typeof CATEGORIES)[number];
 
+type PaperId =
+  | 'dailystar'
+  | 'prothomalo'
+  | 'tbs'
+  | 'bonikbarta'
+  | 'dhakatribune'
+  | 'kalerkantho'
+  | 'bdpratidin'
+  | 'bbc'
+  | 'guardian'
+  | 'nyt'
+  | 'wsj';
+
 interface StoryRaw {
   title: string;
   link: string;
@@ -122,7 +135,7 @@ interface Mcq {
 interface Digest {
   id: number;
   date: string;
-  paper: 'dailystar' | 'prothomalo';
+  paper: PaperId;
   sections: DigestSection[];
   mcqs: Mcq[];
   pageCount: number;
@@ -196,68 +209,127 @@ function excerptOf(text: string, max = 280): string {
   return (end > max * 0.5 ? cut.slice(0, end + 1) : cut.replace(/\s+\S*$/, '')) + ' …';
 }
 
-// Extract stories from The Daily Star RSS
-async function fetchDailyStarStories(): Promise<StoryRaw[]> {
-  try {
-    const res = await fetch('https://www.thedailystar.net/rss.xml', {
-      headers: { 'User-Agent': 'Mozilla/5.0 NewsDigest-Bot/1.0' },
-      signal: AbortSignal.timeout(10000),
-    });
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    const xml = await res.text();
-    const parser = new XMLParser({ ignoreAttributes: false });
-    const doc = parser.parse(xml);
-    const items = doc.rss?.channel?.item || [];
-    const list = Array.isArray(items) ? items : [items];
-
-    return list.slice(0, 15).map((item: any) => {
-      const rawContent = item['content:encoded'] || item.description || '';
-      const text = stripHtml(rawContent);
-      return {
-        title: item.title || 'Daily Star Headline',
-        link: item.link || '',
-        pubDate: item.pubDate || new Date().toISOString(),
-        content: text,
-        description: excerptOf(text, 250),
-        category: item.category || 'General',
-        image: item['media:content']?.['@_url'] || '',
-      };
-    });
-  } catch (err) {
-    console.error('Failed to fetch Daily Star RSS:', err);
-    return [];
-  }
+interface FeedConfig {
+  id: PaperId;
+  name: string;
+  url: string;
+  isBangla: boolean;
+  defaultTitle: string;
 }
 
-// Extract stories from Prothom Alo RSS
-async function fetchProthomAloStories(): Promise<StoryRaw[]> {
+const FEEDS_CONFIG: FeedConfig[] = [
+  {
+    id: 'dailystar',
+    name: 'The Daily Star',
+    url: 'https://www.thedailystar.net/frontpage/rss.xml',
+    isBangla: false,
+    defaultTitle: 'The Daily Star Lead',
+  },
+  {
+    id: 'prothomalo',
+    name: 'Prothom Alo',
+    url: 'https://www.prothomalo.com/feed',
+    isBangla: true,
+    defaultTitle: 'প্রথম আলো প্রধান খবর',
+  },
+  {
+    id: 'tbs',
+    name: 'The Business Standard',
+    url: 'https://news.google.com/rss/search?q=site:tbsnews.net&hl=en-BD&gl=BD&ceid=BD:en',
+    isBangla: false,
+    defaultTitle: 'The Business Standard Story',
+  },
+  {
+    id: 'bonikbarta',
+    name: 'Daily Bonik Barta',
+    url: 'https://news.google.com/rss/search?q=%E0%A6%AC%E0%A6%A3%E0%A6%BF%E0%A6%95+%E0%A6%AC%E0%A6%BE%E0%A6%B0%E0%A7%8D%E0%A6%A4%E0%A6%BE&hl=bn-BD&gl=BD&ceid=BD:bn',
+    isBangla: true,
+    defaultTitle: 'বণিক বার্তা অর্থনীতি ও বাণিজ্য প্রতিবেদন',
+  },
+  {
+    id: 'dhakatribune',
+    name: 'Dhaka Tribune',
+    url: 'https://news.google.com/rss/search?q=site:dhakatribune.com&hl=en-BD&gl=BD&ceid=BD:en',
+    isBangla: false,
+    defaultTitle: 'Dhaka Tribune Report',
+  },
+  {
+    id: 'kalerkantho',
+    name: 'Kaler Kantho',
+    url: 'https://news.google.com/rss/search?q=site:kalerkantho.com&hl=bn-BD&gl=BD&ceid=BD:bn',
+    isBangla: true,
+    defaultTitle: 'কালের কণ্ঠ খবর',
+  },
+  {
+    id: 'bdpratidin',
+    name: 'Bangladesh Pratidin',
+    url: 'https://news.google.com/rss/search?q=site:bd-pratidin.com&hl=bn-BD&gl=BD&ceid=BD:bn',
+    isBangla: true,
+    defaultTitle: 'বাংলাদেশ প্রতিদিন খবর',
+  },
+  {
+    id: 'bbc',
+    name: 'BBC News (World)',
+    url: 'http://feeds.bbci.co.uk/news/world/rss.xml',
+    isBangla: false,
+    defaultTitle: 'BBC News World',
+  },
+  {
+    id: 'guardian',
+    name: 'The Guardian (World)',
+    url: 'https://www.theguardian.com/world/rss',
+    isBangla: false,
+    defaultTitle: 'The Guardian World',
+  },
+  {
+    id: 'nyt',
+    name: 'The New York Times',
+    url: 'https://rss.nytimes.com/services/xml/rss/nyt/World.xml',
+    isBangla: false,
+    defaultTitle: 'The New York Times World',
+  },
+  {
+    id: 'wsj',
+    name: 'The Wall Street Journal',
+    url: 'https://feeds.a.dj.com/rss/RSSWorldNews.xml',
+    isBangla: false,
+    defaultTitle: 'Wall Street Journal World',
+  },
+];
+
+async function fetchStoriesForPaper(feed: FeedConfig): Promise<StoryRaw[]> {
   try {
-    const res = await fetch('https://www.prothomalo.com/stories.rss', {
-      headers: { 'User-Agent': 'Mozilla/5.0 NewsDigest-Bot/1.0' },
+    const res = await fetch(feed.url, {
+      headers: {
+        'User-Agent':
+          'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        Accept: 'application/rss+xml, application/xml, text/xml, */*',
+      },
       signal: AbortSignal.timeout(10000),
     });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const xml = await res.text();
-    const parser = new XMLParser({ ignoreAttributes: false });
+    const parser = new XMLParser({ ignoreAttributes: false, attributeNamePrefix: '@_' });
     const doc = parser.parse(xml);
-    const items = doc.rss?.channel?.item || [];
+    const items = doc.rss?.channel?.item || doc.feed?.entry || [];
     const list = Array.isArray(items) ? items : [items];
 
     return list.slice(0, 15).map((item: any) => {
-      const rawContent = item['content:encoded'] || item.description || '';
+      const rawContent = item['content:encoded'] || item.description || item.summary || '';
       const text = stripHtml(rawContent);
+      const link = typeof item.link === 'string' ? item.link : item.link?.['@_href'] || '';
       return {
-        title: item.title || 'প্রথম আলো শিরোনাম',
-        link: item.link || '',
-        pubDate: item.pubDate || new Date().toISOString(),
+        title: item.title ? stripHtml(item.title) : feed.defaultTitle,
+        link,
+        pubDate: item.pubDate || item.published || new Date().toISOString(),
         content: text,
-        description: excerptOf(text, 250),
-        category: item.category || 'বাংলাদেশ',
+        description: excerptOf(text || item.title || '', 250),
+        category: item.category || 'General',
         image: item['media:content']?.['@_url'] || item['media:thumbnail']?.['@_url'] || '',
       };
     });
-  } catch (err) {
-    console.error('Failed to fetch Prothom Alo RSS:', err);
+  } catch (err: any) {
+    console.error(`Failed to fetch ${feed.name} RSS:`, err.message);
     return [];
   }
 }
@@ -265,10 +337,11 @@ async function fetchProthomAloStories(): Promise<StoryRaw[]> {
 // Fallback rule-based digest generator if Gemini is not responding or during test
 function generateFallbackDigest(
   stories: StoryRaw[],
-  paper: 'dailystar' | 'prothomalo',
+  paper: PaperId,
   date: string
 ): Digest {
-  const isBangla = paper === 'prothomalo';
+  const feedInfo = FEEDS_CONFIG.find((f) => f.id === paper);
+  const isBangla = feedInfo?.isBangla ?? (paper === 'prothomalo' || paper === 'kalerkantho' || paper === 'bdpratidin');
   const categorized: Record<Category, DigestItem[]> = {
     'Bangladesh Affairs': [],
     'International Affairs': [],
@@ -284,7 +357,12 @@ function generateFallbackDigest(
   stories.forEach((story, idx) => {
     const titleLower = story.title.toLowerCase();
     const content = story.content || '';
-    let category: Category = 'Bangladesh Affairs';
+    let category: Category =
+      paper === 'wsj' || paper === 'tbs'
+        ? 'Economy'
+        : paper === 'bbc' || paper === 'guardian' || paper === 'nyt'
+        ? 'International Affairs'
+        : 'Bangladesh Affairs';
 
     if (
       titleLower.includes('world') ||
@@ -428,15 +506,16 @@ function generateFallbackDigest(
 // Generate BCS Digest using Gemini API
 async function synthesizeWithGemini(
   stories: StoryRaw[],
-  paper: 'dailystar' | 'prothomalo',
+  paper: PaperId,
   date: string
 ): Promise<Digest> {
   if (!ai || !apiKey) {
     return generateFallbackDigest(stories, paper, date);
   }
 
-  const isBangla = paper === 'prothomalo';
-  const paperName = paper === 'dailystar' ? 'The Daily Star' : 'Prothom Alo';
+  const feedInfo = FEEDS_CONFIG.find((f) => f.id === paper);
+  const isBangla = feedInfo?.isBangla ?? false;
+  const paperName = feedInfo?.name ?? paper;
   const langPrompt = isBangla
     ? 'Write everything (headlines, bullets, keyFacts, MCQs) in authentic, formal Bangla (বাংলা) standard for Bangladesh Civil Service examinations.'
     : 'Write everything in concise, rigorous English suitable for BCS preliminary & written exam preparation.';
@@ -501,7 +580,7 @@ ${storiesPrompt}`;
     const parsed = JSON.parse(text);
 
     return {
-      id: Date.now() + (paper === 'dailystar' ? 10 : 20),
+      id: Date.now() + Math.floor(Math.random() * 1000),
       date,
       paper,
       sections: parsed.sections || [],
@@ -523,31 +602,24 @@ ${storiesPrompt}`;
 async function ensureDigests(forceRefresh = false): Promise<void> {
   const today = getDhakaDate();
 
-  const hasTodayDailyStar = digestsCache.some((d) => d.date === today && d.paper === 'dailystar');
-  const hasTodayProthomAlo = digestsCache.some((d) => d.date === today && d.paper === 'prothomalo');
-
-  if (forceRefresh || !hasTodayDailyStar || !hasTodayProthomAlo) {
-    console.log(`Building live digests for ${today}...`);
-
-    const [dsStories, paStories] = await Promise.all([
-      fetchDailyStarStories(),
-      fetchProthomAloStories(),
-    ]);
-
-    if (dsStories.length > 0) {
-      const dsDigest = await synthesizeWithGemini(dsStories, 'dailystar', today);
-      digestsCache = digestsCache.filter((d) => !(d.date === today && d.paper === 'dailystar'));
-      digestsCache.unshift(dsDigest);
+  for (const feed of FEEDS_CONFIG) {
+    const hasToday = digestsCache.some((d) => d.date === today && d.paper === feed.id);
+    if (forceRefresh || !hasToday) {
+      try {
+        console.log(`Building live digest for ${feed.name} (${today})...`);
+        const stories = await fetchStoriesForPaper(feed);
+        if (stories.length > 0) {
+          const digest = await synthesizeWithGemini(stories, feed.id, today);
+          digestsCache = digestsCache.filter((d) => !(d.date === today && d.paper === feed.id));
+          digestsCache.unshift(digest);
+        }
+      } catch (err: any) {
+        console.warn(`Could not build live digest for ${feed.name}:`, err.message);
+      }
     }
-
-    if (paStories.length > 0) {
-      const paDigest = await synthesizeWithGemini(paStories, 'prothomalo', today);
-      digestsCache = digestsCache.filter((d) => !(d.date === today && d.paper === 'prothomalo'));
-      digestsCache.unshift(paDigest);
-    }
-
-    saveCache();
   }
+
+  saveCache();
 
   // Also seed past days (yesterday, 2 days ago, 5 days ago) if cache is small
   if (digestsCache.length < 6) {
@@ -1179,13 +1251,13 @@ Return ONLY valid JSON:
 });
 
 // Live Feed endpoints for reader tab
-app.get('/api/feed/dailystar', async (req, res) => {
-  const stories = await fetchDailyStarStories();
-  res.json(stories);
-});
-
-app.get('/api/feed/prothomalo', async (req, res) => {
-  const stories = await fetchProthomAloStories();
+app.get('/api/feed/:paper', async (req, res) => {
+  const paper = req.params.paper as PaperId;
+  const feed = FEEDS_CONFIG.find((f) => f.id === paper);
+  if (!feed) {
+    return res.status(404).json({ error: 'Paper not found' });
+  }
+  const stories = await fetchStoriesForPaper(feed);
   res.json(stories);
 });
 

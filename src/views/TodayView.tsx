@@ -85,6 +85,12 @@ export const TodayView: React.FC<TodayViewProps> = ({
     (d) => paperFilter === null || d.paper === paperFilter
   );
 
+  const paperCounts: Partial<Record<PaperId, number>> = {};
+  digests.forEach((d) => {
+    const total = d.sections.reduce((acc, s) => acc + s.items.length, 0);
+    paperCounts[d.paper] = (paperCounts[d.paper] || 0) + total;
+  });
+
   // Flatten all items
   const allItems: SavedItem[] = visibleDigests.flatMap((d) =>
     d.sections.flatMap((s) =>
@@ -370,40 +376,52 @@ export const TodayView: React.FC<TodayViewProps> = ({
               </div>
             )}
 
-            {/* Paper Segmented Control */}
-            <div className="bg-black/5 dark:bg-white/5 p-1 rounded-xl flex text-xs font-semibold select-none border border-black/5 dark:border-white/5">
-              <button
-                onClick={() => onPaperFilterChange(null)}
-                className={`flex-1 py-1.5 rounded-lg transition-all text-center ${
-                  paperFilter === null
-                    ? 'bg-[var(--bg-surface)] text-[var(--text-primary)] shadow-2xs font-bold'
-                    : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
-                }`}
-              >
-                Both Papers
-              </button>
-              <button
-                onClick={() => onPaperFilterChange('dailystar')}
-                className={`flex-1 py-1.5 rounded-lg transition-all text-center flex items-center justify-center gap-1.5 ${
-                  paperFilter === 'dailystar'
-                    ? 'bg-[var(--bg-surface)] text-[var(--text-primary)] shadow-2xs font-bold'
-                    : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
-                }`}
-              >
-                <PaperBadge paper="dailystar" size="sm" />
-                <span>Daily Star</span>
-              </button>
-              <button
-                onClick={() => onPaperFilterChange('prothomalo')}
-                className={`flex-1 py-1.5 rounded-lg transition-all text-center flex items-center justify-center gap-1.5 ${
-                  paperFilter === 'prothomalo'
-                    ? 'bg-[var(--bg-surface)] text-[var(--text-primary)] shadow-2xs font-bold'
-                    : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
-                }`}
-              >
-                <PaperBadge paper="prothomalo" size="sm" />
-                <span>প্রথম আলো</span>
-              </button>
+            {/* Paper Selection Pills (Scrollable with National & Global badges) */}
+            <div className="space-y-1.5">
+              <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-0.5 text-xs font-semibold select-none">
+                <button
+                  onClick={() => onPaperFilterChange(null)}
+                  className={`px-3 py-1.5 rounded-xl transition-all text-center shrink-0 flex items-center gap-1.5 ${
+                    paperFilter === null
+                      ? 'bg-[var(--text-primary)] text-[var(--bg-surface)] shadow-2xs font-bold'
+                      : 'bg-black/5 dark:bg-white/5 text-[var(--text-secondary)] hover:text-[var(--text-primary)] border border-black/5 dark:border-white/5'
+                  }`}
+                >
+                  <span>All Outlets</span>
+                  <span className={`text-[10px] px-1.5 py-0.2 rounded-full ${
+                    paperFilter === null ? 'bg-white/20 dark:bg-black/20' : 'bg-black/5 dark:bg-white/10'
+                  }`}>
+                    {allItems.length}
+                  </span>
+                </button>
+
+                {(Object.keys(PAPERS) as PaperId[]).map((pid) => {
+                  const info = PAPERS[pid];
+                  const count = paperCounts[pid] || 0;
+                  const isSelected = paperFilter === pid;
+                  if (count === 0 && !isSelected) return null;
+
+                  return (
+                    <button
+                      key={pid}
+                      onClick={() => onPaperFilterChange(isSelected ? null : pid)}
+                      className={`px-3 py-1.5 rounded-xl transition-all text-center flex items-center gap-1.5 shrink-0 border ${
+                        isSelected
+                          ? 'bg-[var(--bg-surface)] text-[var(--text-primary)] shadow-2xs font-bold border-[#007aff]'
+                          : 'bg-black/5 dark:bg-white/5 text-[var(--text-secondary)] hover:text-[var(--text-primary)] border-transparent'
+                      }`}
+                    >
+                      <PaperBadge paper={pid} size="sm" />
+                      <span>{info.shortName}</span>
+                      {count > 0 && (
+                        <span className="text-[10px] opacity-75 font-mono">
+                          {count}
+                        </span>
+                      )}
+                    </button>
+                  );
+                })}
+              </div>
             </div>
 
             {/* Horizontal Chips Carousel */}
