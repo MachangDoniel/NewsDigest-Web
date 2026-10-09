@@ -18,7 +18,6 @@ export const ShortcutsModal: React.FC<ShortcutsModalProps> = ({
     { key: '/', desc: 'Instant search in Archive' },
     { key: 'M', desc: 'Jump directly to Practice MCQs' },
     { key: 'P', desc: 'Toggle Audio Read Aloud player' },
-    { key: 'R', desc: 'Trigger Live Digest compilation' },
     { key: 'S', desc: 'Open Daily BCS Revision Sheet' },
     { key: 'T / D', desc: 'Toggle Dark / Light Mode' },
     { key: 'Esc', desc: 'Close any active modal or sheet' },

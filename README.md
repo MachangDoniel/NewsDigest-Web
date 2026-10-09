@@ -90,7 +90,6 @@ Comprehensive revision tools built specifically for civil service preliminary, w
 | 📝 **Practice MCQs** | Real daily Prelims questions with interactive circular score ring. |
 | 🎧 **Voice Narrator** | Persistent bottom audio player with sentence tracking and speech speed. |
 | 🗄️ **Archive & Bookmarks** | Complete historical date archive and bookmarked revision vault. |
-| 🔒 **Admin Access** | Stealth passcode unlock for live crawling and database connections. |
 
 ---
 
