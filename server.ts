@@ -7,6 +7,7 @@ import { fileURLToPath } from 'node:url';
 import { GoogleGenAI } from '@google/genai';
 import { createClient } from '@supabase/supabase-js';
 import { visitLog } from './src/services/visitLog';
+import { rateLimit } from './src/services/rateLimit';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -28,6 +29,9 @@ const supabase = createClient(SUPABASE_URL, SUPABASE_KEY, {
 });
 
 app.use(visitLog(SUPABASE_URL));
+// Per address, per minute: 120 API requests, of which at most 10 may use AI.
+app.use('/api/', rateLimit(120));
+app.use(['/api/chat', '/api/bcs-summary'], rateLimit(10));
 
 // Initialize Gemini SDK if API key is present
 const apiKey = process.env.GEMINI_API_KEY || '';
