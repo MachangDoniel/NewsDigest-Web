@@ -137,9 +137,49 @@ GEMINI_API_KEY="your-gemini-api-key"
 SUPABASE_URL="https://your-project.supabase.co"
 SUPABASE_ANON_KEY="your-publishable-key"
 
+# Optional: report visits to the NewsDigest iOS app's Admin screen
+# (same value as the WEB_LOG_KEY secret on the Supabase project)
+WEB_LOG_KEY="your-web-log-key"
+
 # Port (defaults to 3000)
 PORT=3000
 ```
+
+No keys are stored in this repository. `.env` is ignored by git; on AI Studio the same names go in the **Secrets** panel.
+
+---
+
+## 🔒 Security & Limits
+
+This is a public reader: there is no sign-in, no admin screen and no admin API on this site. Administration lives in the NewsDigest iOS app.
+
+| Protection | Rule |
+| :--- | :--- |
+| **Requests per address** | 120 API requests a minute; over that the server answers `429` with `Retry-After`. |
+| **AI per address** | 10 requests a minute to `/api/chat` and `/api/bcs-summary`. |
+| **AI from everyone together** | 30 requests a minute and 600 a day, so changing address does not get around the limit. |
+| **Request size** | Bodies up to 200 KB. Chat sends at most the last 12 messages (2,000 characters each) and 8,000 characters of story context to Gemini. |
+| **Database** | The site reads `digests` and `run_status` with the publishable key. Row-level security makes them read-only; nothing here can write to them. |
+| **Visit reporting** | At most one report every 30 seconds, 100 visits in it, 30 from one address. Off unless `SUPABASE_URL` and `WEB_LOG_KEY` are set. |
+
+The limits are counted in memory, so they start again when the server restarts.
+
+---
+
+## ☁️ Deploying on AI Studio
+
+1. In the **Secrets** panel set `GEMINI_API_KEY`, `SUPABASE_URL` and `SUPABASE_ANON_KEY` (and `WEB_LOG_KEY` if you use visit reporting).
+2. Bring the app up to date with the `main` branch of this repository. `main` is the source of truth: do not put back the admin login, passcode, telemetry dashboard or any built-in key.
+3. Publish.
+4. Check the result. Each of these must answer `404`:
+
+```bash
+curl -s -o /dev/null -w "%{http_code}\n" https://newsdigest.ai.studio/api/auth/session
+curl -s -o /dev/null -w "%{http_code}\n" https://newsdigest.ai.studio/api/admin/telemetry
+curl -s -o /dev/null -w "%{http_code}\n" -X POST https://newsdigest.ai.studio/api/auth/passcode-login
+```
+
+and `https://newsdigest.ai.studio/api/digests?source=epaper&limit=1` must return a digest.
 
 ---
 
