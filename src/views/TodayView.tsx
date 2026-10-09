@@ -10,7 +10,6 @@ import {
   Trophy,
   Grid2X2,
   AlertCircle,
-  Sparkles,
   ArrowRight,
   Search,
   X,
@@ -45,13 +44,10 @@ interface TodayViewProps {
   onOpenPage: (paper: string, page: number) => void;
   onOpenInAppChat: (prompt: string, contextTitle: string) => void;
   onNavigateToPractice: () => void;
-  onRunDigestNow: () => Promise<void>;
-  isCompiling: boolean;
   isLoading: boolean;
   viewMode: ViewMode;
   onOpenRevisionSheet: () => void;
   onOpenFlashcards: () => void;
-  isAdmin?: boolean;
 }
 
 export const TodayView: React.FC<TodayViewProps> = ({
@@ -69,13 +65,10 @@ export const TodayView: React.FC<TodayViewProps> = ({
   onOpenPage,
   onOpenInAppChat,
   onNavigateToPractice,
-  onRunDigestNow,
-  isCompiling,
   isLoading,
   viewMode,
   onOpenRevisionSheet,
   onOpenFlashcards,
-  isAdmin = false,
 }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -226,32 +219,6 @@ export const TodayView: React.FC<TodayViewProps> = ({
       <div className="lg:grid lg:grid-cols-12 lg:gap-8 items-start">
         {/* Left Column: Feed */}
         <div className="lg:col-span-7 xl:col-span-8 space-y-4">
-          {/* Run Digest Now Action Banner (Admin Only) */}
-          {isAdmin && (
-            <div className="bg-[var(--bg-surface)] rounded-2xl p-4 sm:p-5 shadow-xs border border-[var(--border-subtle)] flex items-center justify-between gap-4">
-              <div className="space-y-1">
-                <div className="flex items-center gap-2 text-xs font-bold text-[var(--text-primary)]">
-                  <Sparkles className="w-4 h-4 text-[#007aff]" />
-                  <span>Morning Papers Live (Admin Console)</span>
-                </div>
-                <p className="text-xs text-[var(--text-secondary)] max-w-lg leading-relaxed">
-                  Compile fresh examination summaries immediately from today's live online editions.
-                </p>
-              </div>
-
-              <button
-                onClick={onRunDigestNow}
-                disabled={isCompiling}
-                className="shrink-0 px-4 py-2.5 rounded-xl bg-[#007aff] text-white text-xs font-semibold hover:bg-[#0062cc] disabled:opacity-50 transition-all shadow-xs flex items-center gap-2"
-              >
-                <span className={`inline-block ${isCompiling ? 'animate-spin' : ''}`}>
-                  ⟳
-                </span>
-                <span>{isCompiling ? 'Compiling…' : 'Run digest now'}</span>
-              </button>
-            </div>
-          )}
-
           {/* Practice MCQs Callout */}
           {totalMcqCount > 0 && (
             <button

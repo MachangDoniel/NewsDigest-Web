@@ -22,13 +22,6 @@ import {
   saveThemeToStorage,
   stepDhakaDate,
 } from './services/store';
-import {
-  getStoredAdminToken,
-  getStoredAdminUser,
-  checkAdminSession,
-  clearAdminSession,
-  AdminUser,
-} from './services/auth';
 
 import { Header, ViewMode, ThemeMode } from './components/Header';
 import { TabBar } from './components/TabBar';
@@ -58,7 +51,6 @@ export default function App() {
   >('today');
   const [runStatus, setRunStatus] = useState<RunStatus[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [isCompiling, setIsCompiling] = useState<boolean>(false);
 
   // Web V2 States
   const [viewMode, setViewMode] = useState<ViewMode>('editorial');
@@ -86,7 +78,7 @@ export default function App() {
 
   // Settings
   const initialSettings = loadSettings();
-  const [aiModel, setAiModel] = useState<string>(initialSettings.aiModel);
+  const [aiModel] = useState<string>(initialSettings.aiModel);
   const [summaryLanguage, setSummaryLanguage] = useState<string>(
     initialSettings.summaryLanguage
   );
@@ -97,17 +89,6 @@ export default function App() {
   // Jump to specific paper & page in Papers view
   const [targetPaper, setTargetPaper] = useState<PaperId | null>(null);
   const [targetPage, setTargetPage] = useState<number>(1);
-
-  // Admin Authentication State (Only donieltripura1971@gmail.com or Master Passcode)
-  const [isAdmin, setIsAdmin] = useState<boolean>(!!getStoredAdminToken());
-  const [adminUser, setAdminUser] = useState<AdminUser | null>(getStoredAdminUser());
-
-  useEffect(() => {
-    checkAdminSession().then((valid) => {
-      setIsAdmin(valid);
-      if (!valid) setAdminUser(null);
-    });
-  }, []);
 
   // Sync theme attribute to document element
   useEffect(() => {
@@ -194,8 +175,6 @@ export default function App() {
           saveThemeToStorage(next);
           return next;
         });
-      } else if (e.key === 'r' || e.key === 'R') {
-        handleRunDigestNow();
       }
     };
 
@@ -225,30 +204,6 @@ export default function App() {
   const handleResetAnswers = () => {
     setMcqAnswers({});
     saveAnswersToStorage({});
-  };
-
-  // Run digest now (admin protected)
-  const handleRunDigestNow = async () => {
-    setIsCompiling(true);
-    try {
-      const token = getStoredAdminToken();
-      const res = await fetch('/api/run-digest', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-admin-token': token || '',
-        },
-      });
-      const data = await res.json();
-      if (data.ok) {
-        await fetchDigests();
-        await fetchStatus(currentDate);
-      }
-    } catch (err) {
-      console.error('Run digest error:', err);
-    } finally {
-      setIsCompiling(false);
-    }
   };
 
   // Open specific page from ItemCard
@@ -306,7 +261,6 @@ export default function App() {
         onOpenRevisionSheet={() => setIsRevisionSheetOpen(true)}
         onOpenShortcuts={() => setIsShortcutsOpen(true)}
         mcqCount={totalMcqCountForCurrentDate}
-        isAdmin={isAdmin}
       />
 
       {/* Main Content Viewport */}
@@ -327,13 +281,10 @@ export default function App() {
             onOpenPage={handleOpenPage}
             onOpenInAppChat={handleOpenInAppChat}
             onNavigateToPractice={() => setActiveTab('practice')}
-            onRunDigestNow={handleRunDigestNow}
-            isCompiling={isCompiling}
             isLoading={isLoading && dateDigests.length === 0}
             viewMode={viewMode}
             onOpenRevisionSheet={() => setIsRevisionSheetOpen(true)}
             onOpenFlashcards={() => setIsFlashcardsOpen(true)}
-            isAdmin={isAdmin}
           />
         )}
 
@@ -376,11 +327,6 @@ export default function App() {
             <SettingsView
               theme={theme}
               onThemeChange={handleThemeChange}
-              aiModel={aiModel}
-              onAiModelChange={(m) => {
-                setAiModel(m);
-                saveSettingsToStorage({ aiModel: m, summaryLanguage, speechVoice, speechRate: 1.0 });
-              }}
               summaryLanguage={summaryLanguage}
               onSummaryLanguageChange={(l) => {
                 setSummaryLanguage(l);
@@ -390,19 +336,6 @@ export default function App() {
               onSpeechVoiceChange={(v) => {
                 setSpeechVoice(v);
                 saveSettingsToStorage({ aiModel, summaryLanguage, speechVoice: v, speechRate: 1.0 });
-              }}
-              onRunDigestNow={handleRunDigestNow}
-              isCompiling={isCompiling}
-              isAdmin={isAdmin}
-              adminUser={adminUser}
-              onLoginSuccess={(u) => {
-                setIsAdmin(true);
-                setAdminUser(u);
-              }}
-              onLogout={() => {
-                clearAdminSession();
-                setIsAdmin(false);
-                setAdminUser(null);
               }}
             />
           </div>

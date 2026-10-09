@@ -1,21 +1,13 @@
 import 'dotenv/config';
 import express from 'express';
 import { XMLParser } from 'fast-xml-parser';
-import crypto from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { GoogleGenAI } from '@google/genai';
 import { createClient } from '@supabase/supabase-js';
-import {
-  initTelemetry,
-  persistTelemetry,
-  logRequest,
-  trackSupabaseCall,
-  trackGeminiCall,
-  getTelemetrySummary,
-  resetTelemetry,
-} from './src/services/telemetryServer';
+import { visitLog } from './src/services/visitLog';
+import { rateLimit } from './src/services/rateLimit';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -23,68 +15,7 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const port = 3000;
 
-initTelemetry();
-setInterval(persistTelemetry, 30000);
-
 app.use(express.json({ limit: '10mb' }));
-
-// Telemetry request logging middleware
-app.use((req, res, next) => {
-  if (!req.path.startsWith('/api')) {
-    return next();
-  }
-
-  const start = Date.now();
-  const rawIp =
-    (req.headers['x-forwarded-for'] as string)?.split(',')[0].trim() ||
-    req.socket.remoteAddress ||
-    '127.0.0.1';
-  const ua = (req.headers['user-agent'] as string) || 'Browser Client';
-
-  res.on('finish', () => {
-    const duration = Date.now() - start;
-    logRequest(req.method, req.path, res.statusCode, duration, rawIp, ua);
-  });
-
-  next();
-});
-
-// Admin credentials & access control
-const ADMIN_EMAIL = (process.env.ADMIN_EMAIL || 'donieltripura1971@gmail.com').toLowerCase();
-const ADMIN_SECRET = process.env.ADMIN_SECRET || 'newsdigest-admin-2026';
-const AUTH_SECRET_KEY = process.env.AUTH_SECRET_KEY || 'newsdigest-auth-jwt-secret-key-1971';
-
-function generateAdminToken(email: string) {
-  const payload = {
-    email: email.toLowerCase(),
-    isAdmin: true,
-    issuedAt: Date.now(),
-    expiresAt: Date.now() + 30 * 24 * 60 * 60 * 1000, // 30 days
-  };
-  const str = JSON.stringify(payload);
-  const sig = crypto.createHmac('sha256', AUTH_SECRET_KEY).update(str).digest('hex');
-  return Buffer.from(str).toString('base64url') + '.' + sig;
-}
-
-function verifyAdminToken(token?: string): boolean {
-  if (!token) return false;
-  if (token === ADMIN_SECRET) return true;
-
-  try {
-    const parts = token.split('.');
-    if (parts.length !== 2) return false;
-    const str = Buffer.from(parts[0], 'base64url').toString('utf8');
-    const expectedSig = crypto.createHmac('sha256', AUTH_SECRET_KEY).update(str).digest('hex');
-    if (parts[1] !== expectedSig) return false;
-
-    const data = JSON.parse(str);
-    if (!data.isAdmin) return false;
-    if (Date.now() > data.expiresAt) return false;
-    return true;
-  } catch {
-    return false;
-  }
-}
 
 // Supabase client for reading real e-paper digests
 const SUPABASE_URL = process.env.SUPABASE_URL || 'https://utjluiipjiznedsglqsm.supabase.co';
@@ -96,6 +27,11 @@ const SUPABASE_KEY =
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY, {
   auth: { persistSession: false },
 });
+
+app.use(visitLog(SUPABASE_URL));
+// Per address, per minute: 120 API requests, of which at most 10 may use AI.
+app.use('/api/', rateLimit(120));
+app.use(['/api/chat', '/api/bcs-summary'], rateLimit(10));
 
 // Initialize Gemini SDK if API key is present
 const apiKey = process.env.GEMINI_API_KEY || '';
@@ -923,7 +859,6 @@ app.get('/api/digests', async (req, res) => {
     // 1. Fetch Supabase E-Paper digests
     if (source !== 'free' && source !== 'rss') {
       try {
-        const supaStart = Date.now();
         let query = supabase.from('digests').select('*').order('date', { ascending: false });
 
         if (date && typeof date === 'string') {
@@ -937,7 +872,6 @@ app.get('/api/digests', async (req, res) => {
         }
 
         const { data: supaDigests, error } = await query;
-        trackSupabaseCall(Date.now() - supaStart, Boolean(error), supaDigests?.length || 0);
 
         if (!error && supaDigests && supaDigests.length > 0) {
           mappedSupa.push(
@@ -1029,12 +963,10 @@ app.get('/api/status', async (req, res) => {
 
   // 1. Try Supabase run_status table
   try {
-    const supaStart = Date.now();
     const { data: supaStatus, error } = await supabase
       .from('run_status')
       .select('*')
       .eq('date', date);
-    trackSupabaseCall(Date.now() - supaStart, Boolean(error), supaStatus?.length || 0);
 
     if (!error && supaStatus && supaStatus.length > 0) {
       return res.json(
@@ -1073,74 +1005,6 @@ app.get('/api/status', async (req, res) => {
   ];
 
   res.json(statusList);
-});
-
-// Authentication endpoints
-app.post('/api/auth/passcode-login', (req, res) => {
-  try {
-    const { passcode } = req.body;
-    if (!passcode || typeof passcode !== 'string') {
-      return res.status(400).json({ ok: false, message: 'Admin passcode is required' });
-    }
-
-    if (passcode.trim() === ADMIN_SECRET) {
-      const token = generateAdminToken('admin');
-      return res.json({
-        ok: true,
-        isAdmin: true,
-        user: {
-          name: 'Administrator',
-        },
-        token,
-        message: 'Admin access unlocked.',
-      });
-    }
-
-    return res.status(401).json({ ok: false, message: 'Incorrect passcode.' });
-  } catch (err: any) {
-    res.status(500).json({ ok: false, message: err.message });
-  }
-});
-
-app.get('/api/auth/session', (req, res) => {
-  const authHeader = req.headers['authorization'] || req.headers['x-admin-token'];
-  const token = typeof authHeader === 'string' ? authHeader.replace(/^Bearer\s+/, '') : '';
-  const isAdmin = verifyAdminToken(token);
-
-  res.json({
-    ok: true,
-    isAdmin,
-    adminEmail: ADMIN_EMAIL,
-  });
-});
-
-// Run digest now endpoint (Admin Protected)
-app.post('/api/run-digest', async (req, res) => {
-  const authHeader = req.headers['authorization'] || req.headers['x-admin-token'];
-  const token = typeof authHeader === 'string' ? authHeader.replace(/^Bearer\s+/, '') : '';
-  const isAdmin = verifyAdminToken(token);
-
-  if (!isAdmin) {
-    return res.status(403).json({
-      ok: false,
-      message: 'Access denied: Administrator privileges required to trigger live digest compilation.',
-    });
-  }
-
-  try {
-    console.log(`Admin (${ADMIN_EMAIL}) authorized Run Digest Now...`);
-    await ensureDigests(true);
-    res.json({
-      ok: true,
-      message: "Today's digest successfully updated from live editions.",
-    });
-  } catch (err: any) {
-    console.error('Run digest failed:', err);
-    res.status(500).json({
-      ok: false,
-      message: `Failed to compile digest: ${err.message}`,
-    });
-  }
 });
 
 // AI Chat endpoint for follow-up questions on stories or MCQs
@@ -1184,14 +1048,12 @@ Instructions:
           contents: prompt,
         });
         text = response.text || '';
-        trackGeminiCall();
       } catch (e) {
         const response = await ai.models.generateContent({
           model: 'gemini-3.5-flash-lite',
           contents: prompt,
         });
         text = response.text || '';
-        trackGeminiCall();
       }
 
       return res.json({
@@ -1209,85 +1071,6 @@ Instructions:
   } catch (err: any) {
     console.error('Chat endpoint error:', err);
     res.status(500).json({ ok: false, message: err.message });
-  }
-});
-
-// ----------------- Admin Telemetry & Quota Endpoints -----------------
-
-// Live Telemetry & Quota Dashboard
-app.get('/api/admin/telemetry', (req, res) => {
-  const authHeader = req.headers['authorization'] || req.headers['x-admin-token'];
-  const token = typeof authHeader === 'string' ? authHeader.replace(/^Bearer\s+/, '') : '';
-  const isAdmin = verifyAdminToken(token);
-
-  if (!isAdmin) {
-    return res.status(403).json({ error: 'Access denied: Admin privileges required' });
-  }
-
-  res.json(getTelemetrySummary());
-});
-
-// Reset Telemetry Counters
-app.post('/api/admin/telemetry/reset', (req, res) => {
-  const authHeader = req.headers['authorization'] || req.headers['x-admin-token'];
-  const token = typeof authHeader === 'string' ? authHeader.replace(/^Bearer\s+/, '') : '';
-  const isAdmin = verifyAdminToken(token);
-
-  if (!isAdmin) {
-    return res.status(403).json({ error: 'Access denied: Admin privileges required' });
-  }
-
-  resetTelemetry();
-  res.json({ ok: true, message: 'Telemetry counters successfully reset' });
-});
-
-// Test Supabase Live Ping & Row Count Probe
-app.post('/api/admin/supabase-ping', async (req, res) => {
-  const authHeader = req.headers['authorization'] || req.headers['x-admin-token'];
-  const token = typeof authHeader === 'string' ? authHeader.replace(/^Bearer\s+/, '') : '';
-  const isAdmin = verifyAdminToken(token);
-
-  if (!isAdmin) {
-    return res.status(403).json({ error: 'Access denied: Admin privileges required' });
-  }
-
-  const start = Date.now();
-  try {
-    const { data, error, count } = await supabase
-      .from('digests')
-      .select('id', { count: 'exact', head: true });
-
-    const pingMs = Date.now() - start;
-    trackSupabaseCall(pingMs, Boolean(error), count || 0);
-
-    if (error) {
-      return res.json({
-        ok: false,
-        status: 'error',
-        pingMs,
-        error: error.message,
-        url: SUPABASE_URL,
-      });
-    }
-
-    res.json({
-      ok: true,
-      status: 'connected',
-      pingMs,
-      totalRows: count ?? 0,
-      url: SUPABASE_URL,
-      testedAt: new Date().toISOString(),
-    });
-  } catch (err: any) {
-    const pingMs = Date.now() - start;
-    trackSupabaseCall(pingMs, true, 0);
-    res.json({
-      ok: false,
-      status: 'error',
-      pingMs,
-      error: err.message,
-      url: SUPABASE_URL,
-    });
   }
 });
 
