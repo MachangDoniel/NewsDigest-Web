@@ -15,9 +15,11 @@ interface Visit {
   userAgent: string;
 }
 
-const FLUSH_EVERY_MS = 15_000;
-const FLUSH_AT = 25;
-const MAX_QUEUED = 500;
+// Limits so a bot hammering the site can't flood Supabase: one report every 30 seconds, at most
+// 100 visits in it, and at most 30 of those from any one address. The rest are not logged.
+const FLUSH_EVERY_MS = 30_000;
+const MAX_QUEUED = 100;
+const MAX_PER_IP = 30;
 
 function detectDevice(ua: string): string {
   const lower = ua.toLowerCase();
@@ -33,7 +35,9 @@ export function visitLog(supabaseUrl: string) {
   if (!key) return (_req: Request, _res: Response, next: NextFunction) => next();
 
   let queue: Visit[] = [];
+  let perIp = new Map<string, number>();
   const flush = async () => {
+    perIp = new Map();
     if (!queue.length) return;
     const events = queue;
     queue = [];
@@ -56,9 +60,12 @@ export function visitLog(supabaseUrl: string) {
     // Read now: the dev server rewrites the URL of page loads before the response finishes.
     const action = `${req.method} ${req.path.replace(/\/\d+/g, '/:id')}`;
     res.on('finish', () => {
-      if (queue.length >= MAX_QUEUED) return;
       const userAgent = String(req.headers['user-agent'] ?? '');
       const forwarded = String(req.headers['x-forwarded-for'] ?? '').split(',')[0].trim();
+      const ip = (forwarded || req.ip || '').replace('::ffff:', '');
+      const seen = perIp.get(ip) ?? 0;
+      if (queue.length >= MAX_QUEUED || seen >= MAX_PER_IP) return;
+      perIp.set(ip, seen + 1);
       queue.push({
         at: new Date(started).toISOString(),
         action,
@@ -66,10 +73,9 @@ export function visitLog(supabaseUrl: string) {
         status: res.statusCode,
         latencyMs: Date.now() - started,
         device: detectDevice(userAgent),
-        ip: (forwarded || req.ip || '').replace('::ffff:', ''),
+        ip,
         userAgent,
       });
-      if (queue.length >= FLUSH_AT) void flush();
     });
     next();
   };
