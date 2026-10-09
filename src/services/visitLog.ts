@@ -1,7 +1,7 @@
 import type { NextFunction, Request, Response } from 'express';
 
 // Reports each page load and API request to the NewsDigest Supabase project, so the iOS app's
-// Admin screen can show website visitors next to app users. Off unless WEB_LOG_KEY is set
+// Admin screen can show website visitors next to app users. Off unless SUPABASE_URL and WEB_LOG_KEY are set
 // (the same value as the WEB_LOG_KEY secret on the Supabase project).
 
 interface Visit {
@@ -32,7 +32,7 @@ function detectDevice(ua: string): string {
 
 export function visitLog(supabaseUrl: string) {
   const key = process.env.WEB_LOG_KEY;
-  if (!key) return (_req: Request, _res: Response, next: NextFunction) => next();
+  if (!key || !supabaseUrl) return (_req: Request, _res: Response, next: NextFunction) => next();
 
   let queue: Visit[] = [];
   let perIp = new Map<string, number>();

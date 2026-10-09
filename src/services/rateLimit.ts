@@ -4,6 +4,7 @@ import type { NextFunction, Request, Response } from 'express';
 // Counts are kept in memory for one minute at a time; a restart clears them.
 
 const WINDOW_MS = 60_000;
+const DAY_MS = 24 * 60 * 60_000;
 
 /** Allows `max` requests a minute from one address; the rest get 429 until the minute is over. */
 export function rateLimit(max: number) {
@@ -26,6 +27,35 @@ export function rateLimit(max: number) {
       const message = `Too many requests. Try again in ${retryAfter} seconds.`;
       return res.status(429).json({ ok: false, error: message, message });
     }
+    next();
+  };
+}
+
+/** Allows `perMinute` and `perDay` requests from all addresses together; the rest get 429. */
+export function totalLimit(perMinute: number, perDay: number) {
+  let minuteStart = Date.now();
+  let dayStart = Date.now();
+  let inMinute = 0;
+  let inDay = 0;
+
+  return (_req: Request, res: Response, next: NextFunction) => {
+    const now = Date.now();
+    if (now - minuteStart >= WINDOW_MS) {
+      minuteStart = now;
+      inMinute = 0;
+    }
+    if (now - dayStart >= DAY_MS) {
+      dayStart = now;
+      inDay = 0;
+    }
+    if (inDay >= perDay || inMinute >= perMinute) {
+      const waitMs = inDay >= perDay ? DAY_MS - (now - dayStart) : WINDOW_MS - (now - minuteStart);
+      res.setHeader('Retry-After', String(Math.ceil(waitMs / 1000)));
+      const message = 'The AI tutor is busy right now. Please try again later.';
+      return res.status(429).json({ ok: false, error: message, message });
+    }
+    inMinute += 1;
+    inDay += 1;
     next();
   };
 }
