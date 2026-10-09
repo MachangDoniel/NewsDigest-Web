@@ -7,7 +7,7 @@ import { fileURLToPath } from 'node:url';
 import { GoogleGenAI } from '@google/genai';
 import { createClient } from '@supabase/supabase-js';
 import { visitLog } from './src/services/visitLog';
-import { rateLimit } from './src/services/rateLimit';
+import { rateLimit, totalLimit } from './src/services/rateLimit';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -15,23 +15,26 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const port = 3000;
 
-app.use(express.json({ limit: '10mb' }));
+// Requests carry a question and a story's text at most; anything bigger is refused.
+app.use(express.json({ limit: '200kb' }));
 
-// Supabase client for reading real e-paper digests
-const SUPABASE_URL = process.env.SUPABASE_URL || 'https://utjluiipjiznedsglqsm.supabase.co';
-const SUPABASE_KEY =
-  process.env.SUPABASE_SERVICE_ROLE_KEY ||
-  process.env.SUPABASE_ANON_KEY ||
-  'sb_publishable_30UE1vzeEt2MzIR3ufVWYw_lr0ZQm7V';
+// Supabase client for reading real e-paper digests. Both values come from the environment;
+// without them the site still runs on its saved copy and the live feeds.
+const SUPABASE_URL = process.env.SUPABASE_URL || '';
+const SUPABASE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_ANON_KEY || '';
 
-const supabase = createClient(SUPABASE_URL, SUPABASE_KEY, {
-  auth: { persistSession: false },
-});
+const supabase =
+  SUPABASE_URL && SUPABASE_KEY
+    ? createClient(SUPABASE_URL, SUPABASE_KEY, { auth: { persistSession: false } })
+    : null;
 
 app.use(visitLog(SUPABASE_URL));
 // Per address, per minute: 120 API requests, of which at most 10 may use AI.
 app.use('/api/', rateLimit(120));
 app.use(['/api/chat', '/api/bcs-summary'], rateLimit(10));
+// From everyone together: 30 AI requests a minute and 600 a day, so a bot that keeps changing
+// address still can't use up the Gemini quota.
+app.use(['/api/chat', '/api/bcs-summary'], totalLimit(30, 600));
 
 // Initialize Gemini SDK if API key is present
 const apiKey = process.env.GEMINI_API_KEY || '';
@@ -857,7 +860,7 @@ app.get('/api/digests', async (req, res) => {
     const mappedSupa: any[] = [];
 
     // 1. Fetch Supabase E-Paper digests
-    if (source !== 'free' && source !== 'rss') {
+    if (supabase && source !== 'free' && source !== 'rss') {
       try {
         let query = supabase.from('digests').select('*').order('date', { ascending: false });
 
@@ -963,6 +966,7 @@ app.get('/api/status', async (req, res) => {
 
   // 1. Try Supabase run_status table
   try {
+    if (!supabase) throw new Error('Supabase is not set up');
     const { data: supaStatus, error } = await supabase
       .from('run_status')
       .select('*')
@@ -1008,6 +1012,10 @@ app.get('/api/status', async (req, res) => {
 });
 
 // AI Chat endpoint for follow-up questions on stories or MCQs
+const MAX_CHAT_MESSAGES = 12;
+const MAX_CHAT_TEXT = 2000;
+const MAX_CHAT_CONTEXT = 8000;
+
 app.post('/api/chat', async (req, res) => {
   try {
     const { context, messages } = req.body;
@@ -1016,17 +1024,20 @@ app.post('/api/chat', async (req, res) => {
       return res.status(400).json({ ok: false, message: 'Messages array is required' });
     }
 
-    const lastMessage = messages[messages.length - 1].text || '';
-    const conversationHistory = messages
+    // Only the recent conversation and a bounded amount of text go to the model.
+    const recent = messages.slice(-MAX_CHAT_MESSAGES);
+    const lastMessage = String(recent[recent.length - 1]?.text || '').slice(0, MAX_CHAT_TEXT);
+    const conversationHistory = recent
       .slice(0, -1)
-      .map((m: any) => `${m.role === 'user' ? 'User' : 'Assistant'}: ${m.text}`)
+      .map((m: any) => `${m?.role === 'user' ? 'User' : 'Assistant'}: ${String(m?.text || '').slice(0, MAX_CHAT_TEXT)}`)
       .join('\n');
+    const storyContext = typeof context === 'string' ? context.slice(0, MAX_CHAT_CONTEXT) : '';
 
     const prompt = `You are a distinguished mentor and senior tutor for candidates preparing for the Bangladesh Civil Service (BCS) preliminary, written, and viva examinations.
 You provide precise, factual, exam-oriented guidance with constitutional references, historical background, key statistics, and analytical insights.
 
 Context:
-${context || 'No specific news context provided.'}
+${storyContext || 'No specific news context provided.'}
 
 Conversation History:
 ${conversationHistory}
@@ -1078,7 +1089,7 @@ Instructions:
 app.post('/api/bcs-summary', async (req, res) => {
   try {
     const { text, paper, lang } = req.body;
-    if (!text) {
+    if (!text || typeof text !== 'string') {
       return res.status(400).json({ ok: false, message: 'Text is required' });
     }
 

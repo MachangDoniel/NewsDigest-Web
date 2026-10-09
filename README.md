@@ -133,6 +133,10 @@ Create a `.env` file in the root directory:
 # Optional: Gemini API Key for live AI summaries & in-app chat
 GEMINI_API_KEY="your-gemini-api-key"
 
+# Optional: Supabase project, for the e-paper digests (Project Settings -> API)
+SUPABASE_URL="https://your-project.supabase.co"
+SUPABASE_ANON_KEY="your-publishable-key"
+
 # Port (defaults to 3000)
 PORT=3000
 ```
